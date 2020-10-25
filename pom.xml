@@ -12,8 +12,15 @@
     <artifactId>young-mall</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>young-mall</name>
+    <packaging>pom</packaging>
     <description>Demo project for Spring Boot</description>
-
+    <modules>
+        <module>young-admin</module>
+        <module>young-common</module>
+        <module>young-db</module>
+        <module>young-security</module>
+        <module>young-wx-api</module>
+    </modules>
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -32,25 +39,39 @@
         <spring-data-commons.version>2.3.0.RELEASE</spring-data-commons.version>
         <jjwt.version>0.9.0</jjwt.version>
         <aliyun-oss.version>2.5.0</aliyun-oss.version>
-        <logstash-logback.version>5.3</logstash-logback.version>
+        <knife4j.version>2.0.4</knife4j.version>
         <minio.version>7.1.0</minio.version>
+        <young-db.version>0.0.1-SNAPSHOT</young-db.version>
         <young-common.version>0.0.1-SNAPSHOT</young-common.version>
         <young-security.version>0.0.1-SNAPSHOT</young-security.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <!--swagger-->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <!--在引用时请在maven中央仓库搜索最新版本号-->
+                <version>${knife4j.version}</version>
+            </dependency>
+            <!--mall中代码生成模块-->
+            <dependency>
+                <groupId>com.young.db</groupId>
+                <artifactId>young-db</artifactId>
+                <version>${young-db.version}</version>
+            </dependency>
             <!--mall通用模块-->
             <dependency>
                 <groupId>com.young.mall</groupId>
                 <artifactId>young-common</artifactId>
-                <version>${mall-common.version}</version>
+                <version>${young-common.version}</version>
             </dependency>
             <!--mall安全模块-->
             <dependency>
                 <groupId>com.young.mall</groupId>
                 <artifactId>young-security</artifactId>
-                <version>${mall-security.version}</version>
+                <version>${young-security.version}</version>
             </dependency>
             <!--MyBatis分页插件starter-->
             <dependency>
@@ -174,12 +195,14 @@
     </dependencies>
 
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
 </project>
