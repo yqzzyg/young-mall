@@ -1,10 +1,12 @@
 package com.young.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollectionUtil;
 import com.young.db.entity.YoungAdmin;
 import com.young.mall.domain.AdminUser;
 import com.young.mall.exception.Asserts;
 import com.young.mall.service.PermissionService;
+import com.young.mall.service.RedisService;
 import com.young.mall.service.YoungAdminService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
 import java.util.*;
@@ -35,8 +38,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private PermissionService permissionService;
 
+    @Autowired
+    private RedisService redisService;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+
 
         Optional<YoungAdmin> adminOptional = adminService.findAdminByName(username);
         if (!adminOptional.isPresent()) {
@@ -46,17 +54,40 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         AdminUser adminUser = new AdminUser();
         BeanUtil.copyProperties(youngAdmin, adminUser);
-
-        Optional<Set<String>> optionalSet = permissionService.queryByRoleIds(adminUser.getRoleIds());
-        Set<String> permissions = optionalSet.get();
-
-        Collection<? extends GrantedAuthority> authorities
-                = AuthorityUtils.createAuthorityList(permissions.toArray(new String[0]));
-        Set<GrantedAuthority> authoritySet = Collections.unmodifiableSet(sortAuthorities(authorities));
+        Set<GrantedAuthority> authoritySet = getAuthorities(adminUser);
         adminUser.setAuthorities(authoritySet);
 
         return adminUser;
     }
+
+
+    public Set<GrantedAuthority> getAuthorities(AdminUser adminUser) {
+
+        Set<String> optional = (Set<String>) redisService.get(adminUser.getId().toString());
+        if (CollectionUtil.isNotEmpty(optional)) {
+            return unmodifiableSet(optional);
+        }
+
+        Optional<Set<String>> optionalSet = permissionService.queryByRoleIds(adminUser.getRoleIds());
+        Set<String> permissions = optionalSet.get();
+        if (!optionalSet.isPresent()) {
+            Asserts.fail("查询权限失败");
+        }
+        //把权限id存入缓存，避免每次查询数据库缓慢
+        redisService.set(adminUser.getId().toString(), permissions);
+
+        Set<GrantedAuthority> authoritySet = unmodifiableSet(permissions);
+
+        return authoritySet;
+    }
+
+    public Set<GrantedAuthority> unmodifiableSet(Set<String> permissions) {
+        Collection<? extends GrantedAuthority> authorities
+                = AuthorityUtils.createAuthorityList(permissions.toArray(new String[0]));
+        Set<GrantedAuthority> authoritySet = Collections.unmodifiableSet(sortAuthorities(authorities));
+        return authoritySet;
+    }
+
 
     private static SortedSet<GrantedAuthority> sortAuthorities(
             Collection<? extends GrantedAuthority> authorities) {

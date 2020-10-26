@@ -41,6 +41,7 @@
         <aliyun-oss.version>2.5.0</aliyun-oss.version>
         <knife4j.version>2.0.4</knife4j.version>
         <minio.version>7.1.0</minio.version>
+        <redisson.version>3.11.3</redisson.version>
         <young-db.version>0.0.1-SNAPSHOT</young-db.version>
         <young-common.version>0.0.1-SNAPSHOT</young-common.version>
         <young-security.version>0.0.1-SNAPSHOT</young-security.version>
@@ -48,6 +49,12 @@
 
     <dependencyManagement>
         <dependencies>
+            <!--redisson-->
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>${redisson.version}</version>
+            </dependency>
             <!--swagger-->
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>

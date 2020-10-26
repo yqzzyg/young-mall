@@ -13,6 +13,17 @@ spring:
         login-username: druid
         login-password: druid
 
+  redis:
+#    host: 106.54.139.18
+#    password: redis12358
+#    database: 8
+#    port: 6379
+#    timeout: 3000
+#  redisTemplate使用，可用于普通缓存
+#  redisson使用，redisson分布式锁
+    redisson:
+      config: classpath:redisson.yml
+
 logging:
   level:
     root: info
