@@ -2,6 +2,7 @@ package com.young.mall.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -25,6 +26,14 @@ public interface RedisService {
      */
     Object get(String key);
 
+    /**
+     * 获取属性，根据clazz返回响应体
+     * @param key
+     * @param clazz
+     * @param <T>
+     * @return
+     */
+    <T> Optional<T> get(String key, Class<? extends T> clazz);
     /**
      * 删除属性
      */

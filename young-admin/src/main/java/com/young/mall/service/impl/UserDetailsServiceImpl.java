@@ -1,8 +1,9 @@
 package com.young.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.json.JSONUtil;
 import com.young.db.entity.YoungAdmin;
+import com.young.mall.constant.RedisConstant;
 import com.young.mall.domain.AdminUser;
 import com.young.mall.exception.Asserts;
 import com.young.mall.service.PermissionService;
@@ -19,7 +20,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
 import java.util.*;
@@ -44,13 +44,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-
-
-        Optional<YoungAdmin> adminOptional = adminService.findAdminByName(username);
-        if (!adminOptional.isPresent()) {
-            Asserts.fail("无该用户");
-        }
-        YoungAdmin youngAdmin = adminOptional.get();
+        YoungAdmin youngAdmin = getYoungAdmin(username);
 
         AdminUser adminUser = new AdminUser();
         BeanUtil.copyProperties(youngAdmin, adminUser);
@@ -60,21 +54,52 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return adminUser;
     }
 
+    /**
+     * 获取用户信息
+     *
+     * @param username
+     * @return
+     */
+    public YoungAdmin getYoungAdmin(String username) {
 
+        YoungAdmin youngAdmin = null;
+
+        Optional<YoungAdmin> admin = redisService.get(RedisConstant.REDIS_KEY_ADMIN + ":" + username, YoungAdmin.class);
+        if (admin.isPresent()) {
+            logger.info("缓存中获取用户信息：{}", JSONUtil.toJsonStr(admin.get()));
+            return admin.get();
+        }
+        Optional<YoungAdmin> adminOptional = adminService.findAdminByName(username);
+        if (!adminOptional.isPresent()) {
+            Asserts.fail("无该用户");
+        }
+        youngAdmin = adminOptional.get();
+        logger.info("数据库中获取用户信息：{}", JSONUtil.toJsonStr(youngAdmin));
+
+        redisService.set(RedisConstant.REDIS_KEY_ADMIN + ":" + youngAdmin.getUsername(), youngAdmin, RedisConstant.REDIS_EXPIRE);
+        return youngAdmin;
+    }
+
+    /**
+     * 查询 authoritySet
+     *
+     * @param adminUser
+     * @return
+     */
     public Set<GrantedAuthority> getAuthorities(AdminUser adminUser) {
 
-        Set<String> optional = (Set<String>) redisService.get(adminUser.getId().toString());
-        if (CollectionUtil.isNotEmpty(optional)) {
-            return unmodifiableSet(optional);
+        Optional<Set> authoritiesSet = redisService.get(RedisConstant.REDIS_KEY_ROLEIDS + ":" + adminUser.getUsername(), Set.class);
+        if (authoritiesSet.isPresent()) {
+            return unmodifiableSet(authoritiesSet.get());
         }
-
         Optional<Set<String>> optionalSet = permissionService.queryByRoleIds(adminUser.getRoleIds());
         Set<String> permissions = optionalSet.get();
         if (!optionalSet.isPresent()) {
             Asserts.fail("查询权限失败");
         }
+
         //把权限id存入缓存，避免每次查询数据库缓慢
-        redisService.set(adminUser.getId().toString(), permissions);
+        redisService.set(RedisConstant.REDIS_KEY_ROLEIDS + ":" + adminUser.getUsername(), permissions, RedisConstant.REDIS_EXPIRE);
 
         Set<GrantedAuthority> authoritySet = unmodifiableSet(permissions);
 

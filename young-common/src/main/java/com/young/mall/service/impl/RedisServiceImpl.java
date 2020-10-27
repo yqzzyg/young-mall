@@ -1,5 +1,7 @@
 package com.young.mall.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.young.mall.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -33,6 +36,19 @@ public class RedisServiceImpl implements RedisService {
     @Override
     public Object get(String key) {
         return redisTemplate.opsForValue().get(key);
+    }
+
+    @Override
+    public <T> Optional<T> get(String key, Class<? extends T> clazz) {
+        Object obj = redisTemplate.opsForValue().get(key);
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        if (!BeanUtil.isEmpty(obj)) {
+            T t = mapper.convertValue(obj, clazz);
+            return Optional.ofNullable(t);
+        }
+        return Optional.ofNullable(null);
     }
 
     @Override
