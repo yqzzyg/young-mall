@@ -5,7 +5,7 @@ package com.young.mall.common;
  * @Author: yqz
  * @CreateDate: 2020/10/25 15:54
  */
-public enum ResponseCode implements ResErrorCode{
+public enum ResCode implements ResErrorCode{
     SUCCESS(200, "操作成功"),
     FAILED(500, "操作失败"),
     VALIDATE_FAILED(404, "参数检验失败"),
@@ -14,7 +14,7 @@ public enum ResponseCode implements ResErrorCode{
     private long code;
     private String msg;
 
-    ResponseCode(long code, String msg) {
+    ResCode(long code, String msg) {
         this.code = code;
         this.msg = msg;
     }

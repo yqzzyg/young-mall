@@ -1,7 +1,7 @@
 package com.young.mall.component;
 
 import cn.hutool.json.JSONUtil;
-import com.young.mall.common.ResponseBean;
+import com.young.mall.common.ResBean;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
@@ -26,7 +26,7 @@ public class RestfulAccessDeniedHandler implements AccessDeniedHandler {
         response.setHeader("Cache-Control","no-cache");
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
-        response.getWriter().println(JSONUtil.parse(ResponseBean.forbidden(e.getMessage())));
+        response.getWriter().println(JSONUtil.parse(ResBean.forbidden(e.getMessage())));
         response.getWriter().flush();
     }
 }
