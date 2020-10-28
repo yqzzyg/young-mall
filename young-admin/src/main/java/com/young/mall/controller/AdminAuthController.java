@@ -1,6 +1,7 @@
 package com.young.mall.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.young.db.entity.YoungAdmin;
@@ -17,14 +18,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @Description: 后台用户管理
@@ -70,26 +69,21 @@ public class AdminAuthController {
         if (BeanUtil.isEmpty(principal)) {
             return ResBean.unauthorized(null);
         }
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        Optional<YoungAdmin> adminByName = adminService.findAdminByName(principal.getName());
-        if (!adminByName.isPresent()) {
-            ResBean.unauthorized("无此用户");
-        }
-        YoungAdmin admin = adminByName.get();
-        AdminUser adminUser = new AdminUser();
-        BeanUtil.copyProperties(admin, adminUser);
+        JSONObject jsonObject = JSONUtil.parseObj(principal);
+
+        JSONObject principalData = jsonObject.getJSONObject("principal");
+
         Map<String, Object> data = new HashMap<>();
-        data.put("name", adminUser.getUsername());
-        data.put("avatar", adminUser.getAvatar());
+        data.put("name", principal.getName());
+        data.put("avatar", principalData.getStr("avatar"));
 
-        Integer[] roleIds = adminUser.getRoleIds();
-        Optional<Set<String>> optionalSet = permissionService.queryByRoleIds(adminUser.getRoleIds());
+        JSONArray roleIds = principalData.getJSONArray("roleIds");
 
 //        Set<String> roles = roleService.queryByIds(roleIds);
 
 //        data.put("roles", roles);
-        data.put("perms", optionalSet.get());
+        data.put("perms", "");
         logger.info("【请求结束】系统管理->用户信息获取,响应结果:{}", JSONUtil.toJsonStr(data));
 
         return ResBean.success(data);
