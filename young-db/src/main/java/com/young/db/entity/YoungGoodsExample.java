@@ -271,72 +271,72 @@ public class YoungGoodsExample {
         }
 
         public Criteria andNameIsNull() {
-            addCriterion("name is null");
+            addCriterion("`name` is null");
             return (Criteria) this;
         }
 
         public Criteria andNameIsNotNull() {
-            addCriterion("name is not null");
+            addCriterion("`name` is not null");
             return (Criteria) this;
         }
 
         public Criteria andNameEqualTo(String value) {
-            addCriterion("name =", value, "name");
+            addCriterion("`name` =", value, "name");
             return (Criteria) this;
         }
 
         public Criteria andNameNotEqualTo(String value) {
-            addCriterion("name <>", value, "name");
+            addCriterion("`name` <>", value, "name");
             return (Criteria) this;
         }
 
         public Criteria andNameGreaterThan(String value) {
-            addCriterion("name >", value, "name");
+            addCriterion("`name` >", value, "name");
             return (Criteria) this;
         }
 
         public Criteria andNameGreaterThanOrEqualTo(String value) {
-            addCriterion("name >=", value, "name");
+            addCriterion("`name` >=", value, "name");
             return (Criteria) this;
         }
 
         public Criteria andNameLessThan(String value) {
-            addCriterion("name <", value, "name");
+            addCriterion("`name` <", value, "name");
             return (Criteria) this;
         }
 
         public Criteria andNameLessThanOrEqualTo(String value) {
-            addCriterion("name <=", value, "name");
+            addCriterion("`name` <=", value, "name");
             return (Criteria) this;
         }
 
         public Criteria andNameLike(String value) {
-            addCriterion("name like", value, "name");
+            addCriterion("`name` like", value, "name");
             return (Criteria) this;
         }
 
         public Criteria andNameNotLike(String value) {
-            addCriterion("name not like", value, "name");
+            addCriterion("`name` not like", value, "name");
             return (Criteria) this;
         }
 
         public Criteria andNameIn(List<String> values) {
-            addCriterion("name in", values, "name");
+            addCriterion("`name` in", values, "name");
             return (Criteria) this;
         }
 
         public Criteria andNameNotIn(List<String> values) {
-            addCriterion("name not in", values, "name");
+            addCriterion("`name` not in", values, "name");
             return (Criteria) this;
         }
 
         public Criteria andNameBetween(String value1, String value2) {
-            addCriterion("name between", value1, value2, "name");
+            addCriterion("`name` between", value1, value2, "name");
             return (Criteria) this;
         }
 
         public Criteria andNameNotBetween(String value1, String value2) {
-            addCriterion("name not between", value1, value2, "name");
+            addCriterion("`name` not between", value1, value2, "name");
             return (Criteria) this;
         }
 
@@ -1361,62 +1361,62 @@ public class YoungGoodsExample {
         }
 
         public Criteria andBrowseIsNull() {
-            addCriterion("browse is null");
+            addCriterion("`browse` is null");
             return (Criteria) this;
         }
 
         public Criteria andBrowseIsNotNull() {
-            addCriterion("browse is not null");
+            addCriterion("`browse` is not null");
             return (Criteria) this;
         }
 
         public Criteria andBrowseEqualTo(Integer value) {
-            addCriterion("browse =", value, "browse");
+            addCriterion("`browse` =", value, "browse");
             return (Criteria) this;
         }
 
         public Criteria andBrowseNotEqualTo(Integer value) {
-            addCriterion("browse <>", value, "browse");
+            addCriterion("`browse` <>", value, "browse");
             return (Criteria) this;
         }
 
         public Criteria andBrowseGreaterThan(Integer value) {
-            addCriterion("browse >", value, "browse");
+            addCriterion("`browse` >", value, "browse");
             return (Criteria) this;
         }
 
         public Criteria andBrowseGreaterThanOrEqualTo(Integer value) {
-            addCriterion("browse >=", value, "browse");
+            addCriterion("`browse` >=", value, "browse");
             return (Criteria) this;
         }
 
         public Criteria andBrowseLessThan(Integer value) {
-            addCriterion("browse <", value, "browse");
+            addCriterion("`browse` <", value, "browse");
             return (Criteria) this;
         }
 
         public Criteria andBrowseLessThanOrEqualTo(Integer value) {
-            addCriterion("browse <=", value, "browse");
+            addCriterion("`browse` <=", value, "browse");
             return (Criteria) this;
         }
 
         public Criteria andBrowseIn(List<Integer> values) {
-            addCriterion("browse in", values, "browse");
+            addCriterion("`browse` in", values, "browse");
             return (Criteria) this;
         }
 
         public Criteria andBrowseNotIn(List<Integer> values) {
-            addCriterion("browse not in", values, "browse");
+            addCriterion("`browse` not in", values, "browse");
             return (Criteria) this;
         }
 
         public Criteria andBrowseBetween(Integer value1, Integer value2) {
-            addCriterion("browse between", value1, value2, "browse");
+            addCriterion("`browse` between", value1, value2, "browse");
             return (Criteria) this;
         }
 
         public Criteria andBrowseNotBetween(Integer value1, Integer value2) {
-            addCriterion("browse not between", value1, value2, "browse");
+            addCriterion("`browse` not between", value1, value2, "browse");
             return (Criteria) this;
         }
 

@@ -71,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, type, title, add_time, update_time, deleted
+    id, `type`, title, add_time, update_time, deleted
   </sql>
   <sql id="Blob_Column_List">
     content
@@ -128,7 +128,7 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into young_article (type, title, add_time, 
+    insert into young_article (`type`, title, add_time, 
       update_time, deleted, content
       )
     values (#{type,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, 
@@ -142,7 +142,7 @@
     insert into young_article
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="type != null">
-        type,
+        `type`,
       </if>
       <if test="title != null">
         title,
@@ -194,7 +194,7 @@
         id = #{record.id,jdbcType=INTEGER},
       </if>
       <if test="record.type != null">
-        type = #{record.type,jdbcType=VARCHAR},
+        `type` = #{record.type,jdbcType=VARCHAR},
       </if>
       <if test="record.title != null">
         title = #{record.title,jdbcType=VARCHAR},
@@ -219,7 +219,7 @@
   <update id="updateByExampleWithBLOBs" parameterType="map">
     update young_article
     set id = #{record.id,jdbcType=INTEGER},
-      type = #{record.type,jdbcType=VARCHAR},
+      `type` = #{record.type,jdbcType=VARCHAR},
       title = #{record.title,jdbcType=VARCHAR},
       add_time = #{record.addTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
@@ -232,7 +232,7 @@
   <update id="updateByExample" parameterType="map">
     update young_article
     set id = #{record.id,jdbcType=INTEGER},
-      type = #{record.type,jdbcType=VARCHAR},
+      `type` = #{record.type,jdbcType=VARCHAR},
       title = #{record.title,jdbcType=VARCHAR},
       add_time = #{record.addTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
@@ -245,7 +245,7 @@
     update young_article
     <set>
       <if test="type != null">
-        type = #{type,jdbcType=VARCHAR},
+        `type` = #{type,jdbcType=VARCHAR},
       </if>
       <if test="title != null">
         title = #{title,jdbcType=VARCHAR},
@@ -267,7 +267,7 @@
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.young.db.entity.YoungArticle">
     update young_article
-    set type = #{type,jdbcType=VARCHAR},
+    set `type` = #{type,jdbcType=VARCHAR},
       title = #{title,jdbcType=VARCHAR},
       add_time = #{addTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
@@ -277,7 +277,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.young.db.entity.YoungArticle">
     update young_article
-    set type = #{type,jdbcType=VARCHAR},
+    set `type` = #{type,jdbcType=VARCHAR},
       title = #{title,jdbcType=VARCHAR},
       add_time = #{addTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},

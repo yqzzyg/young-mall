@@ -17,6 +17,8 @@ mybatis:
   mapper-locations:
     - classpath:dao/*.xml
     - classpath*:com/**/mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 jwt:
   tokenHeader: Authorization #JWT存储的请求头

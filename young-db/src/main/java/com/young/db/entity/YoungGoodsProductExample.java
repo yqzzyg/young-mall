@@ -391,62 +391,62 @@ public class YoungGoodsProductExample {
         }
 
         public Criteria andNumberIsNull() {
-            addCriterion("number is null");
+            addCriterion("`number` is null");
             return (Criteria) this;
         }
 
         public Criteria andNumberIsNotNull() {
-            addCriterion("number is not null");
+            addCriterion("`number` is not null");
             return (Criteria) this;
         }
 
         public Criteria andNumberEqualTo(Integer value) {
-            addCriterion("number =", value, "number");
+            addCriterion("`number` =", value, "number");
             return (Criteria) this;
         }
 
         public Criteria andNumberNotEqualTo(Integer value) {
-            addCriterion("number <>", value, "number");
+            addCriterion("`number` <>", value, "number");
             return (Criteria) this;
         }
 
         public Criteria andNumberGreaterThan(Integer value) {
-            addCriterion("number >", value, "number");
+            addCriterion("`number` >", value, "number");
             return (Criteria) this;
         }
 
         public Criteria andNumberGreaterThanOrEqualTo(Integer value) {
-            addCriterion("number >=", value, "number");
+            addCriterion("`number` >=", value, "number");
             return (Criteria) this;
         }
 
         public Criteria andNumberLessThan(Integer value) {
-            addCriterion("number <", value, "number");
+            addCriterion("`number` <", value, "number");
             return (Criteria) this;
         }
 
         public Criteria andNumberLessThanOrEqualTo(Integer value) {
-            addCriterion("number <=", value, "number");
+            addCriterion("`number` <=", value, "number");
             return (Criteria) this;
         }
 
         public Criteria andNumberIn(List<Integer> values) {
-            addCriterion("number in", values, "number");
+            addCriterion("`number` in", values, "number");
             return (Criteria) this;
         }
 
         public Criteria andNumberNotIn(List<Integer> values) {
-            addCriterion("number not in", values, "number");
+            addCriterion("`number` not in", values, "number");
             return (Criteria) this;
         }
 
         public Criteria andNumberBetween(Integer value1, Integer value2) {
-            addCriterion("number between", value1, value2, "number");
+            addCriterion("`number` between", value1, value2, "number");
             return (Criteria) this;
         }
 
         public Criteria andNumberNotBetween(Integer value1, Integer value2) {
-            addCriterion("number not between", value1, value2, "number");
+            addCriterion("`number` not between", value1, value2, "number");
             return (Criteria) this;
         }
 

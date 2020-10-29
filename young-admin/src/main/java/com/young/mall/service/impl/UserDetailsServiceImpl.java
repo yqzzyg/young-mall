@@ -8,7 +8,7 @@ import com.young.mall.domain.AdminUser;
 import com.young.mall.exception.Asserts;
 import com.young.mall.service.PermissionService;
 import com.young.mall.service.RedisService;
-import com.young.mall.service.YoungAdminService;
+import com.young.mall.service.AdminService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private YoungAdminService adminService;
+    private AdminService adminService;
     @Autowired
     private PermissionService permissionService;
 

@@ -74,7 +74,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, name, link, url, position, content, start_time, end_time, enabled, add_time, 
+    id, `name`, link, url, `position`, content, start_time, end_time, enabled, add_time, 
     update_time, deleted
   </sql>
   <select id="selectByExample" parameterType="com.young.db.entity.YoungAdExample" resultMap="BaseResultMap">
@@ -111,8 +111,8 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into young_ad (name, link, url, 
-      position, content, start_time, 
+    insert into young_ad (`name`, link, url, 
+      `position`, content, start_time, 
       end_time, enabled, add_time, 
       update_time, deleted)
     values (#{name,jdbcType=VARCHAR}, #{link,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
@@ -127,7 +127,7 @@
     insert into young_ad
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="name != null">
-        name,
+        `name`,
       </if>
       <if test="link != null">
         link,
@@ -136,7 +136,7 @@
         url,
       </if>
       <if test="position != null">
-        position,
+        `position`,
       </if>
       <if test="content != null">
         content,
@@ -209,7 +209,7 @@
         id = #{record.id,jdbcType=INTEGER},
       </if>
       <if test="record.name != null">
-        name = #{record.name,jdbcType=VARCHAR},
+        `name` = #{record.name,jdbcType=VARCHAR},
       </if>
       <if test="record.link != null">
         link = #{record.link,jdbcType=VARCHAR},
@@ -218,7 +218,7 @@
         url = #{record.url,jdbcType=VARCHAR},
       </if>
       <if test="record.position != null">
-        position = #{record.position,jdbcType=TINYINT},
+        `position` = #{record.position,jdbcType=TINYINT},
       </if>
       <if test="record.content != null">
         content = #{record.content,jdbcType=VARCHAR},
@@ -249,10 +249,10 @@
   <update id="updateByExample" parameterType="map">
     update young_ad
     set id = #{record.id,jdbcType=INTEGER},
-      name = #{record.name,jdbcType=VARCHAR},
+      `name` = #{record.name,jdbcType=VARCHAR},
       link = #{record.link,jdbcType=VARCHAR},
       url = #{record.url,jdbcType=VARCHAR},
-      position = #{record.position,jdbcType=TINYINT},
+      `position` = #{record.position,jdbcType=TINYINT},
       content = #{record.content,jdbcType=VARCHAR},
       start_time = #{record.startTime,jdbcType=TIMESTAMP},
       end_time = #{record.endTime,jdbcType=TIMESTAMP},
@@ -268,7 +268,7 @@
     update young_ad
     <set>
       <if test="name != null">
-        name = #{name,jdbcType=VARCHAR},
+        `name` = #{name,jdbcType=VARCHAR},
       </if>
       <if test="link != null">
         link = #{link,jdbcType=VARCHAR},
@@ -277,7 +277,7 @@
         url = #{url,jdbcType=VARCHAR},
       </if>
       <if test="position != null">
-        position = #{position,jdbcType=TINYINT},
+        `position` = #{position,jdbcType=TINYINT},
       </if>
       <if test="content != null">
         content = #{content,jdbcType=VARCHAR},
@@ -305,10 +305,10 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.young.db.entity.YoungAd">
     update young_ad
-    set name = #{name,jdbcType=VARCHAR},
+    set `name` = #{name,jdbcType=VARCHAR},
       link = #{link,jdbcType=VARCHAR},
       url = #{url,jdbcType=VARCHAR},
-      position = #{position,jdbcType=TINYINT},
+      `position` = #{position,jdbcType=TINYINT},
       content = #{content,jdbcType=VARCHAR},
       start_time = #{startTime,jdbcType=TIMESTAMP},
       end_time = #{endTime,jdbcType=TIMESTAMP},

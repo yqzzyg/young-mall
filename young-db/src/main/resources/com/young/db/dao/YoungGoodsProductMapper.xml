@@ -109,7 +109,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, goods_id, specifications, price, number, url, add_time, update_time, deleted
+    id, goods_id, specifications, price, `number`, url, add_time, update_time, deleted
   </sql>
   <select id="selectByExample" parameterType="com.young.db.entity.YoungGoodsProductExample" resultMap="BaseResultMap">
     select
@@ -146,7 +146,7 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into young_goods_product (goods_id, specifications, 
-      price, number, url, 
+      price, `number`, url, 
       add_time, update_time, deleted
       )
     values (#{goodsId,jdbcType=INTEGER}, #{specifications,jdbcType=VARCHAR,typeHandler=com.young.db.utils.JsonStringArrayTypeHandler}, 
@@ -170,7 +170,7 @@
         price,
       </if>
       <if test="number != null">
-        number,
+        `number`,
       </if>
       <if test="url != null">
         url,
@@ -234,7 +234,7 @@
         price = #{record.price,jdbcType=DECIMAL},
       </if>
       <if test="record.number != null">
-        number = #{record.number,jdbcType=INTEGER},
+        `number` = #{record.number,jdbcType=INTEGER},
       </if>
       <if test="record.url != null">
         url = #{record.url,jdbcType=VARCHAR},
@@ -259,7 +259,7 @@
       goods_id = #{record.goodsId,jdbcType=INTEGER},
       specifications = #{record.specifications,jdbcType=VARCHAR,typeHandler=com.young.db.utils.JsonStringArrayTypeHandler},
       price = #{record.price,jdbcType=DECIMAL},
-      number = #{record.number,jdbcType=INTEGER},
+      `number` = #{record.number,jdbcType=INTEGER},
       url = #{record.url,jdbcType=VARCHAR},
       add_time = #{record.addTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
@@ -281,7 +281,7 @@
         price = #{price,jdbcType=DECIMAL},
       </if>
       <if test="number != null">
-        number = #{number,jdbcType=INTEGER},
+        `number` = #{number,jdbcType=INTEGER},
       </if>
       <if test="url != null">
         url = #{url,jdbcType=VARCHAR},
@@ -303,7 +303,7 @@
     set goods_id = #{goodsId,jdbcType=INTEGER},
       specifications = #{specifications,jdbcType=VARCHAR,typeHandler=com.young.db.utils.JsonStringArrayTypeHandler},
       price = #{price,jdbcType=DECIMAL},
-      number = #{number,jdbcType=INTEGER},
+      `number` = #{number,jdbcType=INTEGER},
       url = #{url,jdbcType=VARCHAR},
       add_time = #{addTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},

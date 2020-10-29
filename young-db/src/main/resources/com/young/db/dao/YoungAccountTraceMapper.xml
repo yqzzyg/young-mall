@@ -74,8 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, trace_sn, user_id, type, amount, total_amount, add_time, mobile, sms_code, status, 
-    trace_msg, update_time
+    id, trace_sn, user_id, `type`, amount, total_amount, add_time, mobile, sms_code, 
+    `status`, trace_msg, update_time
   </sql>
   <select id="selectByExample" parameterType="com.young.db.entity.YoungAccountTraceExample" resultMap="BaseResultMap">
     select
@@ -111,9 +111,9 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into young_account_trace (trace_sn, user_id, type, 
+    insert into young_account_trace (trace_sn, user_id, `type`, 
       amount, total_amount, add_time, 
-      mobile, sms_code, status, 
+      mobile, sms_code, `status`, 
       trace_msg, update_time)
     values (#{traceSn,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
       #{amount,jdbcType=DECIMAL}, #{totalAmount,jdbcType=DECIMAL}, #{addTime,jdbcType=TIMESTAMP}, 
@@ -133,7 +133,7 @@
         user_id,
       </if>
       <if test="type != null">
-        type,
+        `type`,
       </if>
       <if test="amount != null">
         amount,
@@ -151,7 +151,7 @@
         sms_code,
       </if>
       <if test="status != null">
-        status,
+        `status`,
       </if>
       <if test="traceMsg != null">
         trace_msg,
@@ -215,7 +215,7 @@
         user_id = #{record.userId,jdbcType=INTEGER},
       </if>
       <if test="record.type != null">
-        type = #{record.type,jdbcType=INTEGER},
+        `type` = #{record.type,jdbcType=INTEGER},
       </if>
       <if test="record.amount != null">
         amount = #{record.amount,jdbcType=DECIMAL},
@@ -233,7 +233,7 @@
         sms_code = #{record.smsCode,jdbcType=VARCHAR},
       </if>
       <if test="record.status != null">
-        status = #{record.status,jdbcType=TINYINT},
+        `status` = #{record.status,jdbcType=TINYINT},
       </if>
       <if test="record.traceMsg != null">
         trace_msg = #{record.traceMsg,jdbcType=VARCHAR},
@@ -251,13 +251,13 @@
     set id = #{record.id,jdbcType=INTEGER},
       trace_sn = #{record.traceSn,jdbcType=VARCHAR},
       user_id = #{record.userId,jdbcType=INTEGER},
-      type = #{record.type,jdbcType=INTEGER},
+      `type` = #{record.type,jdbcType=INTEGER},
       amount = #{record.amount,jdbcType=DECIMAL},
       total_amount = #{record.totalAmount,jdbcType=DECIMAL},
       add_time = #{record.addTime,jdbcType=TIMESTAMP},
       mobile = #{record.mobile,jdbcType=VARCHAR},
       sms_code = #{record.smsCode,jdbcType=VARCHAR},
-      status = #{record.status,jdbcType=TINYINT},
+      `status` = #{record.status,jdbcType=TINYINT},
       trace_msg = #{record.traceMsg,jdbcType=VARCHAR},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
@@ -274,7 +274,7 @@
         user_id = #{userId,jdbcType=INTEGER},
       </if>
       <if test="type != null">
-        type = #{type,jdbcType=INTEGER},
+        `type` = #{type,jdbcType=INTEGER},
       </if>
       <if test="amount != null">
         amount = #{amount,jdbcType=DECIMAL},
@@ -292,7 +292,7 @@
         sms_code = #{smsCode,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
-        status = #{status,jdbcType=TINYINT},
+        `status` = #{status,jdbcType=TINYINT},
       </if>
       <if test="traceMsg != null">
         trace_msg = #{traceMsg,jdbcType=VARCHAR},
@@ -307,13 +307,13 @@
     update young_account_trace
     set trace_sn = #{traceSn,jdbcType=VARCHAR},
       user_id = #{userId,jdbcType=INTEGER},
-      type = #{type,jdbcType=INTEGER},
+      `type` = #{type,jdbcType=INTEGER},
       amount = #{amount,jdbcType=DECIMAL},
       total_amount = #{totalAmount,jdbcType=DECIMAL},
       add_time = #{addTime,jdbcType=TIMESTAMP},
       mobile = #{mobile,jdbcType=VARCHAR},
       sms_code = #{smsCode,jdbcType=VARCHAR},
-      status = #{status,jdbcType=TINYINT},
+      `status` = #{status,jdbcType=TINYINT},
       trace_msg = #{traceMsg,jdbcType=VARCHAR},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

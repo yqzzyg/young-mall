@@ -69,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, user_id, value_id, type, add_time, update_time, deleted
+    id, user_id, value_id, `type`, add_time, update_time, deleted
   </sql>
   <select id="selectByExample" parameterType="com.young.db.entity.YoungCollectExample" resultMap="BaseResultMap">
     select
@@ -105,7 +105,7 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into young_collect (user_id, value_id, type, 
+    insert into young_collect (user_id, value_id, `type`, 
       add_time, update_time, deleted
       )
     values (#{userId,jdbcType=INTEGER}, #{valueId,jdbcType=INTEGER}, #{type,jdbcType=TINYINT}, 
@@ -125,7 +125,7 @@
         value_id,
       </if>
       <if test="type != null">
-        type,
+        `type`,
       </if>
       <if test="addTime != null">
         add_time,
@@ -177,7 +177,7 @@
         value_id = #{record.valueId,jdbcType=INTEGER},
       </if>
       <if test="record.type != null">
-        type = #{record.type,jdbcType=TINYINT},
+        `type` = #{record.type,jdbcType=TINYINT},
       </if>
       <if test="record.addTime != null">
         add_time = #{record.addTime,jdbcType=TIMESTAMP},
@@ -198,7 +198,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       user_id = #{record.userId,jdbcType=INTEGER},
       value_id = #{record.valueId,jdbcType=INTEGER},
-      type = #{record.type,jdbcType=TINYINT},
+      `type` = #{record.type,jdbcType=TINYINT},
       add_time = #{record.addTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       deleted = #{record.deleted,jdbcType=BIT}
@@ -216,7 +216,7 @@
         value_id = #{valueId,jdbcType=INTEGER},
       </if>
       <if test="type != null">
-        type = #{type,jdbcType=TINYINT},
+        `type` = #{type,jdbcType=TINYINT},
       </if>
       <if test="addTime != null">
         add_time = #{addTime,jdbcType=TIMESTAMP},
@@ -234,7 +234,7 @@
     update young_collect
     set user_id = #{userId,jdbcType=INTEGER},
       value_id = #{valueId,jdbcType=INTEGER},
-      type = #{type,jdbcType=TINYINT},
+      `type` = #{type,jdbcType=TINYINT},
       add_time = #{addTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       deleted = #{deleted,jdbcType=BIT}

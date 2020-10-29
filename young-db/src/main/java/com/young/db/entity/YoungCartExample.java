@@ -641,62 +641,62 @@ public class YoungCartExample {
         }
 
         public Criteria andNumberIsNull() {
-            addCriterion("number is null");
+            addCriterion("`number` is null");
             return (Criteria) this;
         }
 
         public Criteria andNumberIsNotNull() {
-            addCriterion("number is not null");
+            addCriterion("`number` is not null");
             return (Criteria) this;
         }
 
         public Criteria andNumberEqualTo(Short value) {
-            addCriterion("number =", value, "number");
+            addCriterion("`number` =", value, "number");
             return (Criteria) this;
         }
 
         public Criteria andNumberNotEqualTo(Short value) {
-            addCriterion("number <>", value, "number");
+            addCriterion("`number` <>", value, "number");
             return (Criteria) this;
         }
 
         public Criteria andNumberGreaterThan(Short value) {
-            addCriterion("number >", value, "number");
+            addCriterion("`number` >", value, "number");
             return (Criteria) this;
         }
 
         public Criteria andNumberGreaterThanOrEqualTo(Short value) {
-            addCriterion("number >=", value, "number");
+            addCriterion("`number` >=", value, "number");
             return (Criteria) this;
         }
 
         public Criteria andNumberLessThan(Short value) {
-            addCriterion("number <", value, "number");
+            addCriterion("`number` <", value, "number");
             return (Criteria) this;
         }
 
         public Criteria andNumberLessThanOrEqualTo(Short value) {
-            addCriterion("number <=", value, "number");
+            addCriterion("`number` <=", value, "number");
             return (Criteria) this;
         }
 
         public Criteria andNumberIn(List<Short> values) {
-            addCriterion("number in", values, "number");
+            addCriterion("`number` in", values, "number");
             return (Criteria) this;
         }
 
         public Criteria andNumberNotIn(List<Short> values) {
-            addCriterion("number not in", values, "number");
+            addCriterion("`number` not in", values, "number");
             return (Criteria) this;
         }
 
         public Criteria andNumberBetween(Short value1, Short value2) {
-            addCriterion("number between", value1, value2, "number");
+            addCriterion("`number` between", value1, value2, "number");
             return (Criteria) this;
         }
 
         public Criteria andNumberNotBetween(Short value1, Short value2) {
-            addCriterion("number not between", value1, value2, "number");
+            addCriterion("`number` not between", value1, value2, "number");
             return (Criteria) this;
         }
 
@@ -771,62 +771,62 @@ public class YoungCartExample {
         }
 
         public Criteria andCheckedIsNull() {
-            addCriterion("checked is null");
+            addCriterion("`checked` is null");
             return (Criteria) this;
         }
 
         public Criteria andCheckedIsNotNull() {
-            addCriterion("checked is not null");
+            addCriterion("`checked` is not null");
             return (Criteria) this;
         }
 
         public Criteria andCheckedEqualTo(Boolean value) {
-            addCriterion("checked =", value, "checked");
+            addCriterion("`checked` =", value, "checked");
             return (Criteria) this;
         }
 
         public Criteria andCheckedNotEqualTo(Boolean value) {
-            addCriterion("checked <>", value, "checked");
+            addCriterion("`checked` <>", value, "checked");
             return (Criteria) this;
         }
 
         public Criteria andCheckedGreaterThan(Boolean value) {
-            addCriterion("checked >", value, "checked");
+            addCriterion("`checked` >", value, "checked");
             return (Criteria) this;
         }
 
         public Criteria andCheckedGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("checked >=", value, "checked");
+            addCriterion("`checked` >=", value, "checked");
             return (Criteria) this;
         }
 
         public Criteria andCheckedLessThan(Boolean value) {
-            addCriterion("checked <", value, "checked");
+            addCriterion("`checked` <", value, "checked");
             return (Criteria) this;
         }
 
         public Criteria andCheckedLessThanOrEqualTo(Boolean value) {
-            addCriterion("checked <=", value, "checked");
+            addCriterion("`checked` <=", value, "checked");
             return (Criteria) this;
         }
 
         public Criteria andCheckedIn(List<Boolean> values) {
-            addCriterion("checked in", values, "checked");
+            addCriterion("`checked` in", values, "checked");
             return (Criteria) this;
         }
 
         public Criteria andCheckedNotIn(List<Boolean> values) {
-            addCriterion("checked not in", values, "checked");
+            addCriterion("`checked` not in", values, "checked");
             return (Criteria) this;
         }
 
         public Criteria andCheckedBetween(Boolean value1, Boolean value2) {
-            addCriterion("checked between", value1, value2, "checked");
+            addCriterion("`checked` between", value1, value2, "checked");
             return (Criteria) this;
         }
 
         public Criteria andCheckedNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("checked not between", value1, value2, "checked");
+            addCriterion("`checked` not between", value1, value2, "checked");
             return (Criteria) this;
         }
 

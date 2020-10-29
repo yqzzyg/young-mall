@@ -116,8 +116,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, user_id, brand_id, goods_id, goods_sn, goods_name, product_id, price, number, 
-    specifications, checked, pic_url, add_time, update_time, deleted, settlement_money
+    id, user_id, brand_id, goods_id, goods_sn, goods_name, product_id, price, `number`, 
+    specifications, `checked`, pic_url, add_time, update_time, deleted, settlement_money
   </sql>
   <select id="selectByExample" parameterType="com.young.db.entity.YoungCartExample" resultMap="BaseResultMap">
     select
@@ -155,8 +155,8 @@
     </selectKey>
     insert into young_cart (user_id, brand_id, goods_id, 
       goods_sn, goods_name, product_id, 
-      price, number, specifications, 
-      checked, pic_url, add_time, 
+      price, `number`, specifications, 
+      `checked`, pic_url, add_time, 
       update_time, deleted, settlement_money
       )
     values (#{userId,jdbcType=INTEGER}, #{brandId,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER}, 
@@ -194,13 +194,13 @@
         price,
       </if>
       <if test="number != null">
-        number,
+        `number`,
       </if>
       <if test="specifications != null">
         specifications,
       </if>
       <if test="checked != null">
-        checked,
+        `checked`,
       </if>
       <if test="picUrl != null">
         pic_url,
@@ -300,13 +300,13 @@
         price = #{record.price,jdbcType=DECIMAL},
       </if>
       <if test="record.number != null">
-        number = #{record.number,jdbcType=SMALLINT},
+        `number` = #{record.number,jdbcType=SMALLINT},
       </if>
       <if test="record.specifications != null">
         specifications = #{record.specifications,jdbcType=VARCHAR,typeHandler=com.young.db.utils.JsonStringArrayTypeHandler},
       </if>
       <if test="record.checked != null">
-        checked = #{record.checked,jdbcType=BIT},
+        `checked` = #{record.checked,jdbcType=BIT},
       </if>
       <if test="record.picUrl != null">
         pic_url = #{record.picUrl,jdbcType=VARCHAR},
@@ -338,9 +338,9 @@
       goods_name = #{record.goodsName,jdbcType=VARCHAR},
       product_id = #{record.productId,jdbcType=INTEGER},
       price = #{record.price,jdbcType=DECIMAL},
-      number = #{record.number,jdbcType=SMALLINT},
+      `number` = #{record.number,jdbcType=SMALLINT},
       specifications = #{record.specifications,jdbcType=VARCHAR,typeHandler=com.young.db.utils.JsonStringArrayTypeHandler},
-      checked = #{record.checked,jdbcType=BIT},
+      `checked` = #{record.checked,jdbcType=BIT},
       pic_url = #{record.picUrl,jdbcType=VARCHAR},
       add_time = #{record.addTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
@@ -375,13 +375,13 @@
         price = #{price,jdbcType=DECIMAL},
       </if>
       <if test="number != null">
-        number = #{number,jdbcType=SMALLINT},
+        `number` = #{number,jdbcType=SMALLINT},
       </if>
       <if test="specifications != null">
         specifications = #{specifications,jdbcType=VARCHAR,typeHandler=com.young.db.utils.JsonStringArrayTypeHandler},
       </if>
       <if test="checked != null">
-        checked = #{checked,jdbcType=BIT},
+        `checked` = #{checked,jdbcType=BIT},
       </if>
       <if test="picUrl != null">
         pic_url = #{picUrl,jdbcType=VARCHAR},
@@ -410,9 +410,9 @@
       goods_name = #{goodsName,jdbcType=VARCHAR},
       product_id = #{productId,jdbcType=INTEGER},
       price = #{price,jdbcType=DECIMAL},
-      number = #{number,jdbcType=SMALLINT},
+      `number` = #{number,jdbcType=SMALLINT},
       specifications = #{specifications,jdbcType=VARCHAR,typeHandler=com.young.db.utils.JsonStringArrayTypeHandler},
-      checked = #{checked,jdbcType=BIT},
+      `checked` = #{checked,jdbcType=BIT},
       pic_url = #{picUrl,jdbcType=VARCHAR},
       add_time = #{addTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},

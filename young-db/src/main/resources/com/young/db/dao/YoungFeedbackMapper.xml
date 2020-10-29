@@ -112,7 +112,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, user_id, username, mobile, feed_type, content, status, has_picture, pic_urls, 
+    id, user_id, username, mobile, feed_type, content, `status`, has_picture, pic_urls, 
     add_time, update_time, deleted
   </sql>
   <select id="selectByExample" parameterType="com.young.db.entity.YoungFeedbackExample" resultMap="BaseResultMap">
@@ -150,7 +150,7 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into young_feedback (user_id, username, mobile, 
-      feed_type, content, status, 
+      feed_type, content, `status`, 
       has_picture, pic_urls, 
       add_time, update_time, deleted
       )
@@ -182,7 +182,7 @@
         content,
       </if>
       <if test="status != null">
-        status,
+        `status`,
       </if>
       <if test="hasPicture != null">
         has_picture,
@@ -264,7 +264,7 @@
         content = #{record.content,jdbcType=VARCHAR},
       </if>
       <if test="record.status != null">
-        status = #{record.status,jdbcType=INTEGER},
+        `status` = #{record.status,jdbcType=INTEGER},
       </if>
       <if test="record.hasPicture != null">
         has_picture = #{record.hasPicture,jdbcType=BIT},
@@ -294,7 +294,7 @@
       mobile = #{record.mobile,jdbcType=VARCHAR},
       feed_type = #{record.feedType,jdbcType=VARCHAR},
       content = #{record.content,jdbcType=VARCHAR},
-      status = #{record.status,jdbcType=INTEGER},
+      `status` = #{record.status,jdbcType=INTEGER},
       has_picture = #{record.hasPicture,jdbcType=BIT},
       pic_urls = #{record.picUrls,jdbcType=VARCHAR,typeHandler=com.young.db.utils.JsonStringArrayTypeHandler},
       add_time = #{record.addTime,jdbcType=TIMESTAMP},
@@ -323,7 +323,7 @@
         content = #{content,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
-        status = #{status,jdbcType=INTEGER},
+        `status` = #{status,jdbcType=INTEGER},
       </if>
       <if test="hasPicture != null">
         has_picture = #{hasPicture,jdbcType=BIT},
@@ -350,7 +350,7 @@
       mobile = #{mobile,jdbcType=VARCHAR},
       feed_type = #{feedType,jdbcType=VARCHAR},
       content = #{content,jdbcType=VARCHAR},
-      status = #{status,jdbcType=INTEGER},
+      `status` = #{status,jdbcType=INTEGER},
       has_picture = #{hasPicture,jdbcType=BIT},
       pic_urls = #{picUrls,jdbcType=VARCHAR,typeHandler=com.young.db.utils.JsonStringArrayTypeHandler},
       add_time = #{addTime,jdbcType=TIMESTAMP},

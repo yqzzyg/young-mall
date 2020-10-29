@@ -11,7 +11,7 @@ import java.util.Optional;
  * @Author: yqz
  * @CreateDate: 2020/10/25 17:12
  */
-public interface YoungAdminService {
+public interface AdminService {
 
     /**
      * 根据用户名查找用户

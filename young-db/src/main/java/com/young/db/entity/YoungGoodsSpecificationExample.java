@@ -296,72 +296,72 @@ public class YoungGoodsSpecificationExample {
         }
 
         public Criteria andValueIsNull() {
-            addCriterion("value is null");
+            addCriterion("`value` is null");
             return (Criteria) this;
         }
 
         public Criteria andValueIsNotNull() {
-            addCriterion("value is not null");
+            addCriterion("`value` is not null");
             return (Criteria) this;
         }
 
         public Criteria andValueEqualTo(String value) {
-            addCriterion("value =", value, "value");
+            addCriterion("`value` =", value, "value");
             return (Criteria) this;
         }
 
         public Criteria andValueNotEqualTo(String value) {
-            addCriterion("value <>", value, "value");
+            addCriterion("`value` <>", value, "value");
             return (Criteria) this;
         }
 
         public Criteria andValueGreaterThan(String value) {
-            addCriterion("value >", value, "value");
+            addCriterion("`value` >", value, "value");
             return (Criteria) this;
         }
 
         public Criteria andValueGreaterThanOrEqualTo(String value) {
-            addCriterion("value >=", value, "value");
+            addCriterion("`value` >=", value, "value");
             return (Criteria) this;
         }
 
         public Criteria andValueLessThan(String value) {
-            addCriterion("value <", value, "value");
+            addCriterion("`value` <", value, "value");
             return (Criteria) this;
         }
 
         public Criteria andValueLessThanOrEqualTo(String value) {
-            addCriterion("value <=", value, "value");
+            addCriterion("`value` <=", value, "value");
             return (Criteria) this;
         }
 
         public Criteria andValueLike(String value) {
-            addCriterion("value like", value, "value");
+            addCriterion("`value` like", value, "value");
             return (Criteria) this;
         }
 
         public Criteria andValueNotLike(String value) {
-            addCriterion("value not like", value, "value");
+            addCriterion("`value` not like", value, "value");
             return (Criteria) this;
         }
 
         public Criteria andValueIn(List<String> values) {
-            addCriterion("value in", values, "value");
+            addCriterion("`value` in", values, "value");
             return (Criteria) this;
         }
 
         public Criteria andValueNotIn(List<String> values) {
-            addCriterion("value not in", values, "value");
+            addCriterion("`value` not in", values, "value");
             return (Criteria) this;
         }
 
         public Criteria andValueBetween(String value1, String value2) {
-            addCriterion("value between", value1, value2, "value");
+            addCriterion("`value` between", value1, value2, "value");
             return (Criteria) this;
         }
 
         public Criteria andValueNotBetween(String value1, String value2) {
-            addCriterion("value not between", value1, value2, "value");
+            addCriterion("`value` not between", value1, value2, "value");
             return (Criteria) this;
         }
 

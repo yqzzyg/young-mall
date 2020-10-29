@@ -1,16 +1,14 @@
 package com.young.mall.controller;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.json.JSONArray;
-import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.young.db.entity.YoungAdmin;
 import com.young.mall.domain.AdminUser;
 import com.young.mall.dto.AdminLoginParam;
 import com.young.mall.common.ResBean;
 import com.young.mall.service.AuthService;
 import com.young.mall.service.PermissionService;
-import com.young.mall.service.YoungAdminService;
+import com.young.mall.service.AdminService;
+import com.young.mall.service.RoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -19,9 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.*;
 
@@ -45,10 +43,14 @@ public class AdminAuthController {
     private AuthService authService;
 
     @Autowired
-    private YoungAdminService adminService;
+    private AdminService adminService;
 
     @Autowired
     private PermissionService permissionService;
+
+    @Autowired
+    private RoleService roleService;
+
 
     @ApiOperation("用户登录")
     @PostMapping("/login")
@@ -65,25 +67,36 @@ public class AdminAuthController {
     @ApiOperation("获取登录用户信息")
     @GetMapping("/info")
     public ResBean getLoginInfo(Principal principal) {
-
         if (BeanUtil.isEmpty(principal)) {
             return ResBean.unauthorized(null);
         }
 
-        JSONObject jsonObject = JSONUtil.parseObj(principal);
+        Authentication authentication = (Authentication) principal;
 
-        JSONObject principalData = jsonObject.getJSONObject("principal");
+        AdminUser adminUser = (AdminUser) authentication.getPrincipal();
+        Collection<? extends GrantedAuthority> authorities = adminUser.getAuthorities();
+
+        List<String> list = new ArrayList<>();
+        Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
+        while (iterator.hasNext()) {
+            String perm = iterator.next().toString();
+            list.add(perm);
+        }
 
         Map<String, Object> data = new HashMap<>();
         data.put("name", principal.getName());
-        data.put("avatar", principalData.getStr("avatar"));
+        data.put("avatar", adminUser.getAvatar());
+        Integer[] roleIds = adminUser.getRoleIds();
 
-        JSONArray roleIds = principalData.getJSONArray("roleIds");
 
-//        Set<String> roles = roleService.queryByIds(roleIds);
+        Optional<Set<String>> optionalSet = roleService.getRolesByIds(roleIds);
 
-//        data.put("roles", roles);
-        data.put("perms", "");
+        if (!optionalSet.isPresent()) {
+            return ResBean.failed("权限错误");
+        }
+
+        data.put("roles", optionalSet.get());
+        data.put("perms", list);
         logger.info("【请求结束】系统管理->用户信息获取,响应结果:{}", JSONUtil.toJsonStr(data));
 
         return ResBean.success(data);

@@ -73,7 +73,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, user_id, coupon_id, status, used_time, start_time, end_time, order_sn, add_time, 
+    id, user_id, coupon_id, `status`, used_time, start_time, end_time, order_sn, add_time, 
     update_time, deleted
   </sql>
   <select id="selectByExample" parameterType="com.young.db.entity.YoungCouponUserExample" resultMap="BaseResultMap">
@@ -110,7 +110,7 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into young_coupon_user (user_id, coupon_id, status, 
+    insert into young_coupon_user (user_id, coupon_id, `status`, 
       used_time, start_time, end_time, 
       order_sn, add_time, update_time, 
       deleted)
@@ -132,7 +132,7 @@
         coupon_id,
       </if>
       <if test="status != null">
-        status,
+        `status`,
       </if>
       <if test="usedTime != null">
         used_time,
@@ -208,7 +208,7 @@
         coupon_id = #{record.couponId,jdbcType=INTEGER},
       </if>
       <if test="record.status != null">
-        status = #{record.status,jdbcType=SMALLINT},
+        `status` = #{record.status,jdbcType=SMALLINT},
       </if>
       <if test="record.usedTime != null">
         used_time = #{record.usedTime,jdbcType=TIMESTAMP},
@@ -241,7 +241,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       user_id = #{record.userId,jdbcType=INTEGER},
       coupon_id = #{record.couponId,jdbcType=INTEGER},
-      status = #{record.status,jdbcType=SMALLINT},
+      `status` = #{record.status,jdbcType=SMALLINT},
       used_time = #{record.usedTime,jdbcType=TIMESTAMP},
       start_time = #{record.startTime,jdbcType=DATE},
       end_time = #{record.endTime,jdbcType=DATE},
@@ -263,7 +263,7 @@
         coupon_id = #{couponId,jdbcType=INTEGER},
       </if>
       <if test="status != null">
-        status = #{status,jdbcType=SMALLINT},
+        `status` = #{status,jdbcType=SMALLINT},
       </if>
       <if test="usedTime != null">
         used_time = #{usedTime,jdbcType=TIMESTAMP},
@@ -293,7 +293,7 @@
     update young_coupon_user
     set user_id = #{userId,jdbcType=INTEGER},
       coupon_id = #{couponId,jdbcType=INTEGER},
-      status = #{status,jdbcType=SMALLINT},
+      `status` = #{status,jdbcType=SMALLINT},
       used_time = #{usedTime,jdbcType=TIMESTAMP},
       start_time = #{startTime,jdbcType=DATE},
       end_time = #{endTime,jdbcType=DATE},

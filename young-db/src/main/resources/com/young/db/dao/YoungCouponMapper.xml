@@ -120,8 +120,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, name, desc, tag, total, discount, min, limit, type, status, goods_type, goods_value, 
-    code, time_type, days, start_time, end_time, add_time, update_time, deleted
+    id, `name`, `desc`, tag, total, discount, `min`, `limit`, `type`, `status`, goods_type, 
+    goods_value, code, time_type, `days`, start_time, end_time, add_time, update_time, 
+    deleted
   </sql>
   <select id="selectByExample" parameterType="com.young.db.entity.YoungCouponExample" resultMap="BaseResultMap">
     select
@@ -157,11 +158,11 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into young_coupon (name, desc, tag, 
-      total, discount, min, 
-      limit, type, status, 
+    insert into young_coupon (`name`, `desc`, tag, 
+      total, discount, `min`, 
+      `limit`, `type`, `status`, 
       goods_type, goods_value, 
-      code, time_type, days, 
+      code, time_type, `days`, 
       start_time, end_time, add_time, 
       update_time, deleted)
     values (#{name,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR}, #{tag,jdbcType=VARCHAR}, 
@@ -179,10 +180,10 @@
     insert into young_coupon
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="name != null">
-        name,
+        `name`,
       </if>
       <if test="desc != null">
-        desc,
+        `desc`,
       </if>
       <if test="tag != null">
         tag,
@@ -194,16 +195,16 @@
         discount,
       </if>
       <if test="min != null">
-        min,
+        `min`,
       </if>
       <if test="limit != null">
-        limit,
+        `limit`,
       </if>
       <if test="type != null">
-        type,
+        `type`,
       </if>
       <if test="status != null">
-        status,
+        `status`,
       </if>
       <if test="goodsType != null">
         goods_type,
@@ -218,7 +219,7 @@
         time_type,
       </if>
       <if test="days != null">
-        days,
+        `days`,
       </if>
       <if test="startTime != null">
         start_time,
@@ -309,10 +310,10 @@
         id = #{record.id,jdbcType=INTEGER},
       </if>
       <if test="record.name != null">
-        name = #{record.name,jdbcType=VARCHAR},
+        `name` = #{record.name,jdbcType=VARCHAR},
       </if>
       <if test="record.desc != null">
-        desc = #{record.desc,jdbcType=VARCHAR},
+        `desc` = #{record.desc,jdbcType=VARCHAR},
       </if>
       <if test="record.tag != null">
         tag = #{record.tag,jdbcType=VARCHAR},
@@ -324,16 +325,16 @@
         discount = #{record.discount,jdbcType=DECIMAL},
       </if>
       <if test="record.min != null">
-        min = #{record.min,jdbcType=DECIMAL},
+        `min` = #{record.min,jdbcType=DECIMAL},
       </if>
       <if test="record.limit != null">
-        limit = #{record.limit,jdbcType=SMALLINT},
+        `limit` = #{record.limit,jdbcType=SMALLINT},
       </if>
       <if test="record.type != null">
-        type = #{record.type,jdbcType=SMALLINT},
+        `type` = #{record.type,jdbcType=SMALLINT},
       </if>
       <if test="record.status != null">
-        status = #{record.status,jdbcType=SMALLINT},
+        `status` = #{record.status,jdbcType=SMALLINT},
       </if>
       <if test="record.goodsType != null">
         goods_type = #{record.goodsType,jdbcType=SMALLINT},
@@ -348,7 +349,7 @@
         time_type = #{record.timeType,jdbcType=SMALLINT},
       </if>
       <if test="record.days != null">
-        days = #{record.days,jdbcType=SMALLINT},
+        `days` = #{record.days,jdbcType=SMALLINT},
       </if>
       <if test="record.startTime != null">
         start_time = #{record.startTime,jdbcType=DATE},
@@ -373,20 +374,20 @@
   <update id="updateByExample" parameterType="map">
     update young_coupon
     set id = #{record.id,jdbcType=INTEGER},
-      name = #{record.name,jdbcType=VARCHAR},
-      desc = #{record.desc,jdbcType=VARCHAR},
+      `name` = #{record.name,jdbcType=VARCHAR},
+      `desc` = #{record.desc,jdbcType=VARCHAR},
       tag = #{record.tag,jdbcType=VARCHAR},
       total = #{record.total,jdbcType=INTEGER},
       discount = #{record.discount,jdbcType=DECIMAL},
-      min = #{record.min,jdbcType=DECIMAL},
-      limit = #{record.limit,jdbcType=SMALLINT},
-      type = #{record.type,jdbcType=SMALLINT},
-      status = #{record.status,jdbcType=SMALLINT},
+      `min` = #{record.min,jdbcType=DECIMAL},
+      `limit` = #{record.limit,jdbcType=SMALLINT},
+      `type` = #{record.type,jdbcType=SMALLINT},
+      `status` = #{record.status,jdbcType=SMALLINT},
       goods_type = #{record.goodsType,jdbcType=SMALLINT},
       goods_value = #{record.goodsValue,jdbcType=VARCHAR,typeHandler=com.young.db.utils.JsonIntegerArrayTypeHandler},
       code = #{record.code,jdbcType=VARCHAR},
       time_type = #{record.timeType,jdbcType=SMALLINT},
-      days = #{record.days,jdbcType=SMALLINT},
+      `days` = #{record.days,jdbcType=SMALLINT},
       start_time = #{record.startTime,jdbcType=DATE},
       end_time = #{record.endTime,jdbcType=DATE},
       add_time = #{record.addTime,jdbcType=TIMESTAMP},
@@ -400,10 +401,10 @@
     update young_coupon
     <set>
       <if test="name != null">
-        name = #{name,jdbcType=VARCHAR},
+        `name` = #{name,jdbcType=VARCHAR},
       </if>
       <if test="desc != null">
-        desc = #{desc,jdbcType=VARCHAR},
+        `desc` = #{desc,jdbcType=VARCHAR},
       </if>
       <if test="tag != null">
         tag = #{tag,jdbcType=VARCHAR},
@@ -415,16 +416,16 @@
         discount = #{discount,jdbcType=DECIMAL},
       </if>
       <if test="min != null">
-        min = #{min,jdbcType=DECIMAL},
+        `min` = #{min,jdbcType=DECIMAL},
       </if>
       <if test="limit != null">
-        limit = #{limit,jdbcType=SMALLINT},
+        `limit` = #{limit,jdbcType=SMALLINT},
       </if>
       <if test="type != null">
-        type = #{type,jdbcType=SMALLINT},
+        `type` = #{type,jdbcType=SMALLINT},
       </if>
       <if test="status != null">
-        status = #{status,jdbcType=SMALLINT},
+        `status` = #{status,jdbcType=SMALLINT},
       </if>
       <if test="goodsType != null">
         goods_type = #{goodsType,jdbcType=SMALLINT},
@@ -439,7 +440,7 @@
         time_type = #{timeType,jdbcType=SMALLINT},
       </if>
       <if test="days != null">
-        days = #{days,jdbcType=SMALLINT},
+        `days` = #{days,jdbcType=SMALLINT},
       </if>
       <if test="startTime != null">
         start_time = #{startTime,jdbcType=DATE},
@@ -461,20 +462,20 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.young.db.entity.YoungCoupon">
     update young_coupon
-    set name = #{name,jdbcType=VARCHAR},
-      desc = #{desc,jdbcType=VARCHAR},
+    set `name` = #{name,jdbcType=VARCHAR},
+      `desc` = #{desc,jdbcType=VARCHAR},
       tag = #{tag,jdbcType=VARCHAR},
       total = #{total,jdbcType=INTEGER},
       discount = #{discount,jdbcType=DECIMAL},
-      min = #{min,jdbcType=DECIMAL},
-      limit = #{limit,jdbcType=SMALLINT},
-      type = #{type,jdbcType=SMALLINT},
-      status = #{status,jdbcType=SMALLINT},
+      `min` = #{min,jdbcType=DECIMAL},
+      `limit` = #{limit,jdbcType=SMALLINT},
+      `type` = #{type,jdbcType=SMALLINT},
+      `status` = #{status,jdbcType=SMALLINT},
       goods_type = #{goodsType,jdbcType=SMALLINT},
       goods_value = #{goodsValue,jdbcType=VARCHAR,typeHandler=com.young.db.utils.JsonIntegerArrayTypeHandler},
       code = #{code,jdbcType=VARCHAR},
       time_type = #{timeType,jdbcType=SMALLINT},
-      days = #{days,jdbcType=SMALLINT},
+      `days` = #{days,jdbcType=SMALLINT},
       start_time = #{startTime,jdbcType=DATE},
       end_time = #{endTime,jdbcType=DATE},
       add_time = #{addTime,jdbcType=TIMESTAMP},

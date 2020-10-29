@@ -581,62 +581,62 @@ public class YoungOrderGoodsExample {
         }
 
         public Criteria andNumberIsNull() {
-            addCriterion("number is null");
+            addCriterion("`number` is null");
             return (Criteria) this;
         }
 
         public Criteria andNumberIsNotNull() {
-            addCriterion("number is not null");
+            addCriterion("`number` is not null");
             return (Criteria) this;
         }
 
         public Criteria andNumberEqualTo(Short value) {
-            addCriterion("number =", value, "number");
+            addCriterion("`number` =", value, "number");
             return (Criteria) this;
         }
 
         public Criteria andNumberNotEqualTo(Short value) {
-            addCriterion("number <>", value, "number");
+            addCriterion("`number` <>", value, "number");
             return (Criteria) this;
         }
 
         public Criteria andNumberGreaterThan(Short value) {
-            addCriterion("number >", value, "number");
+            addCriterion("`number` >", value, "number");
             return (Criteria) this;
         }
 
         public Criteria andNumberGreaterThanOrEqualTo(Short value) {
-            addCriterion("number >=", value, "number");
+            addCriterion("`number` >=", value, "number");
             return (Criteria) this;
         }
 
         public Criteria andNumberLessThan(Short value) {
-            addCriterion("number <", value, "number");
+            addCriterion("`number` <", value, "number");
             return (Criteria) this;
         }
 
         public Criteria andNumberLessThanOrEqualTo(Short value) {
-            addCriterion("number <=", value, "number");
+            addCriterion("`number` <=", value, "number");
             return (Criteria) this;
         }
 
         public Criteria andNumberIn(List<Short> values) {
-            addCriterion("number in", values, "number");
+            addCriterion("`number` in", values, "number");
             return (Criteria) this;
         }
 
         public Criteria andNumberNotIn(List<Short> values) {
-            addCriterion("number not in", values, "number");
+            addCriterion("`number` not in", values, "number");
             return (Criteria) this;
         }
 
         public Criteria andNumberBetween(Short value1, Short value2) {
-            addCriterion("number between", value1, value2, "number");
+            addCriterion("`number` between", value1, value2, "number");
             return (Criteria) this;
         }
 
         public Criteria andNumberNotBetween(Short value1, Short value2) {
-            addCriterion("number not between", value1, value2, "number");
+            addCriterion("`number` not between", value1, value2, "number");
             return (Criteria) this;
         }
 
@@ -841,62 +841,62 @@ public class YoungOrderGoodsExample {
         }
 
         public Criteria andCommentIsNull() {
-            addCriterion("comment is null");
+            addCriterion("`comment` is null");
             return (Criteria) this;
         }
 
         public Criteria andCommentIsNotNull() {
-            addCriterion("comment is not null");
+            addCriterion("`comment` is not null");
             return (Criteria) this;
         }
 
         public Criteria andCommentEqualTo(Integer value) {
-            addCriterion("comment =", value, "comment");
+            addCriterion("`comment` =", value, "comment");
             return (Criteria) this;
         }
 
         public Criteria andCommentNotEqualTo(Integer value) {
-            addCriterion("comment <>", value, "comment");
+            addCriterion("`comment` <>", value, "comment");
             return (Criteria) this;
         }
 
         public Criteria andCommentGreaterThan(Integer value) {
-            addCriterion("comment >", value, "comment");
+            addCriterion("`comment` >", value, "comment");
             return (Criteria) this;
         }
 
         public Criteria andCommentGreaterThanOrEqualTo(Integer value) {
-            addCriterion("comment >=", value, "comment");
+            addCriterion("`comment` >=", value, "comment");
             return (Criteria) this;
         }
 
         public Criteria andCommentLessThan(Integer value) {
-            addCriterion("comment <", value, "comment");
+            addCriterion("`comment` <", value, "comment");
             return (Criteria) this;
         }
 
         public Criteria andCommentLessThanOrEqualTo(Integer value) {
-            addCriterion("comment <=", value, "comment");
+            addCriterion("`comment` <=", value, "comment");
             return (Criteria) this;
         }
 
         public Criteria andCommentIn(List<Integer> values) {
-            addCriterion("comment in", values, "comment");
+            addCriterion("`comment` in", values, "comment");
             return (Criteria) this;
         }
 
         public Criteria andCommentNotIn(List<Integer> values) {
-            addCriterion("comment not in", values, "comment");
+            addCriterion("`comment` not in", values, "comment");
             return (Criteria) this;
         }
 
         public Criteria andCommentBetween(Integer value1, Integer value2) {
-            addCriterion("comment between", value1, value2, "comment");
+            addCriterion("`comment` between", value1, value2, "comment");
             return (Criteria) this;
         }
 
         public Criteria andCommentNotBetween(Integer value1, Integer value2) {
-            addCriterion("comment not between", value1, value2, "comment");
+            addCriterion("`comment` not between", value1, value2, "comment");
             return (Criteria) this;
         }
 

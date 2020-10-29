@@ -69,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, user_id, share_url, type, share_obj_id, add_time, update_time
+    id, user_id, share_url, `type`, share_obj_id, add_time, update_time
   </sql>
   <select id="selectByExample" parameterType="com.young.db.entity.YoungAgencyShareExample" resultMap="BaseResultMap">
     select
@@ -105,7 +105,7 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into young_agency_share (user_id, share_url, type, 
+    insert into young_agency_share (user_id, share_url, `type`, 
       share_obj_id, add_time, update_time
       )
     values (#{userId,jdbcType=INTEGER}, #{shareUrl,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
@@ -125,7 +125,7 @@
         share_url,
       </if>
       <if test="type != null">
-        type,
+        `type`,
       </if>
       <if test="shareObjId != null">
         share_obj_id,
@@ -177,7 +177,7 @@
         share_url = #{record.shareUrl,jdbcType=VARCHAR},
       </if>
       <if test="record.type != null">
-        type = #{record.type,jdbcType=INTEGER},
+        `type` = #{record.type,jdbcType=INTEGER},
       </if>
       <if test="record.shareObjId != null">
         share_obj_id = #{record.shareObjId,jdbcType=INTEGER},
@@ -198,7 +198,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       user_id = #{record.userId,jdbcType=INTEGER},
       share_url = #{record.shareUrl,jdbcType=VARCHAR},
-      type = #{record.type,jdbcType=INTEGER},
+      `type` = #{record.type,jdbcType=INTEGER},
       share_obj_id = #{record.shareObjId,jdbcType=INTEGER},
       add_time = #{record.addTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP}
@@ -216,7 +216,7 @@
         share_url = #{shareUrl,jdbcType=VARCHAR},
       </if>
       <if test="type != null">
-        type = #{type,jdbcType=INTEGER},
+        `type` = #{type,jdbcType=INTEGER},
       </if>
       <if test="shareObjId != null">
         share_obj_id = #{shareObjId,jdbcType=INTEGER},
@@ -234,7 +234,7 @@
     update young_agency_share
     set user_id = #{userId,jdbcType=INTEGER},
       share_url = #{shareUrl,jdbcType=VARCHAR},
-      type = #{type,jdbcType=INTEGER},
+      `type` = #{type,jdbcType=INTEGER},
       share_obj_id = #{shareObjId,jdbcType=INTEGER},
       add_time = #{addTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}

@@ -131,9 +131,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, goods_sn, name, category_id, brand_id, gallery, keywords, brief, is_on_sale, 
+    id, goods_sn, `name`, category_id, brand_id, gallery, keywords, brief, is_on_sale, 
     sort_order, pic_url, share_url, is_new, is_hot, unit, counter_price, retail_price, 
-    add_time, update_time, browse, sales, deleted, commpany, wholesale_price, approve_status, 
+    add_time, update_time, `browse`, sales, deleted, commpany, wholesale_price, approve_status, 
     approve_msg, brokerage_type, brokerage_price
   </sql>
   <sql id="Blob_Column_List">
@@ -191,13 +191,13 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into young_goods (goods_sn, name, category_id, 
+    insert into young_goods (goods_sn, `name`, category_id, 
       brand_id, gallery, 
       keywords, brief, is_on_sale, 
       sort_order, pic_url, share_url, 
       is_new, is_hot, unit, counter_price, 
       retail_price, add_time, update_time, 
-      browse, sales, deleted, 
+      `browse`, sales, deleted, 
       commpany, wholesale_price, approve_status, 
       approve_msg, brokerage_type, brokerage_price, 
       detail)
@@ -222,7 +222,7 @@
         goods_sn,
       </if>
       <if test="name != null">
-        name,
+        `name`,
       </if>
       <if test="categoryId != null">
         category_id,
@@ -273,7 +273,7 @@
         update_time,
       </if>
       <if test="browse != null">
-        browse,
+        `browse`,
       </if>
       <if test="sales != null">
         sales,
@@ -406,7 +406,7 @@
         goods_sn = #{record.goodsSn,jdbcType=VARCHAR},
       </if>
       <if test="record.name != null">
-        name = #{record.name,jdbcType=VARCHAR},
+        `name` = #{record.name,jdbcType=VARCHAR},
       </if>
       <if test="record.categoryId != null">
         category_id = #{record.categoryId,jdbcType=INTEGER},
@@ -457,7 +457,7 @@
         update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.browse != null">
-        browse = #{record.browse,jdbcType=INTEGER},
+        `browse` = #{record.browse,jdbcType=INTEGER},
       </if>
       <if test="record.sales != null">
         sales = #{record.sales,jdbcType=INTEGER},
@@ -495,7 +495,7 @@
     update young_goods
     set id = #{record.id,jdbcType=INTEGER},
       goods_sn = #{record.goodsSn,jdbcType=VARCHAR},
-      name = #{record.name,jdbcType=VARCHAR},
+      `name` = #{record.name,jdbcType=VARCHAR},
       category_id = #{record.categoryId,jdbcType=INTEGER},
       brand_id = #{record.brandId,jdbcType=INTEGER},
       gallery = #{record.gallery,jdbcType=VARCHAR,typeHandler=com.young.db.utils.JsonStringArrayTypeHandler},
@@ -512,7 +512,7 @@
       retail_price = #{record.retailPrice,jdbcType=DECIMAL},
       add_time = #{record.addTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
-      browse = #{record.browse,jdbcType=INTEGER},
+      `browse` = #{record.browse,jdbcType=INTEGER},
       sales = #{record.sales,jdbcType=INTEGER},
       deleted = #{record.deleted,jdbcType=BIT},
       commpany = #{record.commpany,jdbcType=VARCHAR},
@@ -530,7 +530,7 @@
     update young_goods
     set id = #{record.id,jdbcType=INTEGER},
       goods_sn = #{record.goodsSn,jdbcType=VARCHAR},
-      name = #{record.name,jdbcType=VARCHAR},
+      `name` = #{record.name,jdbcType=VARCHAR},
       category_id = #{record.categoryId,jdbcType=INTEGER},
       brand_id = #{record.brandId,jdbcType=INTEGER},
       gallery = #{record.gallery,jdbcType=VARCHAR,typeHandler=com.young.db.utils.JsonStringArrayTypeHandler},
@@ -547,7 +547,7 @@
       retail_price = #{record.retailPrice,jdbcType=DECIMAL},
       add_time = #{record.addTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
-      browse = #{record.browse,jdbcType=INTEGER},
+      `browse` = #{record.browse,jdbcType=INTEGER},
       sales = #{record.sales,jdbcType=INTEGER},
       deleted = #{record.deleted,jdbcType=BIT},
       commpany = #{record.commpany,jdbcType=VARCHAR},
@@ -567,7 +567,7 @@
         goods_sn = #{goodsSn,jdbcType=VARCHAR},
       </if>
       <if test="name != null">
-        name = #{name,jdbcType=VARCHAR},
+        `name` = #{name,jdbcType=VARCHAR},
       </if>
       <if test="categoryId != null">
         category_id = #{categoryId,jdbcType=INTEGER},
@@ -618,7 +618,7 @@
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="browse != null">
-        browse = #{browse,jdbcType=INTEGER},
+        `browse` = #{browse,jdbcType=INTEGER},
       </if>
       <if test="sales != null">
         sales = #{sales,jdbcType=INTEGER},
@@ -653,7 +653,7 @@
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.young.db.entity.YoungGoods">
     update young_goods
     set goods_sn = #{goodsSn,jdbcType=VARCHAR},
-      name = #{name,jdbcType=VARCHAR},
+      `name` = #{name,jdbcType=VARCHAR},
       category_id = #{categoryId,jdbcType=INTEGER},
       brand_id = #{brandId,jdbcType=INTEGER},
       gallery = #{gallery,jdbcType=VARCHAR,typeHandler=com.young.db.utils.JsonStringArrayTypeHandler},
@@ -670,7 +670,7 @@
       retail_price = #{retailPrice,jdbcType=DECIMAL},
       add_time = #{addTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
-      browse = #{browse,jdbcType=INTEGER},
+      `browse` = #{browse,jdbcType=INTEGER},
       sales = #{sales,jdbcType=INTEGER},
       deleted = #{deleted,jdbcType=BIT},
       commpany = #{commpany,jdbcType=VARCHAR},
@@ -685,7 +685,7 @@
   <update id="updateByPrimaryKey" parameterType="com.young.db.entity.YoungGoods">
     update young_goods
     set goods_sn = #{goodsSn,jdbcType=VARCHAR},
-      name = #{name,jdbcType=VARCHAR},
+      `name` = #{name,jdbcType=VARCHAR},
       category_id = #{categoryId,jdbcType=INTEGER},
       brand_id = #{brandId,jdbcType=INTEGER},
       gallery = #{gallery,jdbcType=VARCHAR,typeHandler=com.young.db.utils.JsonStringArrayTypeHandler},
@@ -702,7 +702,7 @@
       retail_price = #{retailPrice,jdbcType=DECIMAL},
       add_time = #{addTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
-      browse = #{browse,jdbcType=INTEGER},
+      `browse` = #{browse,jdbcType=INTEGER},
       sales = #{sales,jdbcType=INTEGER},
       deleted = #{deleted,jdbcType=BIT},
       commpany = #{commpany,jdbcType=VARCHAR},

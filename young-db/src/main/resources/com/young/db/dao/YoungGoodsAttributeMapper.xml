@@ -69,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, goods_id, attribute, value, add_time, update_time, deleted
+    id, goods_id, `attribute`, `value`, add_time, update_time, deleted
   </sql>
   <select id="selectByExample" parameterType="com.young.db.entity.YoungGoodsAttributeExample" resultMap="BaseResultMap">
     select
@@ -105,7 +105,7 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into young_goods_attribute (goods_id, attribute, value, 
+    insert into young_goods_attribute (goods_id, `attribute`, `value`, 
       add_time, update_time, deleted
       )
     values (#{goodsId,jdbcType=INTEGER}, #{attribute,jdbcType=VARCHAR}, #{value,jdbcType=VARCHAR}, 
@@ -122,10 +122,10 @@
         goods_id,
       </if>
       <if test="attribute != null">
-        attribute,
+        `attribute`,
       </if>
       <if test="value != null">
-        value,
+        `value`,
       </if>
       <if test="addTime != null">
         add_time,
@@ -174,10 +174,10 @@
         goods_id = #{record.goodsId,jdbcType=INTEGER},
       </if>
       <if test="record.attribute != null">
-        attribute = #{record.attribute,jdbcType=VARCHAR},
+        `attribute` = #{record.attribute,jdbcType=VARCHAR},
       </if>
       <if test="record.value != null">
-        value = #{record.value,jdbcType=VARCHAR},
+        `value` = #{record.value,jdbcType=VARCHAR},
       </if>
       <if test="record.addTime != null">
         add_time = #{record.addTime,jdbcType=TIMESTAMP},
@@ -197,8 +197,8 @@
     update young_goods_attribute
     set id = #{record.id,jdbcType=INTEGER},
       goods_id = #{record.goodsId,jdbcType=INTEGER},
-      attribute = #{record.attribute,jdbcType=VARCHAR},
-      value = #{record.value,jdbcType=VARCHAR},
+      `attribute` = #{record.attribute,jdbcType=VARCHAR},
+      `value` = #{record.value,jdbcType=VARCHAR},
       add_time = #{record.addTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       deleted = #{record.deleted,jdbcType=BIT}
@@ -213,10 +213,10 @@
         goods_id = #{goodsId,jdbcType=INTEGER},
       </if>
       <if test="attribute != null">
-        attribute = #{attribute,jdbcType=VARCHAR},
+        `attribute` = #{attribute,jdbcType=VARCHAR},
       </if>
       <if test="value != null">
-        value = #{value,jdbcType=VARCHAR},
+        `value` = #{value,jdbcType=VARCHAR},
       </if>
       <if test="addTime != null">
         add_time = #{addTime,jdbcType=TIMESTAMP},
@@ -233,8 +233,8 @@
   <update id="updateByPrimaryKey" parameterType="com.young.db.entity.YoungGoodsAttribute">
     update young_goods_attribute
     set goods_id = #{goodsId,jdbcType=INTEGER},
-      attribute = #{attribute,jdbcType=VARCHAR},
-      value = #{value,jdbcType=VARCHAR},
+      `attribute` = #{attribute,jdbcType=VARCHAR},
+      `value` = #{value,jdbcType=VARCHAR},
       add_time = #{addTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       deleted = #{deleted,jdbcType=BIT}

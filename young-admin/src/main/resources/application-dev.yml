@@ -24,7 +24,3 @@ spring:
     redisson:
       config: classpath:redisson.yml
 
-logging:
-  level:
-    root: info
-    com.young.mall: debug

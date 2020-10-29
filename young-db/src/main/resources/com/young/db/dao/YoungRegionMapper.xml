@@ -67,7 +67,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, pid, name, type, code
+    id, pid, `name`, `type`, code
   </sql>
   <select id="selectByExample" parameterType="com.young.db.entity.YoungRegionExample" resultMap="BaseResultMap">
     select
@@ -103,7 +103,7 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into young_region (pid, name, type, 
+    insert into young_region (pid, `name`, `type`, 
       code)
     values (#{pid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, 
       #{code,jdbcType=INTEGER})
@@ -118,10 +118,10 @@
         pid,
       </if>
       <if test="name != null">
-        name,
+        `name`,
       </if>
       <if test="type != null">
-        type,
+        `type`,
       </if>
       <if test="code != null">
         code,
@@ -158,10 +158,10 @@
         pid = #{record.pid,jdbcType=INTEGER},
       </if>
       <if test="record.name != null">
-        name = #{record.name,jdbcType=VARCHAR},
+        `name` = #{record.name,jdbcType=VARCHAR},
       </if>
       <if test="record.type != null">
-        type = #{record.type,jdbcType=TINYINT},
+        `type` = #{record.type,jdbcType=TINYINT},
       </if>
       <if test="record.code != null">
         code = #{record.code,jdbcType=INTEGER},
@@ -175,8 +175,8 @@
     update young_region
     set id = #{record.id,jdbcType=INTEGER},
       pid = #{record.pid,jdbcType=INTEGER},
-      name = #{record.name,jdbcType=VARCHAR},
-      type = #{record.type,jdbcType=TINYINT},
+      `name` = #{record.name,jdbcType=VARCHAR},
+      `type` = #{record.type,jdbcType=TINYINT},
       code = #{record.code,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -189,10 +189,10 @@
         pid = #{pid,jdbcType=INTEGER},
       </if>
       <if test="name != null">
-        name = #{name,jdbcType=VARCHAR},
+        `name` = #{name,jdbcType=VARCHAR},
       </if>
       <if test="type != null">
-        type = #{type,jdbcType=TINYINT},
+        `type` = #{type,jdbcType=TINYINT},
       </if>
       <if test="code != null">
         code = #{code,jdbcType=INTEGER},
@@ -203,8 +203,8 @@
   <update id="updateByPrimaryKey" parameterType="com.young.db.entity.YoungRegion">
     update young_region
     set pid = #{pid,jdbcType=INTEGER},
-      name = #{name,jdbcType=VARCHAR},
-      type = #{type,jdbcType=TINYINT},
+      `name` = #{name,jdbcType=VARCHAR},
+      `type` = #{type,jdbcType=TINYINT},
       code = #{code,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
