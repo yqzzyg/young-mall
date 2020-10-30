@@ -1,5 +1,8 @@
 package com.young.mall.service;
 
+import com.young.db.entity.YoungUser;
+
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -14,4 +17,7 @@ public interface UserService {
      * @return
      */
     Optional<Integer> count();
+
+    Optional<List<YoungUser>> queryUserList(String username, String mobile, Integer page, Integer size, String sort,
+                                        String order);
 }
