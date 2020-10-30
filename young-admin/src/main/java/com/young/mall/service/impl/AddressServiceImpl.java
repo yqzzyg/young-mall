@@ -30,7 +30,7 @@ public class AddressServiceImpl implements AddressService {
         YoungAddressExample example = new YoungAddressExample();
         YoungAddressExample.Criteria criteria = example.createCriteria();
 
-        if ( userId != null) {
+        if (userId != null) {
             criteria.andUserIdEqualTo(userId);
         }
         if (StrUtil.isNotBlank(name)) {
@@ -40,7 +40,7 @@ public class AddressServiceImpl implements AddressService {
         if (StrUtil.isNotBlank(sort) && StrUtil.isNotBlank(order)) {
             example.setOrderByClause(sort + " " + order);
         }
-        PageHelper.startPage(page,size);
+        PageHelper.startPage(page, size);
         List<YoungAddress> addressList = addressMapper.selectByExample(example);
 
         return Optional.ofNullable(addressList);
