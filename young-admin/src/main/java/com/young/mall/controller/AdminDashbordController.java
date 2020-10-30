@@ -1,5 +1,6 @@
 package com.young.mall.controller;
 
+import cn.hutool.json.JSONUtil;
 import com.young.mall.common.ResBean;
 import com.young.mall.service.GoodsProductService;
 import com.young.mall.service.GoodsService;
@@ -51,6 +52,7 @@ public class AdminDashbordController extends BaseController {
         map.put("goodsTotal", goodsTotal);
         map.put("productTotal", productTotal);
         map.put("orderTotal", orderTotal);
+        logger.info("获取主页数据出参：{}", JSONUtil.toJsonStr(map));
         return ResBean.success(map);
     }
 }
