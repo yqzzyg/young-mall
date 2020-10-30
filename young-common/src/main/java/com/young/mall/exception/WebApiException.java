@@ -7,14 +7,13 @@ import com.young.mall.common.ResErrorCode;
  * @Author: yqz
  * @CreateDate: 2020/10/25 16:11
  */
-public class WebApiException extends RuntimeException {
+public class WebApiException extends RuntimeException{
     private ResErrorCode resErrorCode;
 
     public WebApiException(ResErrorCode resErrorCode) {
         super(resErrorCode.getMsg());
         this.resErrorCode = resErrorCode;
     }
-
     public WebApiException(String msg) {
         super(msg);
     }
