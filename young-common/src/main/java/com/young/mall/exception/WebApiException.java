@@ -12,6 +12,7 @@ public class WebApiException extends RuntimeException{
 
     public WebApiException(ResErrorCode resErrorCode) {
         super(resErrorCode.getMsg());
+
         this.resErrorCode = resErrorCode;
     }
     public WebApiException(String msg) {

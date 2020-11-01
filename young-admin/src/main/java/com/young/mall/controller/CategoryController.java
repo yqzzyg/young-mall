@@ -83,4 +83,17 @@ public class CategoryController extends BaseController {
         }
         return ResBean.success(integerOptional.get());
     }
+
+    @ApiOperation("创建商品分类")
+    @PostMapping("/create")
+    public ResBean creat(@RequestBody YoungCategory category) {
+
+        Optional<Integer> integerOptional = categoryService.creat(category);
+        if (!integerOptional.isPresent()) {
+
+            return ResBean.failed("添加失败");
+        }
+        return ResBean.success(integerOptional.get());
+    }
+
 }

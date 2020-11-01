@@ -36,4 +36,11 @@ public interface CategoryService {
      * @return
      */
     Optional<Integer> delete(Integer id);
+
+    /**
+     * 创建商品分类
+     * @param category
+     * @return
+     */
+    Optional<Integer> creat(YoungCategory category);
 }

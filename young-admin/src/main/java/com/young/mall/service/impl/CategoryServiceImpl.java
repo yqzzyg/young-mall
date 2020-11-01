@@ -1,14 +1,19 @@
 package com.young.mall.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
 import com.young.db.dao.YoungCategoryMapper;
 import com.young.db.entity.YoungCategory;
 import com.young.db.entity.YoungCategoryExample;
+import com.young.mall.common.ResBean;
+import com.young.mall.exception.Asserts;
 import com.young.mall.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,5 +72,41 @@ public class CategoryServiceImpl implements CategoryService {
         return Optional.ofNullable(count);
     }
 
+    @Override
+    public Optional<Integer> creat(YoungCategory category) {
+
+        ResBean validate = validate(category);
+
+        if (!BeanUtil.isEmpty(validate)) {
+            Asserts.fail(validate.getMsg());
+        }
+        category.setAddTime(new Date());
+        category.setUpdateTime(new Date());
+        int count = categoryMapper.insertSelective(category);
+        return Optional.ofNullable(count);
+    }
+
+    private ResBean validate(YoungCategory category) {
+        String name = category.getName();
+        if (StringUtils.isEmpty(name)) {
+            return ResBean.validateFailed("类目名称不能为空");
+        }
+
+        String level = category.getLevel();
+        if (StringUtils.isEmpty(level)) {
+            return ResBean.validateFailed("级别不能为空");
+
+        }
+        if (!level.equals("L1") && !level.equals("L2")) {
+            return ResBean.validateFailed("级别目前仅支持两级");
+        }
+
+        Integer pid = category.getPid();
+        if (level.equals("L2") && (pid == null)) {
+            return ResBean.validateFailed("选择二级类目时，父类目不能为空");
+        }
+
+        return null;
+    }
 
 }
