@@ -43,4 +43,11 @@ public interface CategoryService {
      * @return
      */
     Optional<Integer> creat(YoungCategory category);
+
+    /**
+     * 更新
+     * @param category
+     * @return
+     */
+    Optional<Integer> update(YoungCategory category);
 }

@@ -86,6 +86,18 @@ public class CategoryServiceImpl implements CategoryService {
         return Optional.ofNullable(count);
     }
 
+    @Override
+    public Optional<Integer> update(YoungCategory category) {
+        ResBean validate = validate(category);
+        if (!BeanUtil.isEmpty(validate)) {
+            Asserts.fail(validate.getMsg());
+        }
+        category.setUpdateTime(new Date());
+        int count = categoryMapper.updateByPrimaryKeySelective(category);
+        return Optional.ofNullable(count);
+    }
+
+
     private ResBean validate(YoungCategory category) {
         String name = category.getName();
         if (StringUtils.isEmpty(name)) {

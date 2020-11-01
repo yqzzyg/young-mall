@@ -68,16 +68,14 @@ public class CategoryController extends BaseController {
 
 
     @ApiOperation("删除商品分类")
-    @PostMapping("/delete")
-    public ResBean delete(@RequestBody YoungCategory category) {
+    @DeleteMapping("/{infoIds}")
+    public ResBean delete(@PathVariable("infoIds") Integer infoIds) {
 
-        logger.info("删除商品分类，入参：{}", JSONUtil.toJsonStr(category));
-        Integer id = category.getId();
-        if (id == null) {
+        logger.info("删除商品分类，入参：{}", JSONUtil.toJsonStr(infoIds));
+        if (infoIds == null) {
             return ResBean.validateFailed();
         }
-
-        Optional<Integer> integerOptional = categoryService.delete(id);
+        Optional<Integer> integerOptional = categoryService.delete(infoIds);
         if (!integerOptional.isPresent()) {
             return ResBean.failed("删除失败");
         }
@@ -88,12 +86,25 @@ public class CategoryController extends BaseController {
     @PostMapping("/create")
     public ResBean creat(@RequestBody YoungCategory category) {
 
+        logger.info("创建商品分类,入参：{}", JSONUtil.toJsonStr(category));
         Optional<Integer> integerOptional = categoryService.creat(category);
         if (!integerOptional.isPresent()) {
 
             return ResBean.failed("添加失败");
         }
         return ResBean.success(integerOptional.get());
+    }
+
+    @ApiOperation("更新分类")
+    @PostMapping("/update")
+    public ResBean update(@RequestBody YoungCategory category) {
+
+        Optional<Integer> optionalInteger = categoryService.update(category);
+        if (!optionalInteger.isPresent()) {
+
+            return ResBean.failed("更新失败");
+        }
+        return ResBean.success(optionalInteger.get());
     }
 
 }
