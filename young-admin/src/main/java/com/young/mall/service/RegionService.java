@@ -14,8 +14,8 @@ import java.util.Optional;
 public interface RegionService {
     /**
      * 查询行政区划list
-     * @param name
-     * @param code
+     * @param name 行政区域名称
+     * @param code 行政区域代码
      * @param page 分页起始页
      * @param size 分页大小
      * @param sort 排序依据
