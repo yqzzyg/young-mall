@@ -1,6 +1,5 @@
 package com.young.mall.controller;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.json.JSONUtil;
 import com.young.mall.domain.AdminUser;
 import com.young.mall.dto.AdminLoginParam;
@@ -15,12 +14,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
 import java.util.*;
 
 /**
@@ -66,14 +62,11 @@ public class AdminAuthController {
 
     @ApiOperation("获取登录用户信息")
     @GetMapping("/info")
-    public ResBean getLoginInfo(Principal principal) {
-        if (BeanUtil.isEmpty(principal)) {
-            return ResBean.unauthorized(null);
-        }
+    public ResBean getLoginInfo() {
 
-        Authentication authentication = (Authentication) principal;
 
-        AdminUser adminUser = (AdminUser) authentication.getPrincipal();
+        AdminUser adminUser = authService.getUserInfo();
+
         Collection<? extends GrantedAuthority> authorities = adminUser.getAuthorities();
 
         List<String> list = new ArrayList<>();
@@ -84,10 +77,9 @@ public class AdminAuthController {
         }
 
         Map<String, Object> data = new HashMap<>();
-        data.put("name", principal.getName());
+        data.put("name", adminUser.getUsername());
         data.put("avatar", adminUser.getAvatar());
         Integer[] roleIds = adminUser.getRoleIds();
-
 
         Optional<Set<String>> optionalSet = roleService.getRolesByIds(roleIds);
 

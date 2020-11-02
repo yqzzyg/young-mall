@@ -1,5 +1,7 @@
 package com.young.mall.service;
 
+import com.young.mall.domain.AdminUser;
+
 /**
  * @Description: 登录相关service
  * @Author: yqz
@@ -8,4 +10,9 @@ package com.young.mall.service;
 public interface AuthService {
     String login(String username, String password);
 
+    /**
+     * 获取用户信息
+     * @return
+     */
+    AdminUser getUserInfo();
 }

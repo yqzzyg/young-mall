@@ -1,5 +1,6 @@
 package com.young.mall.service.impl;
 
+import com.young.mall.domain.AdminUser;
 import com.young.mall.exception.Asserts;
 import com.young.mall.service.AuthService;
 import com.young.mall.utils.JwtTokenUtil;
@@ -53,5 +54,14 @@ public class AuthServiceImpl implements AuthService {
         String token = jwtTokenUtil.generateToken((UserDetails) authenticate.getPrincipal());
 
         return token;
+    }
+
+    @Override
+    public AdminUser getUserInfo() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AdminUser adminUser = (AdminUser) authentication.getPrincipal();
+
+        return adminUser;
     }
 }

@@ -20,4 +20,13 @@ public class GlobalExceptionHandler {
         }
         return ResBean.failed(e.getMessage());
     }
+
+    @ResponseBody
+    @ExceptionHandler(value = RuntimeException.class)
+    public ResBean handle(RuntimeException e) {
+        if (e.getMessage() != null) {
+            return ResBean.failed(e.getMessage());
+        }
+        return ResBean.failed(e.getMessage());
+    }
 }
