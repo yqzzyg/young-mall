@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -80,8 +80,8 @@ public class CategoryServiceImpl implements CategoryService {
         if (!BeanUtil.isEmpty(validate)) {
             Asserts.fail(validate.getMsg());
         }
-        category.setAddTime(new Date());
-        category.setUpdateTime(new Date());
+        category.setAddTime(LocalDateTime.now());
+        category.setUpdateTime(LocalDateTime.now());
         int count = categoryMapper.insertSelective(category);
         return Optional.ofNullable(count);
     }
@@ -92,7 +92,7 @@ public class CategoryServiceImpl implements CategoryService {
         if (!BeanUtil.isEmpty(validate)) {
             Asserts.fail(validate.getMsg());
         }
-        category.setUpdateTime(new Date());
+        category.setUpdateTime(LocalDateTime.now());
         int count = categoryMapper.updateByPrimaryKeySelective(category);
         return Optional.ofNullable(count);
     }

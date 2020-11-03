@@ -15,6 +15,8 @@ import com.young.db.service.CommonOrderService;
 import com.young.mall.common.ResBean;
 import com.young.mall.dto.UserVo;
 import com.young.mall.exception.Asserts;
+import com.young.mall.notify.NotifyService;
+import com.young.mall.notify.NotifyType;
 import com.young.mall.service.GoodsProductService;
 import com.young.mall.service.OrderService;
 import com.young.mall.utils.AdminResponseCode;
@@ -38,7 +40,7 @@ import java.util.Optional;
  */
 @Service
 public class OrderServiceImpl implements OrderService {
-    private static final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private YoungOrderMapper orderMapper;
@@ -51,8 +53,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private CommonOrderService commonOrderService;
+
     @Autowired
     private GoodsProductService goodsProductService;
+
+    @Autowired
+    private NotifyService notifyService;
 
     @Override
     public Optional<Integer> count(Integer userId) {
@@ -154,7 +160,7 @@ public class OrderServiceImpl implements OrderService {
         //判断订单状态
         if (!youngOrder.getOrderStatus().equals(OrderUtil.STATUS_REFUND)) {
             logger.info("商场管理->订单管理->订单退款失败:{}", AdminResponseCode.ORDER_REFUND_FAILED.desc());
-            return ResBean.failed(AdminResponseCode.ORDER_REFUND_FAILED.code(), AdminResponseCode.ORDER_REFUND_FAILED.desc())
+            return ResBean.failed(AdminResponseCode.ORDER_REFUND_FAILED.code(), AdminResponseCode.ORDER_REFUND_FAILED.desc());
         }
         //微信退款
         WxPayRefundRequest wxPayRefundRequest = new WxPayRefundRequest();
@@ -198,6 +204,11 @@ public class OrderServiceImpl implements OrderService {
         // 退款成功通知用户, 例如“您申请的订单退款 [ 单号:{1} ] 已成功，请耐心等待到账。”
         // 注意订单号只发后6位
 
-        return null;
+        notifyService.notifySmsTemplate(youngOrder.getMobile(),
+                NotifyType.REFUND,
+                new String[]{youngOrder.getOrderSn().substring(8, 14)});
+        logger.info("订单管理，订单退款成功：{}", JSONUtil.toJsonStr(youngOrder));
+
+        return ResBean.success(youngOrder);
     }
 }
