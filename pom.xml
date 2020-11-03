@@ -45,10 +45,17 @@
         <young-db.version>0.0.1-SNAPSHOT</young-db.version>
         <young-common.version>0.0.1-SNAPSHOT</young-common.version>
         <young-security.version>0.0.1-SNAPSHOT</young-security.version>
+        <fastjson.version>1.2.72</fastjson.version>
+        <email.version>1.5</email.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-email</artifactId>
+                <version>${email.version}</version>
+            </dependency>
             <!--redisson-->
             <dependency>
                 <groupId>org.redisson</groupId>
@@ -97,6 +104,11 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid-spring-boot-starter</artifactId>
                 <version>${druid.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
             </dependency>
             <!--Hutool Java工具包-->
             <dependency>
@@ -171,6 +183,24 @@
         </dependencies>
     </dependencyManagement>
     <dependencies>
+        <dependency>
+            <groupId>com.github.binarywang</groupId>
+            <artifactId>weixin-java-pay</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.binarywang</groupId>
+            <artifactId>weixin-java-miniapp</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.qcloudsms</groupId>
+            <artifactId>qcloudsms</artifactId>
+            <version>1.0.5</version>
+        </dependency>
+
+
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>

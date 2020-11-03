@@ -16,6 +16,7 @@ public class ResBean<T> {
     private long code;
     private String msg;
     private T data;
+
     /**
      * 成功返回结果
      *
@@ -28,8 +29,8 @@ public class ResBean<T> {
     /**
      * 成功返回结果
      *
-     * @param data 获取的数据
-     * @param  message 提示信息
+     * @param data    获取的数据
+     * @param message 提示信息
      */
     public static <T> ResBean<T> success(T data, String message) {
         return new ResBean<T>(ResCode.SUCCESS.getCode(), message, data);
@@ -37,6 +38,7 @@ public class ResBean<T> {
 
     /**
      * 失败返回结果
+     *
      * @param resErrorCode 错误码
      */
     public static <T> ResBean<T> failed(ResErrorCode resErrorCode) {
@@ -45,8 +47,9 @@ public class ResBean<T> {
 
     /**
      * 失败返回结果
+     *
      * @param resErrorCode 错误码
-     * @param msg 错误信息
+     * @param msg          错误信息
      */
     public static <T> ResBean<T> failed(ResErrorCode resErrorCode, String msg) {
         return new ResBean<T>(resErrorCode.getCode(), msg, null);
@@ -54,10 +57,20 @@ public class ResBean<T> {
 
     /**
      * 失败返回结果
+     *
      * @param msg 提示信息
      */
     public static <T> ResBean<T> failed(String msg) {
         return new ResBean<T>(ResCode.FAILED.getCode(), msg, null);
+    }
+
+    /**
+     * 失败返回结果
+     *
+     * @param msg 提示信息
+     */
+    public static <T> ResBean<T> failed(long code, String msg) {
+        return new ResBean<T>(code, msg, null);
     }
 
     /**
@@ -76,6 +89,7 @@ public class ResBean<T> {
 
     /**
      * 参数验证失败返回结果
+     *
      * @param msg 提示信息
      */
     public static <T> ResBean<T> validateFailed(String msg) {

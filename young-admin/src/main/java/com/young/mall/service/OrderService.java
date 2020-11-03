@@ -1,6 +1,7 @@
 package com.young.mall.service;
 
 import com.young.db.entity.YoungOrder;
+import com.young.mall.common.ResBean;
 
 import java.util.List;
 import java.util.Map;
@@ -49,4 +50,11 @@ public interface OrderService {
      * @return
      */
     Optional<Map<String,Object>> detail(Integer id);
+
+    /**
+     * 退款操作
+     * @param map 入参
+     * @return
+     */
+    ResBean refund(Map<String,Object> map);
 }

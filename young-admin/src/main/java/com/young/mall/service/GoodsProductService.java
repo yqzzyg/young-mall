@@ -14,4 +14,12 @@ public interface GoodsProductService {
      * @return
      */
     Optional<Integer> count();
+
+    /**
+     * 增加库存
+     * @param id 产品ID
+     * @param num 数量
+     * @return
+     */
+    Optional<Integer> addStock(Integer id,Short num);
 }

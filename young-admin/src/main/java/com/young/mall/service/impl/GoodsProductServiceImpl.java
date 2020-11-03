@@ -1,9 +1,8 @@
 package com.young.mall.service.impl;
 
 import com.young.db.dao.YoungGoodsProductMapper;
-import com.young.db.entity.YoungGoodsExample;
-import com.young.db.entity.YoungGoodsProduct;
 import com.young.db.entity.YoungGoodsProductExample;
+import com.young.db.mapper.GoodsProductMapper;
 import com.young.mall.service.GoodsProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +20,9 @@ public class GoodsProductServiceImpl implements GoodsProductService {
     @Autowired
     private YoungGoodsProductMapper productMapper;
 
+    @Autowired
+    private GoodsProductMapper goodsProductMapper;
+
     @Override
     public Optional<Integer> count() {
 
@@ -28,5 +30,12 @@ public class GoodsProductServiceImpl implements GoodsProductService {
         example.createCriteria().andDeletedEqualTo(false);
         long count = productMapper.countByExample(example);
         return Optional.ofNullable(((int) count));
+    }
+
+    @Override
+    public Optional<Integer> addStock(Integer id, Short num) {
+        int count = goodsProductMapper.addStock(id, num);
+
+        return Optional.ofNullable(count);
     }
 }
