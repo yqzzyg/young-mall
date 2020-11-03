@@ -1,8 +1,8 @@
 young:
   # 开发者应该设置成自己的wx相关信息
   wx:
-    app-id: wxcd789dd2321424b6
-    app-secret: 9282eb321d3c9ece3c06857e2c54be8e
+    app-id: xxxxx
+    app-secret: xxxxx
     mch-id: 1538666666
     mch-key: 1538xxxxxx-1538xxxxxx-1538xxxxxx
     notify-url: https://test.dtsshop.com/demo/order/dtsNotify
@@ -102,8 +102,8 @@ young:
     # 阿里云对象存储配置信息
     aliyun:
       endpoint: oss-cn-beijing.aliyuncs.com
-      accessKeyId: LTAI4FktYzr1V3HEyyUWN5bx
-      accessKeySecret: K4ow1ECIPYx5ctcADb9UWKro6yjjad
+      accessKeyId: xxxxx
+      accessKeySecret: xxxxx
       bucketName: yqz-oss
     # 腾讯对象存储配置信息
     # 请参考 https://cloud.tencent.com/document/product/436/6249
