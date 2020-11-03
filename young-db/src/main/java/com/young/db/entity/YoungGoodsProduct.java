@@ -1,6 +1,12 @@
 package com.young.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -43,9 +49,15 @@ public class YoungGoodsProduct implements Serializable {
     @ApiModelProperty(value = "商品货品图片")
     private String url;
 
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "创建时间")
     private LocalDateTime addTime;
 
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "更新时间")
     private LocalDateTime updateTime;
 

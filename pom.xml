@@ -47,10 +47,31 @@
         <young-security.version>0.0.1-SNAPSHOT</young-security.version>
         <fastjson.version>1.2.72</fastjson.version>
         <email.version>1.5</email.version>
+        <weixin-java-pay.version>3.3.0</weixin-java-pay.version>
+        <weixin-java-miniap.version>3.3.0</weixin-java-miniap.version>
+        <qcloudsms.version>1.0.5</qcloudsms.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <!--微信-->
+            <dependency>
+                <groupId>com.github.binarywang</groupId>
+                <artifactId>weixin-java-pay</artifactId>
+                <version>${weixin-java-pay.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.binarywang</groupId>
+                <artifactId>weixin-java-miniapp</artifactId>
+                <version>${weixin-java-miniap.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.qcloudsms</groupId>
+                <artifactId>qcloudsms</artifactId>
+                <version>${qcloudsms.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-email</artifactId>
@@ -183,23 +204,6 @@
         </dependencies>
     </dependencyManagement>
     <dependencies>
-        <dependency>
-            <groupId>com.github.binarywang</groupId>
-            <artifactId>weixin-java-pay</artifactId>
-            <version>3.3.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.binarywang</groupId>
-            <artifactId>weixin-java-miniapp</artifactId>
-            <version>3.3.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.qcloudsms</groupId>
-            <artifactId>qcloudsms</artifactId>
-            <version>1.0.5</version>
-        </dependency>
-
 
         <dependency>
             <groupId>cn.hutool</groupId>

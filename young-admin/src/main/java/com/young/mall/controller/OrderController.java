@@ -61,6 +61,7 @@ public class OrderController extends BaseController {
     }
 
     @ApiOperation("订单退款")
+    @PostMapping("/refund")
     public ResBean refund(@RequestBody Map<String, Object> map) {
 
         ResBean refund = orderService.refund(map);

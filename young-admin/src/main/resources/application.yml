@@ -7,7 +7,7 @@ spring:
   application:
     name: young-mall
   profiles:
-    active: dev #默认为开发环境
+    active: dev,common #默认为开发环境
   servlet:
     multipart:
       enabled: true #开启文件上传

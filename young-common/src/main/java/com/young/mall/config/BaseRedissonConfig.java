@@ -4,14 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
-import org.redisson.Redisson;
-import org.redisson.api.RedissonClient;
-import org.redisson.config.Config;
-import org.redisson.config.TransportMode;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.env.Environment;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
@@ -23,8 +16,6 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @Description: redisson基础配置类
@@ -76,6 +67,20 @@ public class BaseRedissonConfig {
         objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         //必须设置，否则无法将JSON转化为对象，会转化成Map类型
         objectMapper.activateDefaultTyping(LaissezFaireSubTypeValidator.instance,ObjectMapper.DefaultTyping.NON_FINAL);
+
+/*        //LocalDatetime序列化
+        JavaTimeModule timeModule = new JavaTimeModule();
+        timeModule.addDeserializer(LocalDate.class,
+                new LocalDateDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        timeModule.addDeserializer(LocalDateTime.class,
+                new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        timeModule.addSerializer(LocalDate.class,
+                new LocalDateSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        timeModule.addSerializer(LocalDateTime.class,
+                new LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        objectMapper.registerModule(timeModule);*/
         serializer.setObjectMapper(objectMapper);
         return serializer;
     }

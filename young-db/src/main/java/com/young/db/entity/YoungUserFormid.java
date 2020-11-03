@@ -1,6 +1,12 @@
 package com.young.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -36,15 +42,24 @@ public class YoungUserFormid implements Serializable {
     @ApiModelProperty(value = "可用次数，fromId为1，prepay为3，用1次减1")
     private Integer useamount;
 
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "过期时间，腾讯规定为7天")
     private LocalDateTime expireTime;
 
     @ApiModelProperty(value = "微信登录openid")
     private String openid;
 
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "创建时间")
     private LocalDateTime addTime;
 
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "更新时间")
     private LocalDateTime updateTime;
 

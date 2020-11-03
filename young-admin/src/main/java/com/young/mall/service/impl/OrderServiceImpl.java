@@ -145,8 +145,8 @@ public class OrderServiceImpl implements OrderService {
         if (orderId == null) {
             return ResBean.validateFailed("订单ID不能为空");
         }
-        if (StrUtil.isNotBlank(refundMoney)) {
-            return ResBean.validateFailed("退款jine不能为空");
+        if (StrUtil.isEmpty(refundMoney)) {
+            return ResBean.validateFailed("退款金额不能为空");
         }
 
         YoungOrder youngOrder = orderMapper.selectByPrimaryKey(orderId);

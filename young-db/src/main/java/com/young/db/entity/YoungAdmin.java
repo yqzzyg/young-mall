@@ -1,6 +1,12 @@
 package com.young.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -36,15 +42,24 @@ public class YoungAdmin implements Serializable {
     @ApiModelProperty(value = "最近一次登录IP地址")
     private String lastLoginIp;
 
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "最近一次登录时间")
     private LocalDateTime lastLoginTime;
 
     @ApiModelProperty(value = "头像图片")
     private String avatar;
 
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "创建时间")
     private LocalDateTime addTime;
 
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "更新时间")
     private LocalDateTime updateTime;
 
@@ -367,7 +382,7 @@ public class YoungAdmin implements Serializable {
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public static Column[] excludes(Column ... excludes) {
+        public static Column[] excludes(Column... excludes) {
             ArrayList<Column> columns = new ArrayList<>(Arrays.asList(Column.values()));
             if (excludes != null && excludes.length > 0) {
                 columns.removeAll(new ArrayList<>(Arrays.asList(excludes)));

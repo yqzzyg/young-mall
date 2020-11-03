@@ -2,9 +2,8 @@ package com.young.db.dao;
 
 import com.young.db.entity.YoungAddress;
 import com.young.db.entity.YoungAddressExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface YoungAddressMapper {
     long countByExample(YoungAddressExample example);
