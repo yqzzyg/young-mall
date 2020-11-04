@@ -17,6 +17,7 @@ import java.util.Map;
 public class NotifyProperties {
     private Mail mail;
     private Sms sms;
+    private AliyunSms aliyunSms;
     private Wx wx;
 
     public static class Mail {
@@ -114,7 +115,90 @@ public class NotifyProperties {
             this.template = template;
         }
     }
+    public static class AliyunSms {
+        private boolean enable;
+        private String accessKeyId;
+        private String secret;
+        private String domain;
+        private String version;
+        private String action;
 
+        private String regionId;
+        private String SignName;
+        private List<Map<String, String>> template = new ArrayList<>();
+
+        public boolean isEnable() {
+            return enable;
+        }
+
+        public void setEnable(boolean enable) {
+            this.enable = enable;
+        }
+
+        public String getAccessKeyId() {
+            return accessKeyId;
+        }
+
+        public void setAccessKeyId(String accessKeyId) {
+            this.accessKeyId = accessKeyId;
+        }
+
+        public String getSecret() {
+            return secret;
+        }
+
+        public void setSecret(String secret) {
+            this.secret = secret;
+        }
+
+        public String getDomain() {
+            return domain;
+        }
+
+        public void setDomain(String domain) {
+            this.domain = domain;
+        }
+
+        public String getVersion() {
+            return version;
+        }
+
+        public void setVersion(String version) {
+            this.version = version;
+        }
+
+        public String getAction() {
+            return action;
+        }
+
+        public void setAction(String action) {
+            this.action = action;
+        }
+
+        public String getRegionId() {
+            return regionId;
+        }
+
+        public void setRegionId(String regionId) {
+            this.regionId = regionId;
+        }
+
+        public String getSignName() {
+            return SignName;
+        }
+
+        public void setSignName(String signName) {
+            SignName = signName;
+        }
+
+        public List<Map<String, String>> getTemplate() {
+            return template;
+        }
+
+        public void setTemplate(List<Map<String, String>> template) {
+            this.template = template;
+        }
+    }
     public static class Wx {
         private boolean enable;
         private List<Map<String, String>> template = new ArrayList<>();

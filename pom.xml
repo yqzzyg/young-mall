@@ -50,10 +50,17 @@
         <weixin-java-pay.version>3.3.0</weixin-java-pay.version>
         <weixin-java-miniap.version>3.3.0</weixin-java-miniap.version>
         <qcloudsms.version>1.0.5</qcloudsms.version>
+        <aliyunSms.version>4.5.3</aliyunSms.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <!--阿里云短信-->
+            <dependency>
+                <groupId>com.aliyun</groupId>
+                <artifactId>aliyun-java-sdk-core</artifactId>
+                <version>${aliyunSms.version}</version>
+            </dependency>
             <!--微信-->
             <dependency>
                 <groupId>com.github.binarywang</groupId>

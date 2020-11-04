@@ -203,6 +203,7 @@ public class OrderServiceImpl implements OrderService {
         // 退款成功通知用户, 例如“您申请的订单退款 [ 单号:{1} ] 已成功，请耐心等待到账。”
         // 注意订单号只发后6位
 
+//        notifyService.notifySslMail("标题","邮件内容");
         notifyService.notifySmsTemplate(youngOrder.getMobile(),
                 NotifyType.REFUND,
                 new String[]{youngOrder.getOrderSn().substring(8, 14)});

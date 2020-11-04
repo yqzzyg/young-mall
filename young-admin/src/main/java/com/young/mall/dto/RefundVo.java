@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 /**
  * @Description:
@@ -19,7 +20,7 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 public class RefundVo {
 
-    @NotEmpty(message = "订单ID不能为空")
+    @NotNull(message = "订单ID不能为空")
     @ApiModelProperty(value = "订单ID", required = true)
     private Integer orderId;
 

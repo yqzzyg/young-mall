@@ -58,7 +58,7 @@ public class SmsSenderTencentImpl implements SmsSender {
             smsResult.setResult(result);
             return smsResult;
         } catch (HTTPException | IOException e) {
-            logger.info("短信模版消息通知 发送成功：{}", e.getMessage());
+            logger.info("短信模版消息通知 发送失败：{}", e.getMessage());
             e.printStackTrace();
         }
         return null;
