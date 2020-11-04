@@ -1,12 +1,12 @@
 package com.young.mall.controller;
 
 import cn.hutool.json.JSONUtil;
+import com.young.mall.common.ResBean;
 import com.young.mall.domain.AdminUser;
 import com.young.mall.dto.AdminLoginParam;
-import com.young.mall.common.ResBean;
+import com.young.mall.service.AdminService;
 import com.young.mall.service.AuthService;
 import com.young.mall.service.PermissionService;
-import com.young.mall.service.AdminService;
 import com.young.mall.service.RoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.*;
 
 /**
@@ -50,7 +51,7 @@ public class AdminAuthController {
 
     @ApiOperation("用户登录")
     @PostMapping("/login")
-    public ResBean login(@RequestBody AdminLoginParam loginParam) {
+    public ResBean login(@Valid @RequestBody AdminLoginParam loginParam) {
         logger.info("用户登录入参：{}", loginParam);
         String token = authService.login(loginParam.getUsername(), loginParam.getPassword());
         Map<String, String> map = new HashMap<>();

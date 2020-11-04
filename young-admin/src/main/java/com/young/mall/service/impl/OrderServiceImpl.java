@@ -3,9 +3,9 @@ package com.young.mall.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.github.binarywang.wxpay.bean.request.WxPayRefundRequest;
+import com.github.binarywang.wxpay.bean.result.WxPayRefundResult;
 import com.github.pagehelper.PageHelper;
 import com.young.db.dao.YoungOrderGoodsMapper;
 import com.young.db.dao.YoungOrderMapper;
@@ -13,6 +13,7 @@ import com.young.db.dao.YoungUserMapper;
 import com.young.db.entity.*;
 import com.young.db.service.CommonOrderService;
 import com.young.mall.common.ResBean;
+import com.young.mall.dto.RefundVo;
 import com.young.mall.dto.UserVo;
 import com.young.mall.exception.Asserts;
 import com.young.mall.notify.NotifyService;
@@ -43,7 +44,7 @@ public class OrderServiceImpl implements OrderService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private YoungOrderMapper orderMapper;
+    private YoungOrderMapper youngOrderMapper;
 
     @Autowired
     private YoungOrderGoodsMapper goodsMapper;
@@ -65,7 +66,7 @@ public class OrderServiceImpl implements OrderService {
 
         YoungOrderExample example = new YoungOrderExample();
         example.createCriteria().andUserIdEqualTo(userId).andDeletedEqualTo(false);
-        long count = orderMapper.countByExample(example);
+        long count = youngOrderMapper.countByExample(example);
         return Optional.ofNullable(((int) count));
     }
 
@@ -76,7 +77,7 @@ public class OrderServiceImpl implements OrderService {
 
         example.createCriteria().andDeletedEqualTo(false);
 
-        long count = orderMapper.countByExample(example);
+        long count = youngOrderMapper.countByExample(example);
 
         return Optional.ofNullable(((int) count));
     }
@@ -105,14 +106,14 @@ public class OrderServiceImpl implements OrderService {
         }
 
         PageHelper.startPage(page, size);
-        List<YoungOrder> youngOrders = orderMapper.selectByExample(example);
+        List<YoungOrder> youngOrders = youngOrderMapper.selectByExample(example);
         return Optional.ofNullable(youngOrders);
     }
 
     @Override
     public Optional<Map<String, Object>> detail(Integer id) {
 
-        YoungOrder order = orderMapper.selectByPrimaryKey(id);
+        YoungOrder order = youngOrderMapper.selectByPrimaryKey(id);
 
         List<YoungOrderGoods> goodsList = queryByOid(id);
         YoungUser youngUser = userMapper.selectByPrimaryKey(id);
@@ -138,23 +139,15 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     @Override
-    public ResBean refund(Map<String, Object> map) {
-        JSONObject paramMap = JSONUtil.parseObj(map);
-        Integer orderId = paramMap.getInt("orderId");
-        String refundMoney = paramMap.getStr("refundMoney");
-        if (orderId == null) {
-            return ResBean.validateFailed("订单ID不能为空");
-        }
-        if (StrUtil.isEmpty(refundMoney)) {
-            return ResBean.validateFailed("退款金额不能为空");
-        }
+    public ResBean refund(RefundVo refundVo) {
 
-        YoungOrder youngOrder = orderMapper.selectByPrimaryKey(orderId);
+
+        YoungOrder youngOrder = youngOrderMapper.selectByPrimaryKey(refundVo.getOrderId());
         if (BeanUtil.isEmpty(youngOrder)) {
             return ResBean.validateFailed("查无此订单");
         }
 
-        if (youngOrder.getActualPrice().compareTo(new BigDecimal(refundMoney)) != 0) {
+        if (youngOrder.getActualPrice().compareTo(new BigDecimal(refundVo.getRefundMoney())) != 0) {
             return ResBean.validateFailed("退款金额与订单金额不一致");
         }
         //判断订单状态
@@ -170,31 +163,37 @@ public class OrderServiceImpl implements OrderService {
         int totalFee = youngOrder.getActualPrice().multiply(new BigDecimal(100)).intValue();
         wxPayRefundRequest.setTotalFee(totalFee);
         wxPayRefundRequest.setRefundFee(totalFee);
-        /**
-         * 为了账号安全，暂时屏蔽api退款 WxPayRefundResult wxPayRefundResult = null; try {
-         * wxPayRefundResult = wxPayService.refund(wxPayRefundRequest); } catch
-         * (WxPayException e) { e.printStackTrace(); return
-         * ResponseUtil.fail(ORDER_REFUND_FAILED, "订单退款失败"); } if
-         * (!wxPayRefundResult.getReturnCode().equals("SUCCESS")) { logger.warn("refund
-         * fail: " + wxPayRefundResult.getReturnMsg()); return
-         * ResponseUtil.fail(ORDER_REFUND_FAILED, "订单退款失败"); } if
-         * (!wxPayRefundResult.getResultCode().equals("SUCCESS")) { logger.warn("refund
-         * fail: " + wxPayRefundResult.getReturnMsg()); return
-         * ResponseUtil.fail(ORDER_REFUND_FAILED, "订单退款失败"); }
-         */
+
+        //为了账号安全，暂时屏蔽api退款
+        WxPayRefundResult wxPayRefundResult = null;
+        /*try {
+            wxPayRefundResult = wxPayService.refund(wxPayRefundRequest);
+        } catch (WxPayException e) {
+            e.printStackTrace();
+            return ResBean.failed(AdminResponseCode.ORDER_REFUND_FAILED.code(), "订单退款失败");
+        }
+        if (!wxPayRefundResult.getReturnCode().equals("SUCCESS")) {
+            logger.warn("refund fail:" + wxPayRefundResult.getReturnMsg());
+            return ResBean.failed(AdminResponseCode.ORDER_REFUND_FAILED.code(), "订单退款失败");
+        }
+        if (!wxPayRefundResult.getResultCode().equals("SUCCESS")) {
+            logger.warn("refund fail:" + wxPayRefundResult.getReturnMsg());
+            return ResBean.failed(AdminResponseCode.ORDER_REFUND_FAILED.code(), "订单退款失败");
+        }*/
+
         //设置订单取消状态
         youngOrder.setOrderStatus(OrderUtil.STATUS_REFUND_CONFIRM);
-        if (commonOrderService.updateWithOptimisticLocker(youngOrder).isPresent()) {
+        if (!commonOrderService.updateWithOptimisticLocker(youngOrder).isPresent()) {
             logger.info("商场管理->订单管理->订单退款失败:{}", "更新数据已失效");
             Asserts.fail("更新数据失败");
         }
         //商品货品数量增加
-        List<YoungOrderGoods> goodsList = queryByOid(orderId);
+        List<YoungOrderGoods> goodsList = queryByOid(refundVo.getOrderId());
         for (YoungOrderGoods orderGoods : goodsList) {
             Integer productId = orderGoods.getProductId();
             Short number = orderGoods.getNumber();
             Optional<Integer> optional = goodsProductService.addStock(productId, number);
-            if (optional.isPresent()) {
+            if (!optional.isPresent()) {
                 logger.info("商场管理->订单管理->订单退款失败:{}", "商品货品库存增加失败");
                 Asserts.fail("商品库存增加失败");
             }

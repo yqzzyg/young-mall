@@ -3,12 +3,14 @@ package com.young.mall.controller;
 import com.young.db.entity.YoungOrder;
 import com.young.mall.common.CommonPage;
 import com.young.mall.common.ResBean;
+import com.young.mall.dto.RefundVo;
 import com.young.mall.service.OrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
@@ -62,9 +64,9 @@ public class OrderController extends BaseController {
 
     @ApiOperation("订单退款")
     @PostMapping("/refund")
-    public ResBean refund(@RequestBody Map<String, Object> map) {
+    public ResBean refund(@Valid @RequestBody RefundVo refundVo) {
 
-        ResBean refund = orderService.refund(map);
+        ResBean refund = orderService.refund(refundVo);
         return refund;
     }
 }

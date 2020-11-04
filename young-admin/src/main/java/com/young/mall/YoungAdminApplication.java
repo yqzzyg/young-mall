@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 @EnableAsync
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.young.db","com.young.mall"})
 public class YoungAdminApplication {
 
     public static void main(String[] args) {

@@ -1,6 +1,9 @@
 package com.young.mall.exception;
 
 import com.young.mall.common.ResBean;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -28,5 +31,19 @@ public class GlobalExceptionHandler {
             return ResBean.failed(e.getMessage());
         }
         return ResBean.failed(e.getMessage());
+    }
+
+    @ResponseBody
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    public ResBean handleValidException(MethodArgumentNotValidException e) {
+        BindingResult bindingResult = e.getBindingResult();
+        String message = null;
+        if (bindingResult.hasErrors()) {
+            FieldError fieldError = bindingResult.getFieldError();
+            if (fieldError != null) {
+                message = fieldError.getField()+fieldError.getDefaultMessage();
+            }
+        }
+        return ResBean.failed(message);
     }
 }

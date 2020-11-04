@@ -1,6 +1,7 @@
 package com.young.db.mapper;
 
 import com.young.db.entity.YoungOrder;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.time.LocalDateTime;
@@ -10,7 +11,8 @@ import java.time.LocalDateTime;
  * @Author: yqz
  * @CreateDate: 2020/11/2 16:26
  */
-public interface OrderMapper {
+@Mapper
+public interface CommonOrderMapper {
     int updateWithOptimisticLocker(@Param("lastUpdateTime") LocalDateTime lastUpdateTime,
                               @Param("order") YoungOrder order);
 }

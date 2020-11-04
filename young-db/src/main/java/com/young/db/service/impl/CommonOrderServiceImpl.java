@@ -1,7 +1,7 @@
 package com.young.db.service.impl;
 
 import com.young.db.entity.YoungOrder;
-import com.young.db.mapper.OrderMapper;
+import com.young.db.mapper.CommonOrderMapper;
 import com.young.db.service.CommonOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import java.util.Optional;
 public class CommonOrderServiceImpl implements CommonOrderService {
 
     @Autowired
-    private OrderMapper orderMapper;
+    private CommonOrderMapper orderMapper;
 
 
     @Override

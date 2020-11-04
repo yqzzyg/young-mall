@@ -15,8 +15,8 @@ spring:
 
 mybatis:
   mapper-locations:
-    - classpath:dao/*.xml
-    - classpath*:com/**/mapper/*.xml
+    - classpath:com/young/db/dao/*.xml
+    - classpath:com/young/db/mapper/*.xml
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
