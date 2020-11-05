@@ -13,11 +13,11 @@ import com.young.db.dao.YoungUserMapper;
 import com.young.db.entity.*;
 import com.young.db.service.CommonOrderService;
 import com.young.mall.common.ResBean;
+import com.young.mall.dto.MailDto;
 import com.young.mall.dto.RefundVo;
 import com.young.mall.dto.UserVo;
 import com.young.mall.exception.Asserts;
 import com.young.mall.notify.NotifyService;
-import com.young.mall.notify.NotifyType;
 import com.young.mall.service.GoodsProductService;
 import com.young.mall.service.OrderService;
 import com.young.mall.utils.AdminResponseCode;
@@ -203,10 +203,22 @@ public class OrderServiceImpl implements OrderService {
         // 退款成功通知用户, 例如“您申请的订单退款 [ 单号:{1} ] 已成功，请耐心等待到账。”
         // 注意订单号只发后6位
 
-//        notifyService.notifySslMail("标题","邮件内容");
-        notifyService.notifySmsTemplate(youngOrder.getMobile(),
-                NotifyType.REFUND,
-                new String[]{youngOrder.getOrderSn().substring(8, 14)});
+        //由于个人用户只能申请aliyun的验证码短信功能，腾讯无法个人申请，所以这里使用aliyun的短信
+        String substring = youngOrder.getOrderSn().substring(8, 14);
+        Map<String, Object> map = new HashMap<>(2);
+        map.put("params", substring);
+/*        notifyService.notifySmsTemplate(youngOrder.getMobile(),
+                NotifyType.REFUND, map);*/
+
+
+        //退款邮件通知
+        MailDto mailDto = MailDto.builder()
+                .title("退款通知")
+                .content(youngOrder.getConsignee() + "退款申请已通过" + "订单ID" + youngOrder.getOrderSn())
+                //临时将订单ID为20190619518874的Message字段添加邮箱，用于测试邮箱功能
+                .to(youngOrder.getMessage())
+                .build();
+        notifyService.notifySslMailWithTo(mailDto);
         logger.info("订单管理，订单退款成功：{}", JSONUtil.toJsonStr(youngOrder));
 
         return ResBean.success(youngOrder);

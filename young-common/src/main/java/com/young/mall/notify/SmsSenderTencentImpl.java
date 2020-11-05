@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * @Description: 腾讯云短信服务
@@ -48,9 +49,11 @@ public class SmsSenderTencentImpl implements SmsSender {
     }
 
     @Override
-    public SmsResult sendWithTemplate(String phone, int templateId, String[] params) {
+    public SmsResult sendWithTemplate(String phone, int templateId, Map<String,Object> map) {
         try {
-            SmsSingleSenderResult result = sender.sendWithParam("86", phone, templateId, params, "", "", "");
+            Object params = map.get("params");
+            String[] arrayParam = (String[]) params;
+            SmsSingleSenderResult result = sender.sendWithParam("86", phone, templateId, arrayParam, "", "", "");
             logger.info("短信模版消息通知 发送成功：{}", JSONUtil.toJsonStr(result));
 
             SmsResult smsResult = new SmsResult();

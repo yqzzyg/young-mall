@@ -1,10 +1,9 @@
 package com.young.mall.config.notify;
 
+import com.aliyuncs.DefaultAcsClient;
+import com.aliyuncs.profile.DefaultProfile;
 import com.github.qcloudsms.SmsSingleSender;
-import com.young.mall.notify.NotifyService;
-import com.young.mall.notify.SmsSenderTencentImpl;
-import com.young.mall.notify.SslMailSender;
-import com.young.mall.notify.WxTemplateSender;
+import com.young.mall.notify.*;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -88,10 +87,24 @@ public class NotifyAutoConfiguration {
     }
 
     @Bean
+    public SmsSenderAliyunImpl smsSenderAliyun() {
+        NotifyProperties.AliyunSms aliyunSms = properties.getAliyunSms();
+
+        SmsSenderAliyunImpl senderAliyun = new SmsSenderAliyunImpl();
+
+        DefaultProfile profile = DefaultProfile.getProfile(aliyunSms.getRegionId(), aliyunSms.getAccessKeyId(), aliyunSms.getSecret());
+
+        senderAliyun.setIAcsClient(new DefaultAcsClient(profile));
+        return senderAliyun;
+    }
+
+
+    @Bean
     public WxTemplateSender wxTemplateSender() {
         WxTemplateSender wxTemplateSender = new WxTemplateSender();
         return wxTemplateSender;
     }
+
     @Bean
     public JavaMailSender mailSender() {
         NotifyProperties.Mail mailConfig = properties.getMail();

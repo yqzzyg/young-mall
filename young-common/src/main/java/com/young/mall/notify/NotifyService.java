@@ -3,6 +3,7 @@ package com.young.mall.notify;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
+import com.young.mall.dto.MailDto;
 import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,10 +57,10 @@ public class NotifyService {
      *
      * @param phoneNumber 接收通知的电话号码
      * @param notifyType  通知类别，通过该枚举值在配置文件中获取相应的模版ID
-     * @param params      通知模版内容里的参数，类似"您的验证码为{1}"中{1}的值
+     * @param map         通知模版内容里的参数，类似"您的验证码为{1}"中{1}的值
      */
     @Async
-    public void notifySmsTemplate(String phoneNumber, NotifyType notifyType, String[] params) {
+    public void notifySmsTemplate(String phoneNumber, NotifyType notifyType, Map<String, Object> map) {
         if (BeanUtil.isEmpty(smsSender)) {
             return;
         }
@@ -68,7 +69,7 @@ public class NotifyService {
             return;
         }
         Integer id = Integer.valueOf(templateId);
-        SmsResult smsResult = smsSender.sendWithTemplate(phoneNumber, id, params);
+        SmsResult smsResult = smsSender.sendWithTemplate(phoneNumber, id, map);
         logger.info("短信模版消息通知结果:{}", JSONUtil.toJsonStr(smsResult));
     }
 
@@ -77,14 +78,14 @@ public class NotifyService {
      *
      * @param phoneNumber 接收通知的电话号码
      * @param notifyType  通知类别，通过该枚举值在配置文件中获取相应的模版ID
-     * @param params      通知模版内容里的参数，类似"您的验证码为{1}"中{1}的值
+     * @param map         通知模版内容里的参数，类似"您的验证码为{1}"中{1}的值
      */
-    public SmsResult notifySmsTemplateSync(String phoneNumber, NotifyType notifyType, String[] params) {
+    public SmsResult notifySmsTemplateSync(String phoneNumber, NotifyType notifyType, Map<String, Object> map) {
         if (BeanUtil.isEmpty(smsSender)) {
             return null;
         }
         Integer templateId = Integer.valueOf(getTemplateId(notifyType, smsTemplate));
-        SmsResult smsResult = smsSender.sendWithTemplate(phoneNumber, templateId, params);
+        SmsResult smsResult = smsSender.sendWithTemplate(phoneNumber, templateId, map);
         logger.info("以同步的方式发送短信模版消息通知 结果:{}", JSONUtil.toJsonStr(smsResult));
 
         return smsResult;
@@ -130,19 +131,18 @@ public class NotifyService {
     /**
      * 邮件消息通知, 接收者在spring.mail.sendto中指定
      *
-     * @param subject 邮件标题
-     * @param content 邮件内容
+     * @param mailDto 邮件
      */
     @Async
-    public void notifyMail(String subject, String content) {
+    public void notifyMail(MailDto mailDto) {
         if (BeanUtil.isEmpty(mailSender)) {
             return;
         }
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(sendFrom);
         message.setTo(sendTo);
-        message.setSubject(subject);
-        message.setText(content);
+        message.setSubject(mailDto.getTitle());
+        message.setText(mailDto.getContent());
         mailSender.send(message);
 
     }
@@ -150,15 +150,28 @@ public class NotifyService {
     /**
      * 发送ssl邮件
      *
-     * @param subject 邮件标题
-     * @param content 邮件内容
+     * @param mailDto 邮件
      */
     @Async
-    public void notifySslMail(String subject, String content) {
+    public void notifySslMail(MailDto mailDto) {
         if (BeanUtil.isEmpty(sslMailSender)) {
             return;
         }
-        sslMailSender.sendMails(subject, content);
+        sslMailSender.sendMails(mailDto.getTitle(), mailDto.getContent());
+    }
+
+    /**
+     * 根据收件人邮箱发送邮件
+     * @param mailDto
+     */
+    @Async
+    public void notifySslMailWithTo(MailDto mailDto) {
+        if (BeanUtil.isEmpty(sslMailSender)) {
+            return;
+        }
+        sslMailSender.setToAddress(mailDto.getTo());
+        boolean status = sslMailSender.sendMails(mailDto.getTitle(), mailDto.getContent());
+        logger.info("根据收件人邮箱发送邮件，发送状态：{}",status);
     }
 
     private String getTemplateId(NotifyType notifyType, List<Map<String, String>> values) {

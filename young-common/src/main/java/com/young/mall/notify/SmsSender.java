@@ -1,5 +1,7 @@
 package com.young.mall.notify;
 
+import java.util.Map;
+
 /**
  * @Description:
  * @Author: yqz
@@ -20,9 +22,9 @@ public interface SmsSender {
      *
      * @param phone      接收通知的电话号码
      * @param templateId 通知模板ID
-     * @param params     通知模版内容里的参数，类似"您的验证码为{1}"中{1}的值
+     * @param map     通知模版内容里的参数，类似"您的验证码为{1}"中{1}的值
      * @return
      */
-    SmsResult sendWithTemplate(String phone, int templateId, String[] params);
+    SmsResult sendWithTemplate(String phone, int templateId, Map<String,Object> map);
 
 }
