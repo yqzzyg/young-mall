@@ -144,10 +144,12 @@ public class OrderServiceImpl implements OrderService {
 
         YoungOrder youngOrder = youngOrderMapper.selectByPrimaryKey(refundVo.getOrderId());
         if (BeanUtil.isEmpty(youngOrder)) {
+            logger.info("退款查无此订单：{}", refundVo.getOrderId());
             return ResBean.validateFailed("查无此订单");
         }
 
         if (youngOrder.getActualPrice().compareTo(new BigDecimal(refundVo.getRefundMoney())) != 0) {
+            logger.info("退款金额与订单金额不一致：{}", youngOrder.getActualPrice());
             return ResBean.validateFailed("退款金额与订单金额不一致");
         }
         //判断订单状态
@@ -207,7 +209,7 @@ public class OrderServiceImpl implements OrderService {
         String substring = youngOrder.getOrderSn().substring(8, 14);
         Map<String, Object> map = new HashMap<>(2);
         map.put("params", substring);
-/*        notifyService.notifySmsTemplate(youngOrder.getMobile(),
+        /*notifyService.notifySmsTemplate(youngOrder.getMobile(),
                 NotifyType.REFUND, map);*/
 
 

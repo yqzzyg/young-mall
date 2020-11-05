@@ -38,7 +38,6 @@
         <mysql-connector.version>8.0.16</mysql-connector.version>
         <spring-data-commons.version>2.3.0.RELEASE</spring-data-commons.version>
         <jjwt.version>0.9.0</jjwt.version>
-        <aliyun-oss.version>2.5.0</aliyun-oss.version>
         <knife4j.version>2.0.4</knife4j.version>
         <minio.version>7.1.0</minio.version>
         <redisson.version>3.11.3</redisson.version>
@@ -51,10 +50,31 @@
         <weixin-java-miniap.version>3.3.0</weixin-java-miniap.version>
         <qcloudsms.version>1.0.5</qcloudsms.version>
         <aliyunSms.version>4.5.3</aliyunSms.version>
+        <aliyunOSS.version>3.10.2</aliyunOSS.version>
+        <tencentOSS.version>5.6.24</tencentOSS.version>
+        <qiniuOSS.version>7.3.0</qiniuOSS.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <!--七牛云-->
+            <dependency>
+                <groupId>com.qiniu</groupId>
+                <artifactId>qiniu-java-sdk</artifactId>
+                <version>${qiniuOSS.version}</version>
+            </dependency>
+            <!--腾讯云对象存储-->
+            <dependency>
+                <groupId>com.qcloud</groupId>
+                <artifactId>cos_api</artifactId>
+                <version>${tencentOSS.version}</version>
+            </dependency>
+            <!--阿里云对象存储-->
+            <dependency>
+                <groupId>com.aliyun.oss</groupId>
+                <artifactId>aliyun-sdk-oss</artifactId>
+                <version>${aliyunOSS.version}</version>
+            </dependency>
             <!--阿里云短信-->
             <dependency>
                 <groupId>com.aliyun</groupId>
@@ -195,12 +215,6 @@
                 <groupId>io.jsonwebtoken</groupId>
                 <artifactId>jjwt</artifactId>
                 <version>${jjwt.version}</version>
-            </dependency>
-            <!-- 阿里云OSS -->
-            <dependency>
-                <groupId>com.aliyun.oss</groupId>
-                <artifactId>aliyun-sdk-oss</artifactId>
-                <version>${aliyun-oss.version}</version>
             </dependency>
             <!--MinIO JAVA SDK-->
             <dependency>

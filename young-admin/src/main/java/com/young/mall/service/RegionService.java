@@ -1,6 +1,5 @@
 package com.young.mall.service;
 
-import afu.org.checkerframework.checker.oigj.qual.O;
 import com.young.db.entity.YoungRegion;
 
 import java.util.List;
