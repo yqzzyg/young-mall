@@ -33,7 +33,7 @@ public class SmsSenderAliyunImpl implements SmsSender {
     }
 
     @Override
-    public SmsResult sendWithTemplate(String phone, int templateId, Map<String, Object> map) {
+    public SmsResult sendWithTemplate(String phone, String templateId, Map<String, Object> map) {
         Object params = map.get("params");
         CommonRequest request = new CommonRequest();
         request.setSysMethod(MethodType.POST);
@@ -42,8 +42,8 @@ public class SmsSenderAliyunImpl implements SmsSender {
         request.setSysAction("SendSms");
         request.putQueryParameter("RegionId", "cn-hangzhou");
         request.putQueryParameter("PhoneNumbers", phone);
-        request.putQueryParameter("SignName", "OpenApi");
-        request.putQueryParameter("TemplateCode", String.valueOf(templateId));
+        request.putQueryParameter("SignName", "mall商城");
+        request.putQueryParameter("TemplateCode", templateId);
         request.putQueryParameter("TemplateParam", params.toString());
 
         CommonResponse commonResponse = null;

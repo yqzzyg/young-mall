@@ -25,6 +25,6 @@ public interface SmsSender {
      * @param map     通知模版内容里的参数，类似"您的验证码为{1}"中{1}的值
      * @return
      */
-    SmsResult sendWithTemplate(String phone, int templateId, Map<String,Object> map);
+    SmsResult sendWithTemplate(String phone, String templateId, Map<String,Object> map);
 
 }

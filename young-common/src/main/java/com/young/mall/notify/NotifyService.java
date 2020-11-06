@@ -68,8 +68,7 @@ public class NotifyService {
         if (StrUtil.isEmpty(templateId)) {
             return;
         }
-        Integer id = Integer.valueOf(templateId);
-        SmsResult smsResult = smsSender.sendWithTemplate(phoneNumber, id, map);
+        SmsResult smsResult = smsSender.sendWithTemplate(phoneNumber, templateId, map);
         logger.info("短信模版消息通知结果:{}", JSONUtil.toJsonStr(smsResult));
     }
 
@@ -84,7 +83,7 @@ public class NotifyService {
         if (BeanUtil.isEmpty(smsSender)) {
             return null;
         }
-        Integer templateId = Integer.valueOf(getTemplateId(notifyType, smsTemplate));
+        String templateId = getTemplateId(notifyType, smsTemplate);
         SmsResult smsResult = smsSender.sendWithTemplate(phoneNumber, templateId, map);
         logger.info("以同步的方式发送短信模版消息通知 结果:{}", JSONUtil.toJsonStr(smsResult));
 

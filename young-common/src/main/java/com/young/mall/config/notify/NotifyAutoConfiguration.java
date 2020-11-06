@@ -47,7 +47,8 @@ public class NotifyAutoConfiguration {
 
         NotifyProperties.AliyunSms aliyunSms = properties.getAliyunSms();
         if (aliyunSms.isEnable()) {
-
+            notifyService.setSmsSender(smsSenderAliyun());
+            notifyService.setSmsTemplate(aliyunSms.getTemplate());
         }
 
         NotifyProperties.Wx wx = properties.getWx();

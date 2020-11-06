@@ -5,7 +5,6 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.github.binarywang.wxpay.bean.request.WxPayRefundRequest;
-import com.github.binarywang.wxpay.bean.result.WxPayRefundResult;
 import com.github.pagehelper.PageHelper;
 import com.young.db.dao.YoungOrderGoodsMapper;
 import com.young.db.dao.YoungOrderMapper;
@@ -167,8 +166,8 @@ public class OrderServiceImpl implements OrderService {
         wxPayRefundRequest.setRefundFee(totalFee);
 
         //为了账号安全，暂时屏蔽api退款
-        WxPayRefundResult wxPayRefundResult = null;
-        /*try {
+        /*WxPayRefundResult wxPayRefundResult = null;
+        try {
             wxPayRefundResult = wxPayService.refund(wxPayRefundRequest);
         } catch (WxPayException e) {
             e.printStackTrace();
@@ -206,12 +205,14 @@ public class OrderServiceImpl implements OrderService {
         // 注意订单号只发后6位
 
         //由于个人用户只能申请aliyun的验证码短信功能，腾讯无法个人申请，所以这里使用aliyun的短信
-        String substring = youngOrder.getOrderSn().substring(8, 14);
+/*        String substring = youngOrder.getOrderSn().substring(8, 14);
         Map<String, Object> map = new HashMap<>(2);
-        map.put("params", substring);
-        /*notifyService.notifySmsTemplate(youngOrder.getMobile(),
-                NotifyType.REFUND, map);*/
 
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code",substring);
+        map.put("params", jsonObject);
+        notifyService.notifySmsTemplate(youngOrder.getMobile(),
+                NotifyType.REFUND, map);*/
 
         //退款邮件通知
         MailDto mailDto = MailDto.builder()

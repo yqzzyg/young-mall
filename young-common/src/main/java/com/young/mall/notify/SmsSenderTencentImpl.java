@@ -49,11 +49,11 @@ public class SmsSenderTencentImpl implements SmsSender {
     }
 
     @Override
-    public SmsResult sendWithTemplate(String phone, int templateId, Map<String,Object> map) {
+    public SmsResult sendWithTemplate(String phone, String templateId, Map<String,Object> map) {
         try {
             Object params = map.get("params");
             String[] arrayParam = (String[]) params;
-            SmsSingleSenderResult result = sender.sendWithParam("86", phone, templateId, arrayParam, "", "", "");
+            SmsSingleSenderResult result = sender.sendWithParam("86", phone, Integer.valueOf(templateId), arrayParam, "", "", "");
             logger.info("短信模版消息通知 发送成功：{}", JSONUtil.toJsonStr(result));
 
             SmsResult smsResult = new SmsResult();
