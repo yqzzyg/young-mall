@@ -19,8 +19,10 @@ public class ResourcesConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/" + storageProperties.getLocal().getStoragePath()+"/**").addResourceLocations("file:" + storageProperties.getLocal().getAddress());
-
+        //addResourceHandler是指你想在url请求的路径
+        //addResourceLocations是图片存放的真实路径
+        registry.addResourceHandler(storageProperties.getLocal().getAddress() + "**")
+                .addResourceLocations("file:" + storageProperties.getLocal().getStoragePath());
     }
 }
 

@@ -144,7 +144,7 @@ public class LocalStorage implements Storage {
         StringBuffer url = request.getRequestURL();
         String contextPath = request.getServletContext().getContextPath();
         String uri = url.delete(url.length() - request.getRequestURI().length(), url.length()).append(contextPath).toString();
-        String realUrl = uri + "/" + storagePath + "/" + keyName;
+        String realUrl = uri + address + keyName;
         return realUrl;
     }
 }
