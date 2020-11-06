@@ -2,10 +2,7 @@ package com.young.mall.config.storage;
 
 import com.young.mall.exception.Asserts;
 import com.young.mall.storage.StorageService;
-import com.young.mall.storage.impl.AliyunStorage;
-import com.young.mall.storage.impl.LocalStorage;
-import com.young.mall.storage.impl.QiniuStorage;
-import com.young.mall.storage.impl.TencentStorage;
+import com.young.mall.storage.impl.*;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,6 +36,8 @@ public class StorageAutoConfiguration {
             storageService.setStorage(tencentStorage());
         } else if (active.equals("qiniu")) {
             storageService.setStorage(qiniuStorage());
+        } else if (active.equals("minIO")) {
+            storageService.setStorage(minioStorage());
         } else {
             Asserts.fail("当前存储模式 " + active + " 不支持");
         }
@@ -64,6 +63,18 @@ public class StorageAutoConfiguration {
         aliyunStorage.setBucketName(aliyun.getBucketName());
         aliyunStorage.setEndpoint(aliyun.getEndpoint());
         return aliyunStorage;
+    }
+
+    @Bean
+    public MinioStorage minioStorage() {
+        MinioStorage minioStorage = new MinioStorage();
+        StorageProperties.MinIO minIO = properties.getMinIO();
+
+        minioStorage.setAccessKey(minIO.getAccessKey());
+        minioStorage.setSecretKey(minIO.getSecretKey());
+        minioStorage.setBucketName(minIO.getBucketName());
+        minioStorage.setEndpoint(minIO.getEndpoint());
+        return minioStorage;
     }
 
     @Bean

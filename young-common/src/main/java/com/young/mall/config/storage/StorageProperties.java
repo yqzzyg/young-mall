@@ -19,13 +19,13 @@ public class StorageProperties {
     private Local local;
     private Aliyun aliyun;
     private Tencent tencent;
+    private MinIO minIO;
     private Qiniu qiniu;
 
     @Data
     public static class Local {
         private String address;
         private String storagePath;
-
     }
 
     @Data
@@ -34,7 +34,6 @@ public class StorageProperties {
         private String secretKey;
         private String region;
         private String bucketName;
-
     }
 
     @Data
@@ -43,7 +42,14 @@ public class StorageProperties {
         private String accessKeyId;
         private String accessKeySecret;
         private String bucketName;
+    }
 
+    @Data
+    public static class MinIO {
+        private String accessKey;
+        private String secretKey;
+        private String endpoint;
+        private String bucketName;
     }
 
     @Data

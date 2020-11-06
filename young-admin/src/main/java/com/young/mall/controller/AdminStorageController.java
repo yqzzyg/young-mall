@@ -53,7 +53,7 @@ public class AdminStorageController extends BaseController {
     }
 
     @ApiOperation("存储文件对象")
-    @PostMapping("/creat")
+    @PostMapping("/create")
     public ResBean creat(@RequestParam("file") MultipartFile file) throws IOException {
         String originalFilename = file.getOriginalFilename();
         String url = storageService.store(file.getInputStream(), file.getSize(),
