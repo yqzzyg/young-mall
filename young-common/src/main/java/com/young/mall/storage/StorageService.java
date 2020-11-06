@@ -3,6 +3,7 @@ package com.young.mall.storage;
 import com.young.db.entity.YoungStorage;
 import com.young.mall.service.YoungStorageService;
 import com.young.mall.utils.CharUtil;
+import com.young.mall.utils.DateTimeUtils;
 import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +43,7 @@ public class StorageService {
                         String contentType, String fileName) {
 
         String key = generateKey(fileName);
-
+        key =  DateTimeUtils.datePath() + "/" + key;
         storage.store(inputStream, contentLength, contentType, key);
 
         String url = generateUrl(key);

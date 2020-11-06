@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * @CreateDate: 2020/11/5 15:30
  */
 @Data
-@Primary
+@Primary //使Spring更好的识别该对象，以便于注入
 @Component
 @ConfigurationProperties(prefix = "young.storage")
 public class StorageProperties {
