@@ -11,13 +11,13 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.stream.Stream;
 
 /**
@@ -76,7 +76,8 @@ public class LocalStorage implements Storage {
                 file.createNewFile();
             }
 
-            FileOutputStream os = new FileOutputStream(file);
+            //1、普通存入方式
+            /*FileOutputStream os = new FileOutputStream(file);
             int index;
             byte[] bytes = new byte[1024];
             while ((index = inputStream.read(bytes)) != -1) {
@@ -85,9 +86,16 @@ public class LocalStorage implements Storage {
             }
             os.flush();
             os.close();
-            inputStream.close();
-            //此方法不能按照日期存储
-            //Files.copy(inputStream, rootLocation.resolve(keyName), StandardCopyOption.REPLACE_EXISTING);
+            inputStream.close();*/
+
+            //2、使用NIO，会快一些
+            /*FileInputStream fileInputStream = (FileInputStream) inputStream;
+            FileOutputStream outputStream = new FileOutputStream(file);
+            FileChannel channel = fileInputStream.getChannel();
+            channel.transferTo(0,channel.size(),outputStream.getChannel());*/
+
+            //3、此方法代码量小，也为NIO
+            Files.copy(inputStream, rootLocation.resolve(keyName), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             logger.info("本地存储文件失败：{}", e.getMessage());
             throw new WebApiException("本地存储文件失败" + e.getMessage());
