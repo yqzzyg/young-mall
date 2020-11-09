@@ -1,8 +1,8 @@
-package com.young.db.service.impl;
+package com.young.mall.service.impl;
 
 import com.young.db.entity.YoungOrder;
 import com.young.db.mapper.CommonOrderMapper;
-import com.young.db.service.CommonOrderService;
+import com.young.mall.service.CommonOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

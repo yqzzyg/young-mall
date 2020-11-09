@@ -4,7 +4,7 @@ import cn.hutool.json.JSONUtil;
 import com.young.db.entity.YoungCategory;
 import com.young.mall.common.CommonPage;
 import com.young.mall.common.ResBean;
-import com.young.mall.service.CategoryService;
+import com.young.mall.service.YoungCategoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ import java.util.*;
 public class CategoryController extends BaseController {
 
     @Autowired
-    private CategoryService categoryService;
+    private YoungCategoryService categoryService;
 
     @ApiOperation("商品分类list")
     @GetMapping("/list")

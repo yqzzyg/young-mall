@@ -48,4 +48,13 @@ public class BrandServiceImpl implements BrandService {
 
         return Optional.ofNullable(brandList);
     }
+
+    @Override
+    public Optional<List<YoungBrand>> all() {
+
+        YoungBrandExample example = new YoungBrandExample();
+        example.createCriteria().andDeletedEqualTo(false);
+        List<YoungBrand> brandList = brandMapper.selectByExample(example);
+        return Optional.ofNullable(brandList);
+    }
 }

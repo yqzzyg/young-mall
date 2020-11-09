@@ -8,7 +8,7 @@ import com.young.db.entity.YoungCategory;
 import com.young.db.entity.YoungCategoryExample;
 import com.young.mall.common.ResBean;
 import com.young.mall.exception.Asserts;
-import com.young.mall.service.CategoryService;
+import com.young.mall.service.YoungCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -23,7 +23,7 @@ import java.util.Optional;
  * @CreateDate: 2020/11/1 15:00
  */
 @Service
-public class CategoryServiceImpl implements CategoryService {
+public class YoungCategoryServiceImpl implements YoungCategoryService {
 
     @Autowired
     private YoungCategoryMapper categoryMapper;
@@ -95,6 +95,18 @@ public class CategoryServiceImpl implements CategoryService {
         category.setUpdateTime(LocalDateTime.now());
         int count = categoryMapper.updateByPrimaryKeySelective(category);
         return Optional.ofNullable(count);
+    }
+
+    @Override
+    public Optional<List<YoungCategory>> queryByPid(Integer pid) {
+
+        YoungCategoryExample example = new YoungCategoryExample();
+        example.createCriteria().andPidEqualTo(pid)
+                .andDeletedEqualTo(false);
+
+        List<YoungCategory> youngCategories = categoryMapper.selectByExample(example);
+
+        return Optional.ofNullable(youngCategories);
     }
 
 

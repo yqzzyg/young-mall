@@ -10,16 +10,17 @@ import java.util.Optional;
  * @Author: yqz
  * @CreateDate: 2020/11/1 14:58
  */
-public interface CategoryService {
+public interface YoungCategoryService {
 
 
     /**
      * 商品分类
-     * @param id 类目ID
-     * @param name 类目名称
-     * @param page 分页
-     * @param size 分页大小
-     * @param sort 排序依据
+     *
+     * @param id    类目ID
+     * @param name  类目名称
+     * @param page  分页
+     * @param size  分页大小
+     * @param sort  排序依据
      * @param order 排序方式
      * @return
      */
@@ -32,6 +33,7 @@ public interface CategoryService {
 
     /**
      * 删除分类，逻辑删除、修改状态
+     *
      * @param id 主键id
      * @return
      */
@@ -39,6 +41,7 @@ public interface CategoryService {
 
     /**
      * 创建商品分类
+     *
      * @param category
      * @return
      */
@@ -46,8 +49,17 @@ public interface CategoryService {
 
     /**
      * 更新
+     *
      * @param category
      * @return
      */
     Optional<Integer> update(YoungCategory category);
+
+    /**
+     * 根据pid查询分类
+     *
+     * @param pid 父级ID
+     * @return
+     */
+    Optional<List<YoungCategory>> queryByPid(Integer pid);
 }
