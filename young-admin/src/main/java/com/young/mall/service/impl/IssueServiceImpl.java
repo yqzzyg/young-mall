@@ -9,6 +9,7 @@ import com.young.mall.service.IssueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,5 +43,40 @@ public class IssueServiceImpl implements IssueService {
         List<YoungIssue> issueList = issueMapper.selectByExample(example);
 
         return Optional.ofNullable(issueList);
+    }
+
+    @Override
+    public Optional<Integer> add(YoungIssue issue) {
+
+        issue.setAddTime(LocalDateTime.now());
+        issue.setUpdateTime(LocalDateTime.now());
+
+        int count = issueMapper.insertSelective(issue);
+        return Optional.ofNullable(count);
+    }
+
+    @Override
+    public Optional<YoungIssue> findById(Integer id) {
+
+        YoungIssue youngIssue = issueMapper.selectByPrimaryKey(id);
+
+        return Optional.ofNullable(youngIssue);
+    }
+
+    @Override
+    public Optional<Integer> update(YoungIssue issue) {
+       issue.setUpdateTime(LocalDateTime.now());
+
+        int count = issueMapper.updateByPrimaryKeySelective(issue);
+
+        return Optional.ofNullable(count);
+    }
+
+    @Override
+    public Optional<Integer> delete(Integer id) {
+
+        int count = issueMapper.logicalDeleteByPrimaryKey(id);
+
+        return Optional.ofNullable(count);
     }
 }

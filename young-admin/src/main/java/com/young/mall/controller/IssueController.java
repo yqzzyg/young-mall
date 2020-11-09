@@ -1,5 +1,6 @@
 package com.young.mall.controller;
 
+import cn.hutool.json.JSONUtil;
 import com.young.db.entity.YoungIssue;
 import com.young.mall.common.CommonPage;
 import com.young.mall.common.ResBean;
@@ -7,11 +8,10 @@ import com.young.mall.service.IssueService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,5 +44,57 @@ public class IssueController extends BaseController {
         CommonPage<YoungIssue> restPage = CommonPage.restPage(youngIssues.get());
 
         return ResBean.success(restPage);
+    }
+
+    @ApiOperation("添加通用问题")
+    @PostMapping("/create")
+    public ResBean create(@Valid @RequestBody YoungIssue issue) {
+        logger.info("添加通用问题入参：{}", JSONUtil.toJsonStr(issue));
+
+        Optional<Integer> optional = issueService.add(issue);
+        if (!optional.isPresent()) {
+            return ResBean.failed("添加失败");
+        }
+        return ResBean.success(issue);
+    }
+
+    @ApiOperation("读取问题详情")
+    @GetMapping("/read")
+    public ResBean read(@NotNull @RequestParam("id") Integer id) {
+        Optional<YoungIssue> optional = issueService.findById(id);
+        if (!optional.isPresent()) {
+            return ResBean.failed("读取问题失败");
+        }
+
+        return ResBean.success(optional.get());
+    }
+
+
+    @ApiOperation("更新通用问题")
+    @PostMapping("/update")
+    public ResBean update(@Valid @RequestBody YoungIssue issue) {
+        logger.info("更新通用问题入参：{}", JSONUtil.toJsonStr(issue));
+
+        Optional<Integer> optional = issueService.update(issue);
+        if (!optional.isPresent()) {
+            return ResBean.failed("更新通用问题失败");
+        }
+        return ResBean.success(issue);
+    }
+
+    @ApiOperation("根据id删除")
+    @PostMapping("/delete")
+    public ResBean delete(@RequestBody YoungIssue issue) {
+
+        logger.info("根据id删除问题入参：{}", JSONUtil.toJsonStr(issue));
+        Integer id = issue.getId();
+        if (id == null) {
+            return ResBean.validateFailed("参数校验错误");
+        }
+        Optional<Integer> optional = issueService.delete(id);
+        if (!optional.isPresent()) {
+            return ResBean.failed("删除通用问题失败");
+        }
+        return ResBean.success(issue);
     }
 }

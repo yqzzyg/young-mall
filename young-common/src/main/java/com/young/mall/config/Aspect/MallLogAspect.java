@@ -72,12 +72,14 @@ public class MallLogAspect {
             mallLog.setDescription(log.value());
         }
 
+        Object parameter = getParameter(method, joinPoint.getArgs());
+
         long endTime = System.currentTimeMillis();
         String urlStr = request.getRequestURL().toString();
         mallLog.setBasePath(StrUtil.removeSuffix(urlStr, URLUtil.getPath(urlStr)));
         mallLog.setIp(request.getRemoteUser());
         mallLog.setMethod(request.getMethod());
-        mallLog.setParameter(getParameter(method, joinPoint.getArgs()));
+        mallLog.setParameter(parameter);
         mallLog.setResult(result);
         mallLog.setSpendTime(((int) (endTime - startTime)));
         mallLog.setStartTime(startTime);

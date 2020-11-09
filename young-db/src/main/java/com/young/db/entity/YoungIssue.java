@@ -7,6 +7,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -33,9 +34,11 @@ public class YoungIssue implements Serializable {
 
     private Integer id;
 
+    @NotEmpty(message = "问题标题不能为空")
     @ApiModelProperty(value = "问题标题")
     private String question;
 
+    @NotEmpty(message = "问题答案不能为空")
     @ApiModelProperty(value = "问题答案")
     private String answer;
 

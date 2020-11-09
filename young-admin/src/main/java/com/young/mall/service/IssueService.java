@@ -25,4 +25,27 @@ public interface IssueService {
     Optional<List<YoungIssue>> querySelective(String question, Integer page,
                                               Integer size, String sort,
                                               String order);
+
+    /**
+     * 添加问题
+     * @param issue
+     * @return
+     */
+    Optional<Integer> add(YoungIssue issue);
+
+    /**
+     * 读取问题详情
+     * @param id
+     * @return
+     */
+    Optional<YoungIssue> findById(Integer id);
+
+    /**
+     * 更新通用问题
+     * @param issue
+     * @return
+     */
+    Optional<Integer> update(YoungIssue issue);
+
+    Optional<Integer> delete(Integer id);
 }
