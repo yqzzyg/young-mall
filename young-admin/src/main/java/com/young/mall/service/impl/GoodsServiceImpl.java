@@ -7,7 +7,7 @@ import com.young.db.dao.YoungGoodsMapper;
 import com.young.db.entity.*;
 import com.young.db.pojo.BrandPojo;
 import com.young.db.pojo.CatAndBrand;
-import com.young.mall.common.ResBean;
+import com.young.mall.dto.GoodsArguments;
 import com.young.mall.exception.Asserts;
 import com.young.mall.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -174,8 +174,14 @@ public class GoodsServiceImpl implements GoodsService {
         Integer delSpecCount = youngGoodsSpecificationService.deleteByGid(id).get();
         Integer delAttrCount = goodsAttributeService.delete(id).get();
         Integer delGoodsProductCount = youngGoodsProductService.deleteByGid(id).get();
-
-
         return Optional.ofNullable(delGoodsCount + delSpecCount + delAttrCount + delGoodsProductCount);
+    }
+
+    @Override
+    public Optional<Integer> create(GoodsArguments goodsArguments) {
+
+
+
+        return Optional.empty();
     }
 }

@@ -1,15 +1,23 @@
 package com.young.mall.controller;
 
+import cn.hutool.json.JSONUtil;
 import com.young.db.entity.YoungGoods;
+import com.young.db.entity.YoungGoodsProduct;
 import com.young.mall.common.CommonPage;
 import com.young.mall.common.ResBean;
+import com.young.mall.dto.GoodsArguments;
+import com.young.mall.exception.Asserts;
 import com.young.mall.service.GoodsService;
+import com.young.mall.service.YoungBrandService;
+import com.young.mall.service.YoungCategoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -26,6 +34,12 @@ public class GoodsController extends BaseController {
 
     @Autowired
     private GoodsService goodsService;
+
+    @Autowired
+    private YoungBrandService youngBrandService;
+
+    @Autowired
+    private YoungCategoryService youngCategoryService;
 
     @ApiOperation("分页查询商品")
     @GetMapping("/list")
@@ -72,7 +86,7 @@ public class GoodsController extends BaseController {
 
     @ApiOperation("删除商品")
     @PostMapping("/delete")
-    public ResBean delete(@RequestBody YoungGoods youngGoods) {
+    public ResBean delete(@Valid @RequestBody YoungGoods youngGoods) {
         Optional<Integer> optional = goodsService.delete(youngGoods);
         if (!optional.isPresent()) {
             return ResBean.failed("删除失败");
@@ -80,4 +94,51 @@ public class GoodsController extends BaseController {
         return ResBean.success(optional.get());
     }
 
+    @ApiOperation("创建商品")
+    @PostMapping("/create")
+    public ResBean create(@Valid @RequestBody GoodsArguments goodsArguments) {
+
+        //校验
+        validate(goodsArguments);
+        logger.info("创建商品入参：{}", JSONUtil.toJsonStr(goodsArguments));
+        return ResBean.success(goodsArguments);
+    }
+
+
+    private void validate(GoodsArguments goodsArguments) {
+        YoungGoods goods = goodsArguments.getGoods();
+
+        // 分类可以不设置，如果设置则需要验证分类存在
+        Integer categoryId = goods.getCategoryId();
+        if (categoryId != null && categoryId != 0) {
+            if (!youngCategoryService.findById(categoryId).isPresent()) {
+                Asserts.fail("商品分类不存在");
+            }
+        }
+
+        // 品牌商可以不设置，如果设置则需要验证品牌商存在
+        Integer brandId = goods.getBrandId();
+        if (brandId != null && brandId != 0) {
+            if (!youngBrandService.findById(brandId).isPresent()) {
+                Asserts.fail("品牌商不存在");
+            }
+        }
+        List<YoungGoodsProduct> products = goodsArguments.getProducts();
+        for (YoungGoodsProduct product : products) {
+            Integer number = product.getNumber();
+            if (number == null || number < 0) {
+                Asserts.fail("商品库存数量不能为空");
+            }
+
+            BigDecimal price = product.getPrice();
+            if (price == null) {
+                Asserts.fail("商品价格不能为空");
+            }
+
+            String[] productSpecifications = product.getSpecifications();
+            if (productSpecifications.length == 0) {
+                Asserts.fail("商品规格值不能为空");
+            }
+        }
+    }
 }

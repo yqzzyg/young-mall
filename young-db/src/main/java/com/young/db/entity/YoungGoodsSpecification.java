@@ -7,6 +7,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -36,9 +37,11 @@ public class YoungGoodsSpecification implements Serializable {
     @ApiModelProperty(value = "商品表的商品ID")
     private Integer goodsId;
 
+    @NotEmpty(message = "商品规格名称不能为空")
     @ApiModelProperty(value = "商品规格名称")
     private String specification;
 
+    @NotEmpty(message = "商品规格值不能为空")
     @ApiModelProperty(value = "商品规格值")
     private String value;
 

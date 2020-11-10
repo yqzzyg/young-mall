@@ -1,6 +1,7 @@
 package com.young.mall.service;
 
 import com.young.db.entity.YoungGoods;
+import com.young.mall.dto.GoodsArguments;
 
 import java.util.List;
 import java.util.Map;
@@ -59,4 +60,11 @@ public interface GoodsService {
      * @return
      */
     Optional<Integer> delete(YoungGoods youngGoods);
+
+    /**
+     * 创建商品
+     * @param goodsArguments
+     * @return
+     */
+    Optional<Integer> create(GoodsArguments goodsArguments);
 }
