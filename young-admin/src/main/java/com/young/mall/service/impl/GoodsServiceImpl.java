@@ -7,10 +7,11 @@ import com.young.db.entity.YoungBrand;
 import com.young.db.entity.YoungCategory;
 import com.young.db.entity.YoungGoods;
 import com.young.db.entity.YoungGoodsExample;
+import com.young.db.pojo.CatAndBrand;
 import com.young.mall.dto.CatAndBrandVo;
 import com.young.mall.service.BrandService;
-import com.young.mall.service.YoungCategoryService;
 import com.young.mall.service.GoodsService;
+import com.young.mall.service.YoungCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -70,6 +71,7 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public Optional<Map> catAndBrand() {
 
+        List<CatAndBrand> catAndBrands = categoryService.selectCatAndBrand().get();
         // 管理员设置“所属分类”
         List<YoungCategory> youngCategories = categoryService.queryLevelFirst().get();
         ArrayList<CatAndBrandVo> categoryList = new ArrayList<>(youngCategories.size());

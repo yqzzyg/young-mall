@@ -6,6 +6,8 @@ import com.github.pagehelper.PageHelper;
 import com.young.db.dao.YoungCategoryMapper;
 import com.young.db.entity.YoungCategory;
 import com.young.db.entity.YoungCategoryExample;
+import com.young.db.mapper.CategoryMapper;
+import com.young.db.pojo.CatAndBrand;
 import com.young.mall.common.ResBean;
 import com.young.mall.exception.Asserts;
 import com.young.mall.service.YoungCategoryService;
@@ -26,7 +28,10 @@ import java.util.Optional;
 public class YoungCategoryServiceImpl implements YoungCategoryService {
 
     @Autowired
-    private YoungCategoryMapper categoryMapper;
+    private YoungCategoryMapper youngCategoryMapper;
+
+    @Autowired
+    private CategoryMapper categoryMapper;
 
     @Override
     public Optional<List<YoungCategory>> queryCateGoryList(String id, String name,
@@ -48,7 +53,7 @@ public class YoungCategoryServiceImpl implements YoungCategoryService {
         }
 
         PageHelper.startPage(page, size);
-        List<YoungCategory> categoryList = categoryMapper.selectByExample(example);
+        List<YoungCategory> categoryList = youngCategoryMapper.selectByExample(example);
         return Optional.ofNullable(categoryList);
     }
 
@@ -58,7 +63,7 @@ public class YoungCategoryServiceImpl implements YoungCategoryService {
 
         example.createCriteria().andLevelEqualTo("L1")
                 .andDeletedEqualTo(false);
-        List<YoungCategory> categoryList = categoryMapper.selectByExample(example);
+        List<YoungCategory> categoryList = youngCategoryMapper.selectByExample(example);
         return Optional.ofNullable(categoryList);
     }
 
@@ -68,7 +73,7 @@ public class YoungCategoryServiceImpl implements YoungCategoryService {
         YoungCategory category = new YoungCategory();
         category.setId(id);
         category.setDeleted(true);
-        int count = categoryMapper.updateByPrimaryKeySelective(category);
+        int count = youngCategoryMapper.updateByPrimaryKeySelective(category);
         return Optional.ofNullable(count);
     }
 
@@ -82,7 +87,7 @@ public class YoungCategoryServiceImpl implements YoungCategoryService {
         }
         category.setAddTime(LocalDateTime.now());
         category.setUpdateTime(LocalDateTime.now());
-        int count = categoryMapper.insertSelective(category);
+        int count = youngCategoryMapper.insertSelective(category);
         return Optional.ofNullable(count);
     }
 
@@ -93,7 +98,7 @@ public class YoungCategoryServiceImpl implements YoungCategoryService {
             Asserts.fail(validate.getMsg());
         }
         category.setUpdateTime(LocalDateTime.now());
-        int count = categoryMapper.updateByPrimaryKeySelective(category);
+        int count = youngCategoryMapper.updateByPrimaryKeySelective(category);
         return Optional.ofNullable(count);
     }
 
@@ -104,11 +109,18 @@ public class YoungCategoryServiceImpl implements YoungCategoryService {
         example.createCriteria().andPidEqualTo(pid)
                 .andDeletedEqualTo(false);
 
-        List<YoungCategory> youngCategories = categoryMapper.selectByExample(example);
+        List<YoungCategory> youngCategories = youngCategoryMapper.selectByExample(example);
 
         return Optional.ofNullable(youngCategories);
     }
 
+    @Override
+    public Optional<List<CatAndBrand>> selectCatAndBrand() {
+
+        List<CatAndBrand> andBrandList = categoryMapper.selectCatAndBrand();
+
+        return Optional.ofNullable(andBrandList);
+    }
 
     private ResBean validate(YoungCategory category) {
         String name = category.getName();
@@ -129,7 +141,6 @@ public class YoungCategoryServiceImpl implements YoungCategoryService {
         if (level.equals("L2") && (pid == null)) {
             return ResBean.validateFailed("选择二级类目时，父类目不能为空");
         }
-
         return null;
     }
 

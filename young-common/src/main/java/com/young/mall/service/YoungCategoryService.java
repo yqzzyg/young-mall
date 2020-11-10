@@ -1,6 +1,7 @@
 package com.young.mall.service;
 
 import com.young.db.entity.YoungCategory;
+import com.young.db.pojo.CatAndBrand;
 
 import java.util.List;
 import java.util.Optional;
@@ -62,4 +63,11 @@ public interface YoungCategoryService {
      * @return
      */
     Optional<List<YoungCategory>> queryByPid(Integer pid);
+
+    /**
+     * 查询分类父级关系
+     *
+     * @return
+     */
+    Optional<List<CatAndBrand>> selectCatAndBrand();
 }
