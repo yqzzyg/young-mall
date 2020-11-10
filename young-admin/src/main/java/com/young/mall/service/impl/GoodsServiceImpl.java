@@ -74,12 +74,12 @@ public class GoodsServiceImpl implements GoodsService {
         List<CatAndBrand> catAndBrands = categoryService.selectCatAndBrand().get();
         // 管理员设置“所属分类”
         List<YoungCategory> youngCategories = categoryService.queryLevelFirst().get();
-        ArrayList<CatAndBrandVo> categoryList = new ArrayList<>(youngCategories.size());
+        List<CatAndBrandVo> categoryList = new ArrayList<>(youngCategories.size());
         for (YoungCategory category : youngCategories) {
             CatAndBrandVo vo = new CatAndBrandVo();
             vo.setValue(category.getId());
             vo.setLabel(category.getName());
-            List<YoungCategory> youngCategoryList = categoryService.queryByPid(category.getPid()).get();
+            List<YoungCategory> youngCategoryList = categoryService.queryByPid(category.getId()).get();
             List<CatAndBrandVo> children = new ArrayList<>();
             for (YoungCategory youngCategory : youngCategoryList) {
                 CatAndBrandVo brandVo = new CatAndBrandVo();

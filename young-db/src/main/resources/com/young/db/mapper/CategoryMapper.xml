@@ -5,16 +5,20 @@
     <resultMap id="CatAndBrand" type="com.young.db.pojo.CatAndBrand">
         <result property="value" column="id"></result>
         <result property="label" column="name"></result>
-        <collection property="catAndBrandList" ofType="com.young.db.pojo.CatAndBrand" javaType="ArrayList">
-            <result property="value" column="id"></result>
-            <result property="label" column="name"></result>
+        <collection property="children" ofType="com.young.db.pojo.ChildBrand"
+                    javaType="ArrayList">
+            <result property="value" column="value"></result>
+            <result property="label" column="label"></result>
         </collection>
     </resultMap>
 
     <select id="selectCatAndBrand" resultMap="CatAndBrand">
         SELECT a.id,a.`name`,
-               b.id `value`,b.`name` `name` FROM young_category a
+        b.id `value`,b.`name` `label` FROM young_category a
         LEFT JOIN young_category b ON a.id = b.pid
+        <where>
+            a.LEVEL='L1' AND b.deleted = 0
+        </where>
     </select>
 
 </mapper>
