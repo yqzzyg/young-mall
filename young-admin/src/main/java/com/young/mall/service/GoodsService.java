@@ -33,5 +33,30 @@ public interface GoodsService {
                                               Integer page, Integer size,
                                               String sort, String order);
 
+    /**
+     * 商品分类和品牌商
+     * @return
+     */
     Optional<Map> catAndBrand();
+
+    /**
+     * 查询商品详情
+     * @param id
+     * @return
+     */
+    Optional<Map> detail(Integer id);
+
+    /**
+     * 更新商品
+     * @param youngGoods
+     * @return
+     */
+    Optional<Integer> update(YoungGoods youngGoods);
+
+    /**
+     * 删除商品
+     * @param youngGoods
+     * @return
+     */
+    Optional<Integer> delete(YoungGoods youngGoods);
 }

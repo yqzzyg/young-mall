@@ -70,4 +70,11 @@ public interface YoungCategoryService {
      * @return
      */
     Optional<List<CatAndBrand>> selectCatAndBrand();
+
+    /**
+     * 根据id查询类目
+     * @param id
+     * @return
+     */
+    Optional<YoungCategory> findById(Integer id);
 }

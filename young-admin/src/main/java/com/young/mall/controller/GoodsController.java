@@ -7,11 +7,9 @@ import com.young.mall.service.GoodsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -54,4 +52,32 @@ public class GoodsController extends BaseController {
 
         return ResBean.success(map.get());
     }
+
+    @ApiOperation("商品详情")
+    @GetMapping("/detail")
+    public ResBean detail(@NotNull @RequestParam("id") Integer id) {
+        Optional<Map> detail = goodsService.detail(id);
+        if (!detail.isPresent()) {
+            return ResBean.failed("查询商品详情失败");
+        }
+        return ResBean.success(detail.get());
+    }
+
+    @ApiOperation("更新商品")
+    @PostMapping("/update")
+    public ResBean update(@RequestBody YoungGoods goods) {
+
+        return null;
+    }
+
+    @ApiOperation("删除商品")
+    @PostMapping("/delete")
+    public ResBean delete(@RequestBody YoungGoods youngGoods) {
+        Optional<Integer> optional = goodsService.delete(youngGoods);
+        if (!optional.isPresent()) {
+            return ResBean.failed("删除失败");
+        }
+        return ResBean.success(optional.get());
+    }
+
 }

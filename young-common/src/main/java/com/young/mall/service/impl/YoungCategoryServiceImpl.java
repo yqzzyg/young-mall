@@ -6,6 +6,7 @@ import com.github.pagehelper.PageHelper;
 import com.young.db.dao.YoungCategoryMapper;
 import com.young.db.entity.YoungCategory;
 import com.young.db.entity.YoungCategoryExample;
+import com.young.db.entity.YoungGoodsAttributeExample;
 import com.young.db.mapper.CategoryMapper;
 import com.young.db.pojo.CatAndBrand;
 import com.young.mall.common.ResBean;
@@ -120,6 +121,12 @@ public class YoungCategoryServiceImpl implements YoungCategoryService {
         List<CatAndBrand> andBrandList = categoryMapper.selectCatAndBrand();
 
         return Optional.ofNullable(andBrandList);
+    }
+
+    @Override
+    public Optional<YoungCategory> findById(Integer id) {
+        YoungCategory youngCategory = youngCategoryMapper.selectByPrimaryKey(id);
+        return Optional.ofNullable(youngCategory);
     }
 
     private ResBean validate(YoungCategory category) {
