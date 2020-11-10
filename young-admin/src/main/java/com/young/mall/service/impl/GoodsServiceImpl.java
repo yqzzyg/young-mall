@@ -7,6 +7,7 @@ import com.young.db.entity.YoungBrand;
 import com.young.db.entity.YoungCategory;
 import com.young.db.entity.YoungGoods;
 import com.young.db.entity.YoungGoodsExample;
+import com.young.db.pojo.BrandPojo;
 import com.young.db.pojo.CatAndBrand;
 import com.young.mall.dto.CatAndBrandVo;
 import com.young.mall.service.BrandService;
@@ -71,7 +72,7 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public Optional<Map> catAndBrand() {
 
-        List<CatAndBrand> catAndBrands = categoryService.selectCatAndBrand().get();
+        List<CatAndBrand> categoryList = categoryService.selectCatAndBrand().get();
         /*// 管理员设置“所属分类”
         List<YoungCategory> youngCategories = categoryService.queryLevelFirst().get();
         List<CatAndBrandVo> categoryList = new ArrayList<>(youngCategories.size());
@@ -89,7 +90,7 @@ public class GoodsServiceImpl implements GoodsService {
             }
             vo.setChildren(children);
             categoryList.add(vo);
-        }*/
+        }
 
         // 管理员设置“所属品牌商”
         List<YoungBrand> list = brandService.all().get();
@@ -100,9 +101,11 @@ public class GoodsServiceImpl implements GoodsService {
             map.put("value", youngBrand.getId());
             map.put("label", youngBrand.getName());
             brandList.add(map);
-        }
+        }*/
+        List<BrandPojo> brandList = brandService.listBrand().get();
+
         Map<String, Object> data = new HashMap<>();
-        data.put("categoryList", catAndBrands);
+        data.put("categoryList", categoryList);
         data.put("brandList", brandList);
         return Optional.ofNullable(data);
     }

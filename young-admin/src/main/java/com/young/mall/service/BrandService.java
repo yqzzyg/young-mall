@@ -1,6 +1,7 @@
 package com.young.mall.service;
 
 import com.young.db.entity.YoungBrand;
+import com.young.db.pojo.BrandPojo;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,4 +35,9 @@ public interface BrandService {
      * @return
      */
     Optional<List<YoungBrand>> all();
+
+    /**
+     * @return 查询品牌
+     */
+    Optional<List<BrandPojo>> listBrand();
 }
