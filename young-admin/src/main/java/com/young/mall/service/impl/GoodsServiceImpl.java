@@ -72,7 +72,7 @@ public class GoodsServiceImpl implements GoodsService {
     public Optional<Map> catAndBrand() {
 
         List<CatAndBrand> catAndBrands = categoryService.selectCatAndBrand().get();
-        // 管理员设置“所属分类”
+        /*// 管理员设置“所属分类”
         List<YoungCategory> youngCategories = categoryService.queryLevelFirst().get();
         List<CatAndBrandVo> categoryList = new ArrayList<>(youngCategories.size());
         for (YoungCategory category : youngCategories) {
@@ -89,7 +89,7 @@ public class GoodsServiceImpl implements GoodsService {
             }
             vo.setChildren(children);
             categoryList.add(vo);
-        }
+        }*/
 
         // 管理员设置“所属品牌商”
         List<YoungBrand> list = brandService.all().get();
@@ -102,7 +102,7 @@ public class GoodsServiceImpl implements GoodsService {
             brandList.add(map);
         }
         Map<String, Object> data = new HashMap<>();
-        data.put("categoryList", categoryList);
+        data.put("categoryList", catAndBrands);
         data.put("brandList", brandList);
         return Optional.ofNullable(data);
     }
