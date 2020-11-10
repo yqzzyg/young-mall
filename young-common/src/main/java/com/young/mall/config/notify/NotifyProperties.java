@@ -118,7 +118,7 @@ public class NotifyProperties {
     public static class AliyunSms {
         private boolean enable;
         private String accessKeyId;
-        private String secret;
+        private String accessSecret;
         private String domain;
         private String version;
         private String action;
@@ -143,12 +143,12 @@ public class NotifyProperties {
             this.accessKeyId = accessKeyId;
         }
 
-        public String getSecret() {
-            return secret;
+        public String getAccessSecret() {
+            return accessSecret;
         }
 
-        public void setSecret(String secret) {
-            this.secret = secret;
+        public void setAccessSecret(String accessSecret) {
+            this.accessSecret = accessSecret;
         }
 
         public String getDomain() {

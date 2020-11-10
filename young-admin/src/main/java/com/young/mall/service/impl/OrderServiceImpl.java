@@ -4,12 +4,14 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.github.binarywang.wxpay.bean.request.WxPayRefundRequest;
 import com.github.pagehelper.PageHelper;
 import com.young.db.dao.YoungOrderGoodsMapper;
 import com.young.db.dao.YoungOrderMapper;
 import com.young.db.dao.YoungUserMapper;
 import com.young.db.entity.*;
+import com.young.mall.notify.NotifyType;
 import com.young.mall.service.CommonOrderService;
 import com.young.mall.common.ResBean;
 import com.young.mall.dto.MailDto;
@@ -205,7 +207,7 @@ public class OrderServiceImpl implements OrderService {
         // 注意订单号只发后6位
 
         //由于个人用户只能申请aliyun的验证码短信功能，腾讯无法个人申请，所以这里使用aliyun的短信
-/*        String substring = youngOrder.getOrderSn().substring(8, 14);
+        /*String substring = youngOrder.getOrderSn().substring(8, 14);
         Map<String, Object> map = new HashMap<>(2);
 
         JSONObject jsonObject = new JSONObject();

@@ -93,7 +93,7 @@ public class NotifyAutoConfiguration {
 
         SmsSenderAliyunImpl senderAliyun = new SmsSenderAliyunImpl();
 
-        DefaultProfile profile = DefaultProfile.getProfile(aliyunSms.getRegionId(), aliyunSms.getAccessKeyId(), aliyunSms.getSecret());
+        DefaultProfile profile = DefaultProfile.getProfile(aliyunSms.getRegionId(), aliyunSms.getAccessKeyId(), aliyunSms.getAccessSecret());
 
         senderAliyun.setIAcsClient(new DefaultAcsClient(profile));
         return senderAliyun;
