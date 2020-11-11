@@ -24,6 +24,5 @@ public class SwaggerConfig extends BaseSwaggerConfig {
         swaggerApiInfo.setVersion("1.0");
         swaggerApiInfo.setGroup("young后台接口");
         swaggerApiInfo.setEnableSecurity(true);
-        super.swaggerApiInfo(swaggerApiInfo);
     }
 }

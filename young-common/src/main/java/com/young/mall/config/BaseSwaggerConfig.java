@@ -23,6 +23,7 @@ public abstract class BaseSwaggerConfig {
     public Docket createAdminRestApi() {
         //不同Module实现不同的配置以及分组
         SwaggerApiInfo swaggerApiInfo = SwaggerApiInfo.builder().build();
+        //读取继承该抽象类所在module配置
         swaggerApiInfo(swaggerApiInfo);
         Docket docket = new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo(swaggerApiInfo))
@@ -80,8 +81,7 @@ public abstract class BaseSwaggerConfig {
 
     /**
      * 自定义Swagger配置
+     * @param swaggerApiInfo
      */
-    public void swaggerApiInfo(SwaggerApiInfo swaggerApiInfo) {
-
-    };
+    public abstract void swaggerApiInfo(SwaggerApiInfo swaggerApiInfo);
 }
