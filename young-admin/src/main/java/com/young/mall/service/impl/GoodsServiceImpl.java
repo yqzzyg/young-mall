@@ -10,10 +10,17 @@ import com.young.db.pojo.CatAndBrand;
 import com.young.mall.dto.GoodsArguments;
 import com.young.mall.exception.Asserts;
 import com.young.mall.service.*;
+import com.young.mall.utils.AdminResponseCode;
+import com.young.mall.utils.QrCodeUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.Valid;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -23,6 +30,7 @@ import java.util.*;
  */
 @Service
 public class GoodsServiceImpl implements GoodsService {
+    protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private YoungGoodsMapper goodsMapper;
@@ -44,6 +52,12 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Autowired
     private YoungGoodsProductService youngGoodsProductService;
+
+    @Autowired
+    private YoungBrandService youngBrandService;
+
+    @Autowired
+    private QrCodeUtil qrCodeUtil;
 
     @Override
     public Optional<Integer> count() {
@@ -179,9 +193,70 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public Optional<Integer> create(GoodsArguments goodsArguments) {
+//        validate(goodsArguments);
 
+        YoungGoods goods = goodsArguments.getGoods();
+        //参数
+        List<YoungGoodsAttribute> attributes = goodsArguments.getAttributes();
+        //规格
+        List<YoungGoodsSpecification> specifications = goodsArguments.getSpecifications();
+        //商品价格，用户选择的尺码、颜色
+        List<YoungGoodsProduct> products = goodsArguments.getProducts();
 
+        String name = goods.getName();
+        if (youngGoodsService.checkExistByName(name)) {
+            logger.info("商品名称重复：{}", AdminResponseCode.GOODS_NAME_EXIST.desc());
+            Asserts.fail(AdminResponseCode.GOODS_NAME_EXIST);
+        }
+        //商品基本信息表young_goods
+        goods.setAddTime(LocalDateTime.now());
+        goods.setUpdateTime(LocalDateTime.now());
+        goodsMapper.insertSelective(goods);
+        //将生成的分享图片地址写入数据库
+        String url = qrCodeUtil.createGoodShareImage(goods.getId().toString(), goods.getPicUrl(), goods.getName(),
+                goods.getCounterPrice(), goods.getRetailPrice());
+        if (StrUtil.isNotEmpty(url)) {
+            goods.setShareUrl(url);
+        }
 
         return Optional.empty();
+    }
+
+
+    private void validate(GoodsArguments goodsArguments) {
+        YoungGoods goods = goodsArguments.getGoods();
+
+        // 分类可以不设置，如果设置则需要验证分类存在
+        Integer categoryId = goods.getCategoryId();
+        if (categoryId != null && categoryId != 0) {
+            if (!youngCategoryService.findById(categoryId).isPresent()) {
+                Asserts.fail("商品分类不存在");
+            }
+        }
+
+        // 品牌商可以不设置，如果设置则需要验证品牌商存在
+        Integer brandId = goods.getBrandId();
+        if (brandId != null && brandId != 0) {
+            if (!youngBrandService.findById(brandId).isPresent()) {
+                Asserts.fail("品牌商不存在");
+            }
+        }
+        List<YoungGoodsProduct> products = goodsArguments.getProducts();
+        for (YoungGoodsProduct product : products) {
+            Integer number = product.getNumber();
+            if (number == null || number < 0) {
+                Asserts.fail("商品库存数量不能为空");
+            }
+
+            BigDecimal price = product.getPrice();
+            if (price == null) {
+                Asserts.fail("商品价格不能为空");
+            }
+
+            String[] productSpecifications = product.getSpecifications();
+            if (productSpecifications.length == 0) {
+                Asserts.fail("商品规格值不能为空");
+            }
+        }
     }
 }

@@ -17,4 +17,11 @@ public interface YoungGoodsService {
      * @return
      */
     Optional<YoungGoods> findById(Integer id);
+
+    /**
+     * 根据商品名称校验是否已经存在
+     * @param name 商品名
+     * @return
+     */
+    Boolean checkExistByName(String name);
 }

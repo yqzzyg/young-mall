@@ -1,11 +1,13 @@
 package com.young.mall.utils;
 
+import com.young.mall.common.ResErrorCode;
+
 /**
  * @Description: 返回码定义
  * @Author: yqz
  * @CreateDate: 2020/11/2 15:53
  */
-public enum AdminResponseCode {
+public enum AdminResponseCode implements ResErrorCode {
     ADMIN_INVALID_NAME(600, "管理员名称不符合规定"),
     ADMIN_INVALID_PASSWORD(601, "管理员密码长度不能小于6"),
     ADMIN_NAME_EXIST(602, "管理员已经存在"),
@@ -53,6 +55,16 @@ public enum AdminResponseCode {
     }
 
     public String desc() {
+        return desc;
+    }
+
+    @Override
+    public long getCode() {
+        return code;
+    }
+
+    @Override
+    public String getMsg() {
         return desc;
     }
 }

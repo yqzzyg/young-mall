@@ -29,4 +29,12 @@ public class YoungGoodsServiceImpl implements YoungGoodsService {
 
         return Optional.ofNullable(youngGoods);
     }
+
+    @Override
+    public Boolean checkExistByName(String name) {
+        YoungGoodsExample example = new YoungGoodsExample();
+        example.createCriteria().andNameEqualTo(name).andDeletedEqualTo(false);
+        int count = (int) goodsMapper.countByExample(example);
+        return count != 0;
+    }
 }
