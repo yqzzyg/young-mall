@@ -1,9 +1,9 @@
 package com.young.mall.system;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @Description: 配置基类，该类实际持有所有的配置，子类只是提供代理访问方法
@@ -14,7 +14,7 @@ public abstract class BaseConfig {
 
     //所有的配置均保存在该 HashMap 中
 
-    protected static Map<String, String> configs = new HashMap<>();
+    protected static Map<String, String> configs = new ConcurrentHashMap<>();
 
     /**
      * 添加配置到公共Map中
