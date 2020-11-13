@@ -7,6 +7,7 @@ import com.young.mall.service.YoungGoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
@@ -36,5 +37,12 @@ public class YoungGoodsServiceImpl implements YoungGoodsService {
         example.createCriteria().andNameEqualTo(name).andDeletedEqualTo(false);
         int count = (int) goodsMapper.countByExample(example);
         return count != 0;
+    }
+
+    @Override
+    public Integer updateById(YoungGoods youngGoods) {
+        youngGoods.setUpdateTime(LocalDateTime.now());
+        int count = goodsMapper.updateByPrimaryKeySelective(youngGoods);
+        return count;
     }
 }

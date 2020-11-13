@@ -24,4 +24,11 @@ public interface YoungGoodsService {
      * @return
      */
     Boolean checkExistByName(String name);
+
+    /**
+     * 根据id更新商品
+     * @param youngGoods
+     * @return
+     */
+    Integer updateById(YoungGoods youngGoods);
 }

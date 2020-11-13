@@ -7,5 +7,19 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-
+    <!--批量新增回写主键支持-->
+    <insert id="insertList">
+        INSERT INTO young_goods_product (goods_id, specifications,
+        price, `number`, url,
+        add_time, update_time) VALUES
+        <foreach collection="list" separator="," item="item" index="index">
+            (#{item.goodsId,jdbcType=INTEGER},
+            #{item.specifications,jdbcType=VARCHAR,typeHandler=com.young.db.utils.JsonStringArrayTypeHandler},
+            #{item.price,jdbcType=DECIMAL},
+            #{item.number,jdbcType=INTEGER},
+            #{item.url,jdbcType=VARCHAR},
+            #{item.addTime,jdbcType=TIMESTAMP},
+            #{item.updateTime,jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
 </mapper>

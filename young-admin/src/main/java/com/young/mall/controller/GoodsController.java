@@ -89,8 +89,6 @@ public class GoodsController extends BaseController {
     public ResBean create(@RequestBody GoodsArguments goodsArguments) {
         goodsService.create(goodsArguments);
         logger.info("创建商品入参：{}", JSONUtil.toJsonStr(goodsArguments));
-        return ResBean.success(goodsArguments);
+        return ResBean.success("创建商品成功");
     }
-
-
 }

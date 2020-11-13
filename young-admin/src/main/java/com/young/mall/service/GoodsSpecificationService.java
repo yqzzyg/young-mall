@@ -10,7 +10,7 @@ import java.util.Optional;
  * @Author: yqz
  * @CreateDate: 2020/11/10 15:44
  */
-public interface YoungGoodsSpecificationService {
+public interface GoodsSpecificationService {
 
     /**
      * 查询商品货品
@@ -26,4 +26,11 @@ public interface YoungGoodsSpecificationService {
      * @return
      */
     Optional<Integer> deleteByGid(Integer gid);
+
+    /**
+     * 批量插入商品规格
+     * @param list
+     * @return
+     */
+    Optional<Integer> insertList(List<YoungGoodsSpecification> list);
 }

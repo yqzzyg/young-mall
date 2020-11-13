@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -44,7 +43,7 @@ public class GoodsServiceImpl implements GoodsService {
     @Autowired
     private YoungGoodsService youngGoodsService;
     @Autowired
-    private YoungGoodsSpecificationService youngGoodsSpecificationService;
+    private GoodsSpecificationService goodsSpecificationService;
     @Autowired
     private GoodsAttributeService goodsAttributeService;
     @Autowired
@@ -58,6 +57,9 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Autowired
     private QrCodeUtil qrCodeUtil;
+
+    @Autowired
+    private GoodsProductService goodsProductService;
 
     @Override
     public Optional<Integer> count() {
@@ -140,7 +142,7 @@ public class GoodsServiceImpl implements GoodsService {
         YoungGoods goods = youngGoodsService.findById(id).get();
 
         List<YoungGoodsProduct> youngGoodsProducts = youngGoodsProductService.queryByGoodsId(id).get();
-        List<YoungGoodsSpecification> specificationList = youngGoodsSpecificationService.queryByGid(id).get();
+        List<YoungGoodsSpecification> specificationList = goodsSpecificationService.queryByGid(id).get();
         List<YoungGoodsAttribute> attributeList = goodsAttributeService.queryByGoodsId(id).get();
 
         Integer categoryId = goods.getCategoryId();
@@ -185,15 +187,16 @@ public class GoodsServiceImpl implements GoodsService {
             Asserts.fail("参数错误");
         }
         int delGoodsCount = goodsMapper.logicalDeleteByPrimaryKey(id);
-        Integer delSpecCount = youngGoodsSpecificationService.deleteByGid(id).get();
+        Integer delSpecCount = goodsSpecificationService.deleteByGid(id).get();
         Integer delAttrCount = goodsAttributeService.delete(id).get();
         Integer delGoodsProductCount = youngGoodsProductService.deleteByGid(id).get();
         return Optional.ofNullable(delGoodsCount + delSpecCount + delAttrCount + delGoodsProductCount);
     }
 
+    @Transactional
     @Override
     public Optional<Integer> create(GoodsArguments goodsArguments) {
-//        validate(goodsArguments);
+        validate(goodsArguments);
 
         YoungGoods goods = goodsArguments.getGoods();
         //参数
@@ -212,12 +215,32 @@ public class GoodsServiceImpl implements GoodsService {
         goods.setAddTime(LocalDateTime.now());
         goods.setUpdateTime(LocalDateTime.now());
         goodsMapper.insertSelective(goods);
-        //将生成的分享图片地址写入数据库
+        //将生成的分享图片地址写入数据库(小程序未上线可能会生成失败)
         String url = qrCodeUtil.createGoodShareImage(goods.getId().toString(), goods.getPicUrl(), goods.getName(),
                 goods.getCounterPrice(), goods.getRetailPrice());
         if (StrUtil.isNotEmpty(url)) {
             goods.setShareUrl(url);
+            if (youngGoodsService.updateById(goods) == 0) {
+                logger.info("商品上架，更新数据失败");
+                Asserts.fail("商品上架，更新数据失败");
+            }
         }
+        // 商品规格表young_goods_specification
+        for (YoungGoodsSpecification specification : specifications) {
+            specification.setGoodsId(goods.getId());
+        }
+        Optional<Integer> specificationOpt = goodsSpecificationService.insertList(specifications);
+        // 商品参数表young_goods_attribute
+        for (YoungGoodsAttribute attribute : attributes) {
+            attribute.setGoodsId(goods.getId());
+        }
+        Optional<Integer> attributeOpt = goodsAttributeService.insertList(attributes);
+
+        // 商品货品表young_product
+        for (YoungGoodsProduct product : products) {
+            product.setGoodsId(goods.getId());
+        }
+        Optional<Integer> productsOpt = goodsProductService.insertList(products);
 
         return Optional.empty();
     }

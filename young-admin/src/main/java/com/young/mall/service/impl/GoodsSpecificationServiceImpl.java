@@ -3,10 +3,12 @@ package com.young.mall.service.impl;
 import com.young.db.dao.YoungGoodsSpecificationMapper;
 import com.young.db.entity.YoungGoodsSpecification;
 import com.young.db.entity.YoungGoodsSpecificationExample;
-import com.young.mall.service.YoungGoodsSpecificationService;
+import com.young.db.mapper.GoodsSpecificationMapper;
+import com.young.mall.service.GoodsSpecificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,17 +18,20 @@ import java.util.Optional;
  * @CreateDate: 2020/11/10 15:46
  */
 @Service
-public class YoungGoodsSpecificationServiceImpl implements YoungGoodsSpecificationService {
+public class GoodsSpecificationServiceImpl implements GoodsSpecificationService {
 
     @Autowired
-    private YoungGoodsSpecificationMapper goodsSpecificationMapper;
+    private YoungGoodsSpecificationMapper youngGoodsSpecificationMapper;
+
+    @Autowired
+    private GoodsSpecificationMapper goodsSpecificationMapper;
 
     @Override
     public Optional<List<YoungGoodsSpecification>> queryByGid(Integer id) {
         YoungGoodsSpecificationExample example = new YoungGoodsSpecificationExample();
         example.createCriteria().andGoodsIdEqualTo(id).andDeletedEqualTo(false);
 
-        List<YoungGoodsSpecification> specificationList = goodsSpecificationMapper.selectByExample(example);
+        List<YoungGoodsSpecification> specificationList = youngGoodsSpecificationMapper.selectByExample(example);
         return Optional.ofNullable(specificationList);
     }
 
@@ -35,8 +40,18 @@ public class YoungGoodsSpecificationServiceImpl implements YoungGoodsSpecificati
         YoungGoodsSpecificationExample example = new YoungGoodsSpecificationExample();
         example.createCriteria().andGoodsIdEqualTo(gid);
 
-        int count = goodsSpecificationMapper.logicalDeleteByExample(example);
+        int count = youngGoodsSpecificationMapper.logicalDeleteByExample(example);
 
+        return Optional.ofNullable(count);
+    }
+
+    @Override
+    public Optional<Integer> insertList(List<YoungGoodsSpecification> list) {
+        for (YoungGoodsSpecification specification : list) {
+            specification.setAddTime(LocalDateTime.now());
+            specification.setUpdateTime(LocalDateTime.now());
+        }
+        Integer count = goodsSpecificationMapper.insertList(list);
         return Optional.ofNullable(count);
     }
 }

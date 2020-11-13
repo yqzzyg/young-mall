@@ -1,5 +1,8 @@
 package com.young.mall.service;
 
+import com.young.db.entity.YoungGoodsProduct;
+
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -11,15 +14,25 @@ public interface GoodsProductService {
 
     /**
      * 货品数量
+     *
      * @return
      */
     Optional<Integer> count();
 
     /**
      * 增加库存
-     * @param id 产品ID
+     *
+     * @param id  产品ID
      * @param num 数量
      * @return
      */
-    Optional<Integer> addStock(Integer id,Short num);
+    Optional<Integer> addStock(Integer id, Short num);
+
+    /**
+     * 批量插入商品价格、库存
+     *
+     * @param list
+     * @return
+     */
+    Optional<Integer> insertList(List<YoungGoodsProduct> list);
 }

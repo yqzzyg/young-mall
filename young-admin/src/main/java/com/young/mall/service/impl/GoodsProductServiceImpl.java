@@ -1,12 +1,15 @@
 package com.young.mall.service.impl;
 
 import com.young.db.dao.YoungGoodsProductMapper;
+import com.young.db.entity.YoungGoodsProduct;
 import com.young.db.entity.YoungGoodsProductExample;
 import com.young.db.mapper.GoodsProductMapper;
 import com.young.mall.service.GoodsProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -36,6 +39,17 @@ public class GoodsProductServiceImpl implements GoodsProductService {
     public Optional<Integer> addStock(Integer id, Short num) {
         int count = goodsProductMapper.addStock(id, num);
 
+        return Optional.ofNullable(count);
+    }
+
+    @Override
+    public Optional<Integer> insertList(List<YoungGoodsProduct> list) {
+
+        for (YoungGoodsProduct product : list) {
+            product.setAddTime(LocalDateTime.now());
+            product.setUpdateTime(LocalDateTime.now());
+        }
+        Integer count = goodsProductMapper.insertList(list);
         return Optional.ofNullable(count);
     }
 }

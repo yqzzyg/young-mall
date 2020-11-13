@@ -25,4 +25,11 @@ public interface GoodsAttributeService {
      * @return
      */
     Optional<Integer> delete(Integer gid);
+
+    /**
+     * 批量插入商品参数
+     * @param list
+     * @return
+     */
+    Optional<Integer> insertList(List<YoungGoodsAttribute> list);
 }
