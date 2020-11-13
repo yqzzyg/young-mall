@@ -48,8 +48,9 @@ public class AdminCommentController extends BaseController {
     @ApiOperation("回复订单评论")
     @PostMapping("/reply")
     public ResBean reply(@Valid @RequestBody CommentDto commentDto) {
-        logger.info("评论入参：{}", JSONUtil.toJsonStr(commentDto));
+        logger.info("回复评论入参：{}", JSONUtil.toJsonStr(commentDto));
         ResBean reply = youngCommentService.reply(commentDto);
+        logger.info("回复评论出参：{}",JSONUtil.toJsonStr(reply));
         return reply;
     }
 }
