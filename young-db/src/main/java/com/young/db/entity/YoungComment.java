@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import io.swagger.annotations.ApiModelProperty;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -33,7 +32,7 @@ public class YoungComment implements Serializable {
 
     private Integer id;
 
-    @ApiModelProperty(value = "如果type=0，则是商品评论；如果是type=1，则是专题评论。")
+    @ApiModelProperty(value = "商品表的商品id")
     private Integer valueId;
 
     @ApiModelProperty(value = "评论类型，如果type=0，则是商品评论；如果是type=1，则是专题评论；如果type=3，则是订单商品评论。")
@@ -41,6 +40,9 @@ public class YoungComment implements Serializable {
 
     @ApiModelProperty(value = "评论内容")
     private String content;
+
+    @ApiModelProperty(value = "掌柜回复")
+    private String replyContent;
 
     @ApiModelProperty(value = "用户表的用户ID")
     private Integer userId;
@@ -53,6 +55,15 @@ public class YoungComment implements Serializable {
 
     @ApiModelProperty(value = "评分， 1-5")
     private Short star;
+
+    @ApiModelProperty(value = "是否回复 0:未回复  1:已回复")
+    private Integer replySts;
+
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
+    @ApiModelProperty(value = "回复时间")
+    private LocalDateTime replyTime;
 
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
@@ -103,6 +114,14 @@ public class YoungComment implements Serializable {
         this.content = content;
     }
 
+    public String getReplyContent() {
+        return replyContent;
+    }
+
+    public void setReplyContent(String replyContent) {
+        this.replyContent = replyContent;
+    }
+
     public Integer getUserId() {
         return userId;
     }
@@ -133,6 +152,22 @@ public class YoungComment implements Serializable {
 
     public void setStar(Short star) {
         this.star = star;
+    }
+
+    public Integer getReplySts() {
+        return replySts;
+    }
+
+    public void setReplySts(Integer replySts) {
+        this.replySts = replySts;
+    }
+
+    public LocalDateTime getReplyTime() {
+        return replyTime;
+    }
+
+    public void setReplyTime(LocalDateTime replyTime) {
+        this.replyTime = replyTime;
     }
 
     public LocalDateTime getAddTime() {
@@ -169,10 +204,13 @@ public class YoungComment implements Serializable {
         sb.append(", valueId=").append(valueId);
         sb.append(", type=").append(type);
         sb.append(", content=").append(content);
+        sb.append(", replyContent=").append(replyContent);
         sb.append(", userId=").append(userId);
         sb.append(", hasPicture=").append(hasPicture);
         sb.append(", picUrls=").append(picUrls);
         sb.append(", star=").append(star);
+        sb.append(", replySts=").append(replySts);
+        sb.append(", replyTime=").append(replyTime);
         sb.append(", addTime=").append(addTime);
         sb.append(", updateTime=").append(updateTime);
         sb.append(", deleted=").append(deleted);
@@ -204,10 +242,13 @@ public class YoungComment implements Serializable {
         valueId("value_id", "valueId", "INTEGER", false),
         type("type", "type", "TINYINT", true),
         content("content", "content", "VARCHAR", false),
+        replyContent("reply_content", "replyContent", "VARCHAR", false),
         userId("user_id", "userId", "INTEGER", false),
         hasPicture("has_picture", "hasPicture", "BIT", false),
         picUrls("pic_urls", "picUrls", "VARCHAR", false),
         star("star", "star", "SMALLINT", false),
+        replySts("reply_sts", "replySts", "INTEGER", false),
+        replyTime("reply_time", "replyTime", "TIMESTAMP", false),
         addTime("add_time", "addTime", "TIMESTAMP", false),
         updateTime("update_time", "updateTime", "TIMESTAMP", false),
         deleted("deleted", "deleted", "BIT", false);

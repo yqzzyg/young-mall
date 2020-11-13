@@ -1,6 +1,5 @@
 package com.young.mall.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
 import com.young.db.dao.YoungCommentMapper;
@@ -68,9 +67,9 @@ public class YoungCommentServiceImpl implements YoungCommentService {
 
     @Override
     public Optional<Integer> save(YoungComment youngComment) {
-        youngComment.setAddTime(LocalDateTime.now());
-        youngComment.setUpdateTime(LocalDateTime.now());
-        int count = youngCommentMapper.insertSelective(youngComment);
+
+        youngComment.setReplyTime(LocalDateTime.now());
+        int count = youngCommentMapper.updateByPrimaryKeySelective(youngComment);
         return Optional.ofNullable(count);
     }
 
@@ -80,19 +79,16 @@ public class YoungCommentServiceImpl implements YoungCommentService {
 
         // 目前只支持回复一次
         YoungComment comment = findById(commentDto.getCommentId()).get();
-        if (!BeanUtil.isEmpty(comment)) {
+        Integer replySts = comment.getReplySts();
+
+        if (replySts == 1) {
             logger.info("该评论已回复");
             return ResBean.failed(AdminResponseCode.ORDER_REPLY_EXIST);
         }
         YoungComment youngComment = new YoungComment();
-        youngComment.setType(((byte) 2));
-        youngComment.setValueId(commentDto.getCommentId());
-        youngComment.setContent(commentDto.getContent());
-        youngComment.setUserId(0); // 评价回复没有用
-        youngComment.setStar((short) 0); // 评价回复没有用
-        youngComment.setHasPicture(false); // 评价回复没有用
-        youngComment.setPicUrls(new String[]{}); // 评价回复没有用
-
+        youngComment.setId(commentDto.getCommentId());
+        youngComment.setReplyContent(commentDto.getContent());
+        youngComment.setReplySts(1);
         Integer count = save(youngComment).get();
         return ResBean.success(count);
     }
