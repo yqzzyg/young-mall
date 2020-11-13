@@ -11,6 +11,7 @@ import com.young.db.dao.YoungOrderGoodsMapper;
 import com.young.db.dao.YoungOrderMapper;
 import com.young.db.dao.YoungUserMapper;
 import com.young.db.entity.*;
+import com.young.mall.dto.CommentDto;
 import com.young.mall.notify.NotifyType;
 import com.young.mall.service.CommonOrderService;
 import com.young.mall.common.ResBean;
@@ -21,6 +22,7 @@ import com.young.mall.exception.Asserts;
 import com.young.mall.notify.NotifyService;
 import com.young.mall.service.GoodsProductService;
 import com.young.mall.service.OrderService;
+import com.young.mall.service.YoungCommentService;
 import com.young.mall.utils.AdminResponseCode;
 import com.young.mall.utils.OrderUtil;
 import org.slf4j.Logger;
@@ -62,6 +64,8 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private NotifyService notifyService;
 
+    @Autowired
+    private YoungCommentService youngCommentService;
     @Override
     public Optional<Integer> count(Integer userId) {
 

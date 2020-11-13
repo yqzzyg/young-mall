@@ -2,6 +2,7 @@ package com.young.mall.service;
 
 import com.young.db.entity.YoungOrder;
 import com.young.mall.common.ResBean;
+import com.young.mall.dto.CommentDto;
 import com.young.mall.dto.RefundVo;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public interface OrderService {
 
     /**
      * 订单数量
+     *
      * @param userId 用户id
      * @return
      */
@@ -31,13 +33,14 @@ public interface OrderService {
 
     /**
      * 订单list查询
-     * @param userId 用户ID
-     * @param orderSn 订单编号
+     *
+     * @param userId           用户ID
+     * @param orderSn          订单编号
      * @param orderStatusArray 订单状态
-     * @param page 分页
-     * @param size 分页大小
-     * @param sort 排序依据
-     * @param order 排序方式
+     * @param page             分页
+     * @param size             分页大小
+     * @param sort             排序依据
+     * @param order            排序方式
      * @return
      */
     Optional<List<YoungOrder>> list(Integer userId, String orderSn,
@@ -47,13 +50,15 @@ public interface OrderService {
 
     /**
      * 订单详情
+     *
      * @param id 顶顶那id
      * @return
      */
-    Optional<Map<String,Object>> detail(Integer id);
+    Optional<Map<String, Object>> detail(Integer id);
 
     /**
      * 退款操作
+     *
      * @param refundVo 入参
      * @return
      */
