@@ -8,7 +8,7 @@ import com.young.db.entity.YoungCommentExample;
 import com.young.mall.common.ResBean;
 import com.young.mall.dto.CommentDto;
 import com.young.mall.service.YoungCommentService;
-import com.young.mall.utils.AdminResponseCode;
+import com.young.mall.enums.AdminResponseCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

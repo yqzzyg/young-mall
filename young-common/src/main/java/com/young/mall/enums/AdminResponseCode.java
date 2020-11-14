@@ -1,4 +1,4 @@
-package com.young.mall.utils;
+package com.young.mall.enums;
 
 import com.young.mall.common.ResErrorCode;
 

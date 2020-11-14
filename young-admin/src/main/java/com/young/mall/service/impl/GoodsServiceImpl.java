@@ -10,7 +10,7 @@ import com.young.db.pojo.CatAndBrand;
 import com.young.mall.dto.GoodsArguments;
 import com.young.mall.exception.Asserts;
 import com.young.mall.service.*;
-import com.young.mall.utils.AdminResponseCode;
+import com.young.mall.enums.AdminResponseCode;
 import com.young.mall.utils.QrCodeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
