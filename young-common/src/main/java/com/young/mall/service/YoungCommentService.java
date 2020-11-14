@@ -52,4 +52,11 @@ public interface YoungCommentService {
      * @return
      */
     ResBean reply(CommentDto commentDto);
+
+    /**
+     * 删除评论
+     * @param cid
+     * @return
+     */
+    Integer delete(Integer cid);
 }

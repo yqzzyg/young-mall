@@ -45,12 +45,26 @@ public class AdminCommentController extends BaseController {
         CommonPage<YoungComment> restPage = CommonPage.restPage(commentList);
         return ResBean.success(restPage);
     }
+
     @ApiOperation("回复订单评论")
     @PostMapping("/reply")
     public ResBean reply(@Valid @RequestBody CommentDto commentDto) {
         logger.info("回复评论入参：{}", JSONUtil.toJsonStr(commentDto));
         ResBean reply = youngCommentService.reply(commentDto);
-        logger.info("回复评论出参：{}",JSONUtil.toJsonStr(reply));
+        logger.info("回复评论出参：{}", JSONUtil.toJsonStr(reply));
         return reply;
+    }
+
+    @ApiOperation("删除评论")
+    @PostMapping("/delete")
+    public ResBean delete(@RequestBody YoungComment youngComment) {
+        logger.info("删除评论入参：{}", JSONUtil.toJsonStr(youngComment));
+        Integer id = youngComment.getId();
+        if (id == null) {
+            return ResBean.failed("删除失败，参数错误");
+        }
+
+        Integer count = youngCommentService.delete(id);
+        return ResBean.success(count);
     }
 }

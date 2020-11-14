@@ -92,4 +92,11 @@ public class YoungCommentServiceImpl implements YoungCommentService {
         Integer count = save(youngComment).get();
         return ResBean.success(count);
     }
+
+    @Override
+    public Integer delete(Integer cid) {
+
+        int count = youngCommentMapper.logicalDeleteByPrimaryKey(cid);
+        return count;
+    }
 }
