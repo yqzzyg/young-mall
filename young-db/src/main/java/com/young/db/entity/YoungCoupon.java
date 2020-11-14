@@ -3,7 +3,9 @@ package com.young.db.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -77,15 +79,15 @@ public class YoungCoupon implements Serializable {
     @ApiModelProperty(value = "基于领取时间的有效天数days。")
     private Short days;
 
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat( pattern="yyyy-MM-dd")
     @ApiModelProperty(value = "使用券开始时间")
     private LocalDate startTime;
 
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat( pattern="yyyy-MM-dd")
     @ApiModelProperty(value = "使用券截至时间")
     private LocalDate endTime;
 
