@@ -5,7 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.young.db.dao.YoungArticleMapper;
 import com.young.db.entity.YoungArticle;
 import com.young.db.entity.YoungArticleExample;
-import com.young.mall.service.YoungArticleService;
+import com.young.mall.service.MallArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,7 @@ import java.util.Optional;
  * @CreateDate: 2020/11/14 12:06
  */
 @Service
-public class YoungArticleServiceImpl implements YoungArticleService {
+public class MallArticleServiceImpl implements MallArticleService {
 
     @Autowired
     private YoungArticleMapper youngArticleMapper;

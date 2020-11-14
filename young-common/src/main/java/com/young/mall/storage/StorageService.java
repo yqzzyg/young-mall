@@ -1,7 +1,7 @@
 package com.young.mall.storage;
 
 import com.young.db.entity.YoungStorage;
-import com.young.mall.service.YoungStorageService;
+import com.young.mall.service.MallStorageService;
 import com.young.mall.utils.CharUtil;
 import com.young.mall.utils.DateTimeUtils;
 import lombok.Data;
@@ -28,7 +28,7 @@ public class StorageService {
     private Storage storage;
 
     @Autowired
-    private YoungStorageService youngStorageService;
+    private MallStorageService youngStorageService;
 
     /**
      * 存储文件

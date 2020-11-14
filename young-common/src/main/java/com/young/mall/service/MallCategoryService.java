@@ -11,7 +11,7 @@ import java.util.Optional;
  * @Author: yqz
  * @CreateDate: 2020/11/1 14:58
  */
-public interface YoungCategoryService {
+public interface MallCategoryService {
 
 
     /**

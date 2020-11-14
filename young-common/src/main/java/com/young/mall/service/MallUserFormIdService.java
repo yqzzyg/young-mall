@@ -9,7 +9,7 @@ import java.util.Optional;
  * @Author: yqz
  * @CreateDate: 2020/11/2 17:08
  */
-public interface YoungUserFormIdService {
+public interface MallUserFormIdService {
 
 
     /**

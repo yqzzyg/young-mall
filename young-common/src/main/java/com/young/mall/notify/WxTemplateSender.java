@@ -6,7 +6,7 @@ import cn.binarywang.wx.miniapp.bean.WxMaTemplateData;
 import cn.binarywang.wx.miniapp.bean.WxMaTemplateMessage;
 import com.young.db.entity.YoungUserFormid;
 import com.young.mall.exception.Asserts;
-import com.young.mall.service.YoungUserFormIdService;
+import com.young.mall.service.MallUserFormIdService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class WxTemplateSender {
     private WxMaService wxMaService;
 
     @Autowired
-    private YoungUserFormIdService userFormIdService;
+    private MallUserFormIdService userFormIdService;
 
     /**
      * 发送微信消息(模板消息),不带跳转

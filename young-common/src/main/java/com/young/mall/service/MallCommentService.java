@@ -12,7 +12,7 @@ import java.util.Optional;
  * @Author: yqz
  * @CreateDate: 2020/11/13 21:29
  */
-public interface YoungCommentService {
+public interface MallCommentService {
 
     /**
      * 分页查询评论

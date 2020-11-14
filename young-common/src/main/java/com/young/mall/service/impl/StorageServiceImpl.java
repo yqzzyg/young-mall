@@ -5,7 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.young.db.dao.YoungStorageMapper;
 import com.young.db.entity.YoungStorage;
 import com.young.db.entity.YoungStorageExample;
-import com.young.mall.service.YoungStorageService;
+import com.young.mall.service.MallStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,7 @@ import java.util.Optional;
  * @CreateDate: 2020/11/5 15:40
  */
 @Service
-public class StorageServiceImpl implements YoungStorageService {
+public class StorageServiceImpl implements MallStorageService {
 
     @Autowired
     private YoungStorageMapper storageMapper;

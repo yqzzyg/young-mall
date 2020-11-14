@@ -3,7 +3,7 @@ package com.young.mall.service.impl;
 import com.young.db.dao.YoungUserFormidMapper;
 import com.young.db.entity.YoungUserFormid;
 import com.young.db.entity.YoungUserFormidExample;
-import com.young.mall.service.YoungUserFormIdService;
+import com.young.mall.service.MallUserFormIdService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ import java.util.Optional;
  * @CreateDate: 2020/11/2 17:09
  */
 @Service
-public class YoungUserFormIdServiceImpl implements YoungUserFormIdService {
+public class MallUserFormIdServiceImpl implements MallUserFormIdService {
 
     @Autowired
     private YoungUserFormidMapper youngUserFormidMapper;

@@ -35,25 +35,25 @@ public class GoodsServiceImpl implements GoodsService {
     private YoungGoodsMapper goodsMapper;
 
     @Autowired
-    private YoungCategoryService categoryService;
+    private MallCategoryService categoryService;
 
     @Autowired
     private BrandService brandService;
 
     @Autowired
-    private YoungGoodsService youngGoodsService;
+    private MallGoodsService youngGoodsService;
     @Autowired
     private GoodsSpecificationService goodsSpecificationService;
     @Autowired
     private GoodsAttributeService goodsAttributeService;
     @Autowired
-    private YoungCategoryService youngCategoryService;
+    private MallCategoryService youngCategoryService;
 
     @Autowired
-    private YoungGoodsProductService youngGoodsProductService;
+    private MallGoodsProductService youngGoodsProductService;
 
     @Autowired
-    private YoungBrandService youngBrandService;
+    private MallBrandService mallBrandService;
 
     @Autowired
     private QrCodeUtil qrCodeUtil;
@@ -260,7 +260,7 @@ public class GoodsServiceImpl implements GoodsService {
         // 品牌商可以不设置，如果设置则需要验证品牌商存在
         Integer brandId = goods.getBrandId();
         if (brandId != null && brandId != 0) {
-            if (!youngBrandService.findById(brandId).isPresent()) {
+            if (!mallBrandService.findById(brandId).isPresent()) {
                 Asserts.fail("品牌商不存在");
             }
         }

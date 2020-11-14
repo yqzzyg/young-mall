@@ -6,12 +6,11 @@ import com.github.pagehelper.PageHelper;
 import com.young.db.dao.YoungCategoryMapper;
 import com.young.db.entity.YoungCategory;
 import com.young.db.entity.YoungCategoryExample;
-import com.young.db.entity.YoungGoodsAttributeExample;
 import com.young.db.mapper.CategoryMapper;
 import com.young.db.pojo.CatAndBrand;
 import com.young.mall.common.ResBean;
 import com.young.mall.exception.Asserts;
-import com.young.mall.service.YoungCategoryService;
+import com.young.mall.service.MallCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -26,7 +25,7 @@ import java.util.Optional;
  * @CreateDate: 2020/11/1 15:00
  */
 @Service
-public class YoungCategoryServiceImpl implements YoungCategoryService {
+public class MallCategoryServiceImpl implements MallCategoryService {
 
     @Autowired
     private YoungCategoryMapper youngCategoryMapper;

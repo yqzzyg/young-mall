@@ -6,7 +6,7 @@ import com.young.db.entity.YoungStorage;
 import com.young.mall.common.CommonPage;
 import com.young.mall.common.ResBean;
 import com.young.mall.dto.FileDto;
-import com.young.mall.service.YoungStorageService;
+import com.young.mall.service.MallStorageService;
 import com.young.mall.storage.StorageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,7 +32,7 @@ public class AdminStorageController extends BaseController {
     @Autowired
     private StorageService storageService;
     @Autowired
-    private YoungStorageService youngStorageService;
+    private MallStorageService youngStorageService;
 
     @ApiOperation("分页查询所有对象存储")
     @GetMapping("/list")

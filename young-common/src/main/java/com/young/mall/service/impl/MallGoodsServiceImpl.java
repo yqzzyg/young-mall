@@ -3,7 +3,7 @@ package com.young.mall.service.impl;
 import com.young.db.dao.YoungGoodsMapper;
 import com.young.db.entity.YoungGoods;
 import com.young.db.entity.YoungGoodsExample;
-import com.young.mall.service.YoungGoodsService;
+import com.young.mall.service.MallGoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ import java.util.Optional;
  * @CreateDate: 2020/11/10 15:39
  */
 @Service
-public class YoungGoodsServiceImpl implements YoungGoodsService {
+public class MallGoodsServiceImpl implements MallGoodsService {
 
     @Autowired
     private YoungGoodsMapper goodsMapper;

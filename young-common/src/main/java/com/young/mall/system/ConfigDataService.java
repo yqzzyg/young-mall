@@ -2,7 +2,7 @@ package com.young.mall.system;
 
 import com.young.db.entity.YoungSystem;
 import com.young.mall.exception.Asserts;
-import com.young.mall.service.YoungSystemConfigService;
+import com.young.mall.service.MallSystemConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ public class ConfigDataService {
     private static ConfigDataService systemConfigService;
 
     @Autowired
-    private YoungSystemConfigService youngSystemConfigService;
+    private MallSystemConfigService youngSystemConfigService;
 
     // 不允许实例化
     private ConfigDataService() {

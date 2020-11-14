@@ -10,7 +10,7 @@ import java.util.Optional;
  * @Author: yqz
  * @CreateDate: 2020/11/11 16:44
  */
-public interface YoungSystemConfigService {
+public interface MallSystemConfigService {
 
     /**
      * 查询所有系统配置

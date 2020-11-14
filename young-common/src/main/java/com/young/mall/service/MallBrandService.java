@@ -9,7 +9,7 @@ import java.util.Optional;
  * @Author: yqz
  * @CreateDate: 2020/11/10 22:39
  */
-public interface YoungBrandService {
+public interface MallBrandService {
 
     /**
      * 根据brandId查询品牌商

@@ -7,7 +7,7 @@ import com.young.mall.common.CommonPage;
 import com.young.mall.common.ResBean;
 import com.young.mall.enums.AdminResponseCode;
 import com.young.mall.enums.ArticleType;
-import com.young.mall.service.YoungArticleService;
+import com.young.mall.service.MallArticleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ import java.util.Optional;
 public class ArticleController extends BaseController {
 
     @Autowired
-    private YoungArticleService youngArticleService;
+    private MallArticleService youngArticleService;
 
     @ApiOperation("分页查询公共")
     @GetMapping("/list")

@@ -10,7 +10,7 @@ import java.util.Optional;
  * @Author: yqz
  * @CreateDate: 2020/11/5 15:37
  */
-public interface YoungStorageService {
+public interface MallStorageService {
 
     /**
      * 删除

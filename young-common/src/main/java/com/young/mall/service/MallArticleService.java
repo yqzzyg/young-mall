@@ -10,7 +10,7 @@ import java.util.Optional;
  * @Author: yqz
  * @CreateDate: 2020/11/14 12:05
  */
-public interface YoungArticleService {
+public interface MallArticleService {
 
     /**
      * 分页查询公告

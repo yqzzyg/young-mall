@@ -10,7 +10,7 @@ import java.util.Optional;
  * @Author: yqz
  * @CreateDate: 2020/11/10 16:33
  */
-public interface YoungGoodsProductService {
+public interface MallGoodsProductService {
 
     /**
      * 根据商品ID查询商品货品

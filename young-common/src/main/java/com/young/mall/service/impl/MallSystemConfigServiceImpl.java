@@ -3,7 +3,7 @@ package com.young.mall.service.impl;
 import com.young.db.dao.YoungSystemMapper;
 import com.young.db.entity.YoungSystem;
 import com.young.db.entity.YoungSystemExample;
-import com.young.mall.service.YoungSystemConfigService;
+import com.young.mall.service.MallSystemConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ import java.util.Optional;
  * @CreateDate: 2020/11/11 16:45
  */
 @Service
-public class YoungSystemConfigServiceImpl implements YoungSystemConfigService {
+public class MallSystemConfigServiceImpl implements MallSystemConfigService {
 
     @Autowired
     private YoungSystemMapper youngSystemMapper;

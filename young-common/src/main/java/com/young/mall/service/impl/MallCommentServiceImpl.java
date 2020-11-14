@@ -7,7 +7,7 @@ import com.young.db.entity.YoungComment;
 import com.young.db.entity.YoungCommentExample;
 import com.young.mall.common.ResBean;
 import com.young.mall.dto.CommentDto;
-import com.young.mall.service.YoungCommentService;
+import com.young.mall.service.MallCommentService;
 import com.young.mall.enums.AdminResponseCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +24,7 @@ import java.util.Optional;
  * @CreateDate: 2020/11/13 21:31
  */
 @Service
-public class YoungCommentServiceImpl implements YoungCommentService {
+public class MallCommentServiceImpl implements MallCommentService {
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
