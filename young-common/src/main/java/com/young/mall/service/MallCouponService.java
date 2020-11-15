@@ -61,4 +61,19 @@ public interface MallCouponService {
      * @return
      */
     Optional<Integer> delete(Integer id);
+
+    /**
+     * 生成优惠券码
+     *
+     * @return
+     */
+    String generateCode();
+
+    /**
+     * 通过优惠券码查询优惠券
+     *
+     * @param code
+     * @return
+     */
+    YoungCoupon findByCode(String code);
 }
