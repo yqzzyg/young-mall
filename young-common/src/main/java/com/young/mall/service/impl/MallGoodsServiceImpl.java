@@ -32,6 +32,14 @@ public class MallGoodsServiceImpl implements MallGoodsService {
     }
 
     @Override
+    public Optional<YoungGoods> findByGoodsSn(String goodsSn) {
+        YoungGoodsExample example = new YoungGoodsExample();
+        example.createCriteria().andGoodsSnEqualTo(goodsSn).andDeletedEqualTo(false);
+        YoungGoods youngGoods = goodsMapper.selectOneByExample(example);
+        return Optional.ofNullable(youngGoods);
+    }
+
+    @Override
     public Boolean checkExistByName(String name) {
         YoungGoodsExample example = new YoungGoodsExample();
         example.createCriteria().andNameEqualTo(name).andDeletedEqualTo(false);

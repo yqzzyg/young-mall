@@ -13,13 +13,23 @@ public interface MallGoodsService {
 
     /**
      * 根据ID查询商品
+     *
      * @param id
      * @return
      */
     Optional<YoungGoods> findById(Integer id);
 
     /**
+     * 通过商品编号查找
+     *
+     * @param goodsSn
+     * @return
+     */
+    Optional<YoungGoods> findByGoodsSn(String goodsSn);
+
+    /**
      * 根据商品名称校验是否已经存在
+     *
      * @param name 商品名
      * @return
      */
@@ -27,6 +37,7 @@ public interface MallGoodsService {
 
     /**
      * 根据id更新商品
+     *
      * @param youngGoods
      * @return
      */

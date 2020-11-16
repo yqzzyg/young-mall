@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import io.swagger.annotations.ApiModelProperty;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -34,8 +33,8 @@ public class YoungGrouponRules implements Serializable {
 
     private Integer id;
 
-    @ApiModelProperty(value = "商品表的商品ID")
-    private Long goodsId;
+    @ApiModelProperty(value = "商品表的商品编号")
+    private String goodsSn;
 
     @ApiModelProperty(value = "商品名称")
     private String goodsName;
@@ -80,12 +79,12 @@ public class YoungGrouponRules implements Serializable {
         this.id = id;
     }
 
-    public Long getGoodsId() {
-        return goodsId;
+    public String getGoodsSn() {
+        return goodsSn;
     }
 
-    public void setGoodsId(Long goodsId) {
-        this.goodsId = goodsId;
+    public void setGoodsSn(String goodsSn) {
+        this.goodsSn = goodsSn;
     }
 
     public String getGoodsName() {
@@ -159,7 +158,7 @@ public class YoungGrouponRules implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", goodsId=").append(goodsId);
+        sb.append(", goodsSn=").append(goodsSn);
         sb.append(", goodsName=").append(goodsName);
         sb.append(", picUrl=").append(picUrl);
         sb.append(", discount=").append(discount);
@@ -193,7 +192,7 @@ public class YoungGrouponRules implements Serializable {
      */
     public enum Column {
         id("id", "id", "INTEGER", false),
-        goodsId("goods_id", "goodsId", "BIGINT", false),
+        goodsSn("goods_sn", "goodsSn", "VARCHAR", false),
         goodsName("goods_name", "goodsName", "VARCHAR", false),
         picUrl("pic_url", "picUrl", "VARCHAR", false),
         discount("discount", "discount", "DECIMAL", false),
