@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import io.swagger.annotations.ApiModelProperty;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -36,7 +35,7 @@ public class YoungGroupon implements Serializable {
     @ApiModelProperty(value = "关联的订单ID")
     private Integer orderId;
 
-    @ApiModelProperty(value = "参与的团购ID，仅当user_type不是1")
+    @ApiModelProperty(value = "如果是开团用户，则groupon_id是0；如果是参团用户，则groupon_id是团购活动ID")
     private Integer grouponId;
 
     @ApiModelProperty(value = "团购规则ID，关联young_groupon_rules表ID字段")
@@ -47,6 +46,12 @@ public class YoungGroupon implements Serializable {
 
     @ApiModelProperty(value = "创建者ID")
     private Integer creatorUserId;
+
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
+    @ApiModelProperty(value = "开团时间")
+    private LocalDateTime creatorUserTime;
 
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
@@ -119,6 +124,14 @@ public class YoungGroupon implements Serializable {
         this.creatorUserId = creatorUserId;
     }
 
+    public LocalDateTime getCreatorUserTime() {
+        return creatorUserTime;
+    }
+
+    public void setCreatorUserTime(LocalDateTime creatorUserTime) {
+        this.creatorUserTime = creatorUserTime;
+    }
+
     public LocalDateTime getAddTime() {
         return addTime;
     }
@@ -171,6 +184,7 @@ public class YoungGroupon implements Serializable {
         sb.append(", rulesId=").append(rulesId);
         sb.append(", userId=").append(userId);
         sb.append(", creatorUserId=").append(creatorUserId);
+        sb.append(", creatorUserTime=").append(creatorUserTime);
         sb.append(", addTime=").append(addTime);
         sb.append(", updateTime=").append(updateTime);
         sb.append(", shareUrl=").append(shareUrl);
@@ -206,6 +220,7 @@ public class YoungGroupon implements Serializable {
         rulesId("rules_id", "rulesId", "INTEGER", false),
         userId("user_id", "userId", "INTEGER", false),
         creatorUserId("creator_user_id", "creatorUserId", "INTEGER", false),
+        creatorUserTime("creator_user_time", "creatorUserTime", "TIMESTAMP", false),
         addTime("add_time", "addTime", "TIMESTAMP", false),
         updateTime("update_time", "updateTime", "TIMESTAMP", false),
         shareUrl("share_url", "shareUrl", "VARCHAR", false),

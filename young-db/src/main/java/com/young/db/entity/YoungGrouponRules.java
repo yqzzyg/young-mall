@@ -48,6 +48,9 @@ public class YoungGrouponRules implements Serializable {
     @ApiModelProperty(value = "达到优惠条件的人数")
     private Integer discountMember;
 
+    @ApiModelProperty(value = "团购规则状态，正常上线则0，到期自动下线则1，管理手动下线则2")
+    private Short status;
+
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
@@ -119,6 +122,14 @@ public class YoungGrouponRules implements Serializable {
         this.discountMember = discountMember;
     }
 
+    public Short getStatus() {
+        return status;
+    }
+
+    public void setStatus(Short status) {
+        this.status = status;
+    }
+
     public LocalDateTime getAddTime() {
         return addTime;
     }
@@ -163,6 +174,7 @@ public class YoungGrouponRules implements Serializable {
         sb.append(", picUrl=").append(picUrl);
         sb.append(", discount=").append(discount);
         sb.append(", discountMember=").append(discountMember);
+        sb.append(", status=").append(status);
         sb.append(", addTime=").append(addTime);
         sb.append(", updateTime=").append(updateTime);
         sb.append(", expireTime=").append(expireTime);
@@ -197,6 +209,7 @@ public class YoungGrouponRules implements Serializable {
         picUrl("pic_url", "picUrl", "VARCHAR", false),
         discount("discount", "discount", "DECIMAL", false),
         discountMember("discount_member", "discountMember", "INTEGER", false),
+        status("status", "status", "SMALLINT", true),
         addTime("add_time", "addTime", "TIMESTAMP", false),
         updateTime("update_time", "updateTime", "TIMESTAMP", false),
         expireTime("expire_time", "expireTime", "TIMESTAMP", false),

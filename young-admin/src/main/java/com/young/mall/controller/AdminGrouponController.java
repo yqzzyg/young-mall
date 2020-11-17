@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.young.db.entity.YoungGoods;
 import com.young.db.entity.YoungGrouponRules;
+import com.young.db.pojo.GroupOnListPojo;
 import com.young.mall.common.CommonPage;
 import com.young.mall.common.ResBean;
 import com.young.mall.exception.Asserts;
@@ -12,14 +13,12 @@ import com.young.mall.service.MallGroupRuleService;
 import com.young.mall.service.MallGrouponService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.tomcat.util.http.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @Description: 团购业务
@@ -34,8 +33,8 @@ public class AdminGrouponController extends BaseController {
     @Autowired
     private MallGoodsService mallGoodsService;
 
-//    @Autowired
-//    private MallGrouponService mallGrouponService;
+    @Autowired
+    private MallGrouponService mallGrouponService;
 
     @Autowired
     private MallGroupRuleService mallGroupRuleService;
@@ -106,6 +105,22 @@ public class AdminGrouponController extends BaseController {
             return ResBean.failed("删除失败");
         }
         return ResBean.success("删除成功");
+    }
+
+    @ApiOperation("团购活动")
+    @GetMapping("/listRecord")
+    public ResBean listGroupOn(String goodsSn,
+                               @RequestParam(defaultValue = "1") Integer page,
+                               @RequestParam(defaultValue = "10") Integer size,
+                               @RequestParam(defaultValue = "add_time") String sort,
+                               @RequestParam(defaultValue = "desc") String order) {
+
+        Optional<List<GroupOnListPojo>> optional = mallGrouponService.list(goodsSn, page, size, sort, order);
+        if (!optional.isPresent()) {
+            return ResBean.failed("查询失败");
+        }
+        CommonPage<GroupOnListPojo> restPage = CommonPage.restPage(optional.get());
+        return ResBean.success(restPage);
     }
 
     private void validate(YoungGrouponRules grouponRules) {

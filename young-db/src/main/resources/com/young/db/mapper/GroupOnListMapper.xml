@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.young.db.mapper.GroupOnListMapper">
+
+    <resultMap id="groupOnList" type="com.young.db.pojo.GroupOnListPojo">
+        <result property="goodsSn" column="goods_sn"></result>
+        <result property="goodsName" column="goods_name"></result>
+
+        <result property="orderId" column="order_id"></result>
+        <result property="userId" column="user_id"></result>
+        <result property="shareUrl" column="share_url"></result>
+        <result property="discount" column="discount"></result>
+        <result property="discountMember" column="discount_member"></result>
+        <result property="addTime" column="add_time"></result>
+        <result property="expireTime" column="expire_time"></result>
+    </resultMap>
+
+    <select id="list" resultMap="groupOnList" parameterType="com.young.db.pojo.GroupOnListPojo">
+        SELECT
+        yg.order_id,yg.user_id,yg.share_url,
+        ygr.goods_sn,ygr.goods_name,
+        ygr.discount,ygr.discount_member,ygr.add_time,ygr.expire_time
+        FROM young_groupon yg
+        LEFT JOIN young_groupon_rules ygr ON yg.rules_id = ygr.id
+        <where>
+        <if test="goodsSn != null and goodsSn != ''">
+            ygr.goods_sn = #{goodsSn} AND
+        </if>
+            yg.deleted=FALSE AND yg.payed=TRUE AND ygr.deleted = FALSE
+            ORDER BY ygr.add_time DESC
+        </where>
+
+    </select>
+
+</mapper>

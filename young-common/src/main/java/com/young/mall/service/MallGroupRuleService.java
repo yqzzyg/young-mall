@@ -11,8 +11,9 @@ import java.util.Optional;
  */
 public interface MallGroupRuleService {
 
+    YoungGrouponRules queryById(Integer id);
     /**
-     * 分页查询团购
+     * 分页查询团购规则
      *
      * @param goodsId
      * @param page

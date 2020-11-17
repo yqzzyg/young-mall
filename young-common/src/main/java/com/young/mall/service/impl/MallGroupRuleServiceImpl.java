@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * @Description: 团购
+ * @Description: 团购规则
  * @Author: yqz
  * @CreateDate: 2020/11/16 15:27
  */
@@ -24,8 +24,15 @@ public class MallGroupRuleServiceImpl implements MallGroupRuleService {
     @Autowired
     private YoungGrouponRulesMapper youngGrouponRulesMapper;
 
+    @Override
+    public YoungGrouponRules queryById(Integer id) {
+        YoungGrouponRulesExample example = new YoungGrouponRulesExample();
+        example.or().andIdEqualTo(id).andDeletedEqualTo(false);
+        return youngGrouponRulesMapper.selectOneByExample(example);
+    }
+
     /**
-     * 团购活动列表
+     * 团购规则列表
      *
      * @param goodsSn
      * @param page

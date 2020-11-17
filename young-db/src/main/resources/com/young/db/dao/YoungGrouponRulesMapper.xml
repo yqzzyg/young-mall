@@ -8,6 +8,7 @@
     <result column="pic_url" jdbcType="VARCHAR" property="picUrl" />
     <result column="discount" jdbcType="DECIMAL" property="discount" />
     <result column="discount_member" jdbcType="INTEGER" property="discountMember" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
     <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="expire_time" jdbcType="TIMESTAMP" property="expireTime" />
@@ -72,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, goods_sn, goods_name, pic_url, discount, discount_member, add_time, update_time,
-    expire_time, deleted
+    id, goods_sn, goods_name, pic_url, discount, discount_member, `status`, add_time,
+    update_time, expire_time, deleted
   </sql>
   <select id="selectByExample" parameterType="com.young.db.entity.YoungGrouponRulesExample" resultMap="BaseResultMap">
     select
@@ -106,8 +107,8 @@
         </foreach>
       </when>
       <otherwise>
-        id, goods_sn, goods_name, pic_url, discount, discount_member, add_time, update_time,
-        expire_time, deleted
+        id, goods_sn, goods_name, pic_url, discount, discount_member, `status`, add_time,
+        update_time, expire_time, deleted
       </otherwise>
     </choose>
     from young_groupon_rules
@@ -158,8 +159,8 @@
         </foreach>
       </when>
       <otherwise>
-        id, goods_sn, goods_name, pic_url, discount, discount_member, add_time, update_time,
-        expire_time, deleted
+        id, goods_sn, goods_name, pic_url, discount, discount_member, `status`, add_time,
+        update_time, expire_time, deleted
       </otherwise>
     </choose>
     from young_groupon_rules
@@ -180,13 +181,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into young_groupon_rules (goods_sn, goods_name, pic_url,
-    discount, discount_member, add_time,
-    update_time, expire_time, deleted
-    )
+    discount, discount_member, `status`,
+    add_time, update_time, expire_time,
+    deleted)
     values (#{goodsSn,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR}, #{picUrl,jdbcType=VARCHAR},
-    #{discount,jdbcType=DECIMAL}, #{discountMember,jdbcType=INTEGER}, #{addTime,jdbcType=TIMESTAMP},
-    #{updateTime,jdbcType=TIMESTAMP}, #{expireTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}
-    )
+    #{discount,jdbcType=DECIMAL}, #{discountMember,jdbcType=INTEGER}, #{status,jdbcType=SMALLINT},
+    #{addTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{expireTime,jdbcType=TIMESTAMP},
+    #{deleted,jdbcType=BIT})
   </insert>
   <insert id="insertSelective" parameterType="com.young.db.entity.YoungGrouponRules">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -208,6 +209,9 @@
       </if>
       <if test="discountMember != null">
         discount_member,
+      </if>
+      <if test="status != null">
+        `status`,
       </if>
       <if test="addTime != null">
         add_time,
@@ -237,6 +241,9 @@
       </if>
       <if test="discountMember != null">
         #{discountMember,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=SMALLINT},
       </if>
       <if test="addTime != null">
         #{addTime,jdbcType=TIMESTAMP},
@@ -279,6 +286,9 @@
       <if test="record.discountMember != null">
         discount_member = #{record.discountMember,jdbcType=INTEGER},
       </if>
+      <if test="record.status != null">
+        `status` = #{record.status,jdbcType=SMALLINT},
+      </if>
       <if test="record.addTime != null">
         add_time = #{record.addTime,jdbcType=TIMESTAMP},
       </if>
@@ -304,6 +314,7 @@
     pic_url = #{record.picUrl,jdbcType=VARCHAR},
     discount = #{record.discount,jdbcType=DECIMAL},
     discount_member = #{record.discountMember,jdbcType=INTEGER},
+    `status` = #{record.status,jdbcType=SMALLINT},
     add_time = #{record.addTime,jdbcType=TIMESTAMP},
     update_time = #{record.updateTime,jdbcType=TIMESTAMP},
     expire_time = #{record.expireTime,jdbcType=TIMESTAMP},
@@ -330,6 +341,9 @@
       <if test="discountMember != null">
         discount_member = #{discountMember,jdbcType=INTEGER},
       </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=SMALLINT},
+      </if>
       <if test="addTime != null">
         add_time = #{addTime,jdbcType=TIMESTAMP},
       </if>
@@ -352,6 +366,7 @@
       pic_url = #{picUrl,jdbcType=VARCHAR},
       discount = #{discount,jdbcType=DECIMAL},
       discount_member = #{discountMember,jdbcType=INTEGER},
+      `status` = #{status,jdbcType=SMALLINT},
       add_time = #{addTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       expire_time = #{expireTime,jdbcType=TIMESTAMP},
@@ -389,8 +404,8 @@
         </foreach>
       </when>
       <otherwise>
-        id, goods_sn, goods_name, pic_url, discount, discount_member, add_time, update_time,
-        expire_time, deleted
+        id, goods_sn, goods_name, pic_url, discount, discount_member, `status`, add_time,
+        update_time, expire_time, deleted
       </otherwise>
     </choose>
     from young_groupon_rules
