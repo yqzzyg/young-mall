@@ -1,14 +1,18 @@
 package com.young.mall.exception;
 
+import cn.hutool.json.JSONUtil;
 import com.young.mall.common.ResBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.nio.file.AccessDeniedException;
 
 /**
  * @Description: 全局异常
@@ -29,15 +33,6 @@ public class GlobalExceptionHandler {
         return ResBean.failed(e.getMessage());
     }
 
-    @ResponseBody
-    @ExceptionHandler(value = RuntimeException.class)
-    public ResBean handle(RuntimeException e) {
-        logger.info("异常信息：{}", e.getMessage());
-        if (e.getMessage() != null) {
-            return ResBean.failed(e.getMessage());
-        }
-        return ResBean.failed(e.getMessage());
-    }
 
     @ResponseBody
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
@@ -52,5 +47,19 @@ public class GlobalExceptionHandler {
             }
         }
         return ResBean.failed(message);
+    }
+
+    @ResponseBody
+    @ExceptionHandler(value = BindException.class)
+    public ResBean handleValidException(BindException e) {
+        BindingResult bindingResult = e.getBindingResult();
+        String message = null;
+        if (bindingResult.hasErrors()) {
+            FieldError fieldError = bindingResult.getFieldError();
+            if (fieldError != null) {
+                message = fieldError.getField() + fieldError.getDefaultMessage();
+            }
+        }
+        return ResBean.validateFailed(message);
     }
 }

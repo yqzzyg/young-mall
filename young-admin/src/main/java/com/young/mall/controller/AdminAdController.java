@@ -7,6 +7,7 @@ import com.young.mall.service.AdvertisingService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,6 +29,7 @@ public class AdminAdController extends BaseController {
     private AdvertisingService advertisingService;
 
     @ApiOperation("分页展示广告")
+    @PreAuthorize("@pms.hasPermission('admin:ad:list')")
     @GetMapping("/list")
     public ResBean list(String name, String content,
                         @RequestParam(defaultValue = "1") Integer page,
@@ -45,6 +47,7 @@ public class AdminAdController extends BaseController {
     }
 
     @ApiOperation("创建广告")
+    @PreAuthorize("@pms.hasPermission('admin:ad:create')")
     @PostMapping("/create")
     public ResBean create(@Valid @RequestBody YoungAd youngAd) {
         logger.info("创建广告入参：{}", youngAd);
@@ -56,6 +59,7 @@ public class AdminAdController extends BaseController {
     }
 
     @ApiOperation("广告详情")
+    @PreAuthorize("@pms.hasPermission('admin:ad:read')")
     @GetMapping("/read")
     public ResBean read(@NotNull Integer id) {
         logger.info("广告详情入参：{}", id);
@@ -67,6 +71,7 @@ public class AdminAdController extends BaseController {
     }
 
     @ApiOperation("更新广告")
+    @PreAuthorize("@pms.hasPermission('admin:ad:update')")
     @PostMapping("/update")
     public ResBean update(@Valid @RequestBody YoungAd youngAd) {
         logger.info("更新广告入参:{}", youngAd);
@@ -78,6 +83,7 @@ public class AdminAdController extends BaseController {
     }
 
     @ApiOperation("删除广告")
+    @PreAuthorize("@pms.hasPermission('admin:ad:delete')")
     @PostMapping("/delete")
     public ResBean delete(@RequestBody YoungAd youngAd) {
         logger.info("删除广告入参：{}", youngAd);
