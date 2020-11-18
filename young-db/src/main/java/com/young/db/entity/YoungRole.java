@@ -1,6 +1,8 @@
 package com.young.db.entity;
 
 import io.swagger.annotations.ApiModelProperty;
+
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ public class YoungRole implements Serializable {
 
     private Integer id;
 
+    @NotEmpty(message = "角色名称不能为空")
     @ApiModelProperty(value = "角色名称")
     private String name;
 
@@ -289,7 +292,7 @@ public class YoungRole implements Serializable {
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public static Column[] excludes(Column ... excludes) {
+        public static Column[] excludes(Column... excludes) {
             ArrayList<Column> columns = new ArrayList<>(Arrays.asList(Column.values()));
             if (excludes != null && excludes.length > 0) {
                 columns.removeAll(new ArrayList<>(Arrays.asList(excludes)));
