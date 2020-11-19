@@ -8,6 +8,7 @@ import com.young.mall.service.IssueService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -29,6 +30,7 @@ public class IssueController extends BaseController {
     private IssueService issueService;
 
     @ApiOperation("分页查询")
+    @PreAuthorize("@pms.hasPermission('admin:issue:list')")
     @GetMapping("/list")
     public ResBean list(String question, @RequestParam(defaultValue = "1") Integer page,
                         @RequestParam(defaultValue = "10") Integer size,
@@ -47,6 +49,7 @@ public class IssueController extends BaseController {
     }
 
     @ApiOperation("添加通用问题")
+    @PreAuthorize("@pms.hasPermission('admin:issue:create')")
     @PostMapping("/create")
     public ResBean create(@Valid @RequestBody YoungIssue issue) {
         logger.info("添加通用问题入参：{}", JSONUtil.toJsonStr(issue));
@@ -59,6 +62,7 @@ public class IssueController extends BaseController {
     }
 
     @ApiOperation("读取问题详情")
+    @PreAuthorize("@pms.hasPermission('admin:issue:read')")
     @GetMapping("/read")
     public ResBean read(@NotNull @RequestParam("id") Integer id) {
         Optional<YoungIssue> optional = issueService.findById(id);
@@ -71,6 +75,7 @@ public class IssueController extends BaseController {
 
 
     @ApiOperation("更新通用问题")
+    @PreAuthorize("@pms.hasPermission('admin:issue:update')")
     @PostMapping("/update")
     public ResBean update(@Valid @RequestBody YoungIssue issue) {
         logger.info("更新通用问题入参：{}", JSONUtil.toJsonStr(issue));
@@ -83,6 +88,7 @@ public class IssueController extends BaseController {
     }
 
     @ApiOperation("根据id删除")
+    @PreAuthorize("@pms.hasPermission('admin:issue:delete')")
     @PostMapping("/delete")
     public ResBean delete(@RequestBody YoungIssue issue) {
 

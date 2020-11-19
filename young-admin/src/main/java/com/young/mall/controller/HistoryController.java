@@ -7,6 +7,7 @@ import com.young.mall.service.SearchHistoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,6 +31,7 @@ public class HistoryController extends BaseController {
     private SearchHistoryService historyService;
 
     @ApiOperation("用户搜索历史记录")
+    @PreAuthorize("@pms.hasPermission('admin:history:list')")
     @GetMapping("/list")
     public ResBean querySearchHistoryList(String userId, String keyword,
                                           @RequestParam(defaultValue = "1") Integer page,

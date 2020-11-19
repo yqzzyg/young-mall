@@ -8,6 +8,7 @@ import com.young.mall.service.MallCategoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -26,6 +27,7 @@ public class CategoryController extends BaseController {
     private MallCategoryService categoryService;
 
     @ApiOperation("商品分类list")
+    @PreAuthorize("@pms.hasPermission('admin:category:list')")
     @GetMapping("/list")
     public ResBean queryCategoryList(String id, String name,
                                      @RequestParam(defaultValue = "1") Integer page,
@@ -68,6 +70,7 @@ public class CategoryController extends BaseController {
 
 
     @ApiOperation("删除商品分类")
+    @PreAuthorize("@pms.hasPermission('admin:category:delete')")
     @DeleteMapping("/{infoIds}")
     public ResBean delete(@PathVariable("infoIds") Integer infoIds) {
 
@@ -83,6 +86,7 @@ public class CategoryController extends BaseController {
     }
 
     @ApiOperation("创建商品分类")
+    @PreAuthorize("@pms.hasPermission('admin:category:create')")
     @PostMapping("/create")
     public ResBean creat(@RequestBody YoungCategory category) {
 
@@ -96,6 +100,7 @@ public class CategoryController extends BaseController {
     }
 
     @ApiOperation("更新分类")
+    @PreAuthorize("@pms.hasPermission('admin:category:update')")
     @PostMapping("/update")
     public ResBean update(@RequestBody YoungCategory category) {
 

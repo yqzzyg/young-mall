@@ -15,6 +15,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.tomcat.util.http.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +41,7 @@ public class AdminUserController extends BaseController {
     private AdminUserService adminUserService;
 
     @ApiOperation("分页查询")
+    @PreAuthorize("@pms.hasPermission('admin:user:list')")
     @GetMapping("/list")
     public ResBean list(String username,
                         @RequestParam(defaultValue = "1") Integer page,
@@ -65,6 +67,7 @@ public class AdminUserController extends BaseController {
     }
 
     @ApiOperation("创建管理员用户")
+    @PreAuthorize("@pms.hasPermission('admin:user:create')")
     @PostMapping("/create")
     public ResBean create(@RequestBody YoungAdmin youngAdmin) {
         validate(youngAdmin);
@@ -102,6 +105,7 @@ public class AdminUserController extends BaseController {
     }
 
     @ApiOperation("管理员详情")
+    @PreAuthorize("@pms.hasPermission('admin:user:read')")
     @GetMapping("/read")
     public ResBean read(@NotNull Integer id) {
         Optional<YoungAdmin> optional = adminUserService.findById(id);
@@ -112,6 +116,7 @@ public class AdminUserController extends BaseController {
     }
 
     @ApiOperation("更新")
+    @PreAuthorize("@pms.hasPermission('admin:user:update')")
     @PostMapping("/update")
     public ResBean update(@RequestBody YoungAdmin youngAdmin) {
         validate(youngAdmin);
@@ -133,6 +138,7 @@ public class AdminUserController extends BaseController {
     }
 
     @ApiOperation("删除后台用户")
+    @PreAuthorize("@pms.hasPermission('admin:user:delete')")
     @PostMapping("/delete")
     public ResBean delete(@RequestBody YoungAdmin youngAdmin) {
         Integer adminId = youngAdmin.getId();

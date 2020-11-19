@@ -7,6 +7,7 @@ import com.young.mall.service.MallTopicService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,6 +29,7 @@ public class AdminTopicController extends BaseController {
     private MallTopicService mallTopicService;
 
     @ApiOperation("分页查询")
+    @PreAuthorize("@pms.hasPermission('admin:topic:list')")
     @GetMapping("/list")
     public ResBean list(String title, String subtitle, @RequestParam(defaultValue = "1") Integer page,
                         @RequestParam(defaultValue = "10") Integer size,
@@ -43,6 +45,7 @@ public class AdminTopicController extends BaseController {
     }
 
     @ApiOperation("添加专题")
+    @PreAuthorize("@pms.hasPermission('admin:topic:create')")
     @PostMapping("/create")
     public ResBean create(@Valid @RequestBody YoungTopic youngTopic) {
         Optional<Integer> optional = mallTopicService.create(youngTopic);
@@ -53,6 +56,7 @@ public class AdminTopicController extends BaseController {
     }
 
     @ApiOperation("专题详情")
+    @PreAuthorize("@pms.hasPermission('admin:topic:read')")
     @GetMapping("/read")
     public ResBean read(@NotNull @RequestParam("id") Integer id) {
 
@@ -64,6 +68,7 @@ public class AdminTopicController extends BaseController {
     }
 
     @ApiOperation("更新专题详情")
+    @PreAuthorize("@pms.hasPermission('admin:topic:update')")
     @PostMapping("/update")
     public ResBean update(@Valid @RequestBody YoungTopic youngTopic) {
         Optional<Integer> optional = mallTopicService.update(youngTopic);
@@ -74,6 +79,7 @@ public class AdminTopicController extends BaseController {
     }
 
     @ApiOperation("删除专题")
+    @PreAuthorize("@pms.hasPermission('admin:topic:delete')")
     @PostMapping("/delete")
     public ResBean delete(@RequestBody YoungTopic youngTopic) {
         Optional<Integer> optional = mallTopicService.delete(youngTopic.getId());

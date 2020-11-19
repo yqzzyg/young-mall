@@ -7,6 +7,7 @@ import com.young.mall.service.AdminRoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -45,6 +46,7 @@ public class AdminRoleController extends BaseController {
     }
 
     @ApiOperation("角色查询")
+    @PreAuthorize("@pms.hasPermission('admin:role:list')")
     @GetMapping("/list")
     public ResBean list(String name,
                         @RequestParam(defaultValue = "1") Integer page,
@@ -60,6 +62,7 @@ public class AdminRoleController extends BaseController {
     }
 
     @ApiOperation("添加角色")
+    @PreAuthorize("@pms.hasPermission('admin:role:create')")
     @PostMapping("/create")
     public ResBean create(@Valid @RequestBody YoungRole youngRole) {
 
@@ -74,6 +77,7 @@ public class AdminRoleController extends BaseController {
     }
 
     @ApiOperation("更新角色")
+    @PreAuthorize("@pms.hasPermission('admin:role:update')")
     @PostMapping("/update")
     public ResBean update(@Valid @RequestBody YoungRole youngRole) {
 
@@ -85,6 +89,7 @@ public class AdminRoleController extends BaseController {
     }
 
     @ApiOperation("删除角色")
+    @PreAuthorize("@pms.hasPermission('admin:role:delete')")
     @PostMapping("/delete")
     public ResBean delete(@RequestBody YoungRole youngRole) {
 

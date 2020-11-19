@@ -6,6 +6,7 @@ import com.young.mall.service.AdminStatService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,6 +29,7 @@ public class AdminStatController extends BaseController {
     private AdminStatService adminStatService;
 
     @ApiOperation("用户统计")
+    @PreAuthorize("@pms.hasPermission('admin:stat:user')")
     @GetMapping("/user")
     public ResBean statUser() {
 
@@ -43,6 +45,7 @@ public class AdminStatController extends BaseController {
     }
 
     @ApiOperation("订单统计")
+    @PreAuthorize("@pms.hasPermission('admin:stat:order')")
     @GetMapping("/order")
     public ResBean statOrder() {
         Optional<List<Map>> optional = adminStatService.statOrder();
@@ -57,6 +60,7 @@ public class AdminStatController extends BaseController {
     }
 
     @ApiOperation("商品统计")
+    @PreAuthorize("@pms.hasPermission('admin:stat:goods')")
     @GetMapping("/goods")
     public ResBean statGoods() {
         Optional<List<Map>> optional = adminStatService.statGoods();

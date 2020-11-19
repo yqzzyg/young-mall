@@ -8,6 +8,7 @@ import com.young.mall.service.KeyWordService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -30,6 +31,7 @@ public class KeyWordController extends BaseController {
     private KeyWordService keyWordService;
 
     @ApiOperation("分页查询")
+    @PreAuthorize("@pms.hasPermission('admin:keyword:list')")
     @GetMapping("/list")
     public ResBean list(String keyword, String url,
                         @RequestParam(defaultValue = "1") Integer page,
@@ -48,6 +50,7 @@ public class KeyWordController extends BaseController {
     }
 
     @ApiOperation("创建关键词")
+    @PreAuthorize("@pms.hasPermission('admin:keyword:create')")
     @PostMapping("/create")
     public ResBean create(@Valid @RequestBody YoungKeyword keyword) {
         logger.info("创建关键词 入参：{}", JSONUtil.toJsonStr(keyword));
@@ -61,6 +64,7 @@ public class KeyWordController extends BaseController {
 
 
     @ApiOperation("读取关键词详情")
+    @PreAuthorize("@pms.hasPermission('admin:keyword:read')")
     @GetMapping("/read")
     public ResBean read(@NotNull Integer id) {
         logger.info("读取关键词接口入参：{}", id);
@@ -72,6 +76,7 @@ public class KeyWordController extends BaseController {
     }
 
     @ApiOperation("更新关键词")
+    @PreAuthorize("@pms.hasPermission('admin:keyword:update')")
     @PostMapping("/update")
     public ResBean update(@Valid @RequestBody YoungKeyword keyword) {
 
@@ -86,6 +91,7 @@ public class KeyWordController extends BaseController {
     }
 
     @ApiOperation("删除关键词对象")
+    @PreAuthorize("@pms.hasPermission('admin:keyword:delete')")
     @PostMapping("/delete")
     public ResBean delete(@RequestBody YoungKeyword keyword) {
 

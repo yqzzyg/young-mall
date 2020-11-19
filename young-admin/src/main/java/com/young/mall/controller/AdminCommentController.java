@@ -9,6 +9,7 @@ import com.young.mall.service.MallCommentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -29,6 +30,7 @@ public class AdminCommentController extends BaseController {
     private MallCommentService youngCommentService;
 
     @ApiOperation("分页查询评论")
+    @PreAuthorize("@pms.hasPermission('admin:comment:list')")
     @GetMapping("/list")
     public ResBean list(String userId, String valueId,
                         @RequestParam(defaultValue = "1") Integer page,
@@ -47,6 +49,7 @@ public class AdminCommentController extends BaseController {
     }
 
     @ApiOperation("回复订单评论")
+    @PreAuthorize("@pms.hasPermission('admin:comment:reply')")
     @PostMapping("/reply")
     public ResBean reply(@Valid @RequestBody CommentDto commentDto) {
         logger.info("回复评论入参：{}", JSONUtil.toJsonStr(commentDto));
@@ -56,6 +59,7 @@ public class AdminCommentController extends BaseController {
     }
 
     @ApiOperation("删除评论")
+    @PreAuthorize("@pms.hasPermission('admin:comment:delete')")
     @PostMapping("/delete")
     public ResBean delete(@RequestBody YoungComment youngComment) {
         logger.info("删除评论入参：{}", JSONUtil.toJsonStr(youngComment));

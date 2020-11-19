@@ -11,6 +11,7 @@ import com.young.mall.storage.StorageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,6 +36,7 @@ public class AdminStorageController extends BaseController {
     private MallStorageService youngStorageService;
 
     @ApiOperation("分页查询所有对象存储")
+    @PreAuthorize("@pms.hasPermission('admin:storage:list')")
     @GetMapping("/list")
     public ResBean list(String key, String name,
                         @RequestParam(defaultValue = "1") Integer page,
@@ -53,6 +55,7 @@ public class AdminStorageController extends BaseController {
     }
 
     @ApiOperation("存储文件对象")
+    @PreAuthorize("@pms.hasPermission('admin:storage:create')")
     @PostMapping("/create")
     public ResBean creat(@RequestParam("file") MultipartFile file) throws IOException {
         String originalFilename = file.getOriginalFilename();
@@ -63,6 +66,7 @@ public class AdminStorageController extends BaseController {
     }
 
     @ApiOperation("根据id读取该对象")
+    @PreAuthorize("@pms.hasPermission('admin:storage:read')")
     @PostMapping("/read")
     public ResBean read(@NotNull Integer id) {
 
@@ -75,6 +79,7 @@ public class AdminStorageController extends BaseController {
     }
 
     @ApiOperation("更新存储对象")
+    @PreAuthorize("@pms.hasPermission('admin:storage:update')")
     @PostMapping("/update")
     public ResBean update(@RequestBody YoungStorage youngStorage) {
         Optional<Integer> integerOptional = youngStorageService.update(youngStorage);
@@ -86,6 +91,7 @@ public class AdminStorageController extends BaseController {
     }
 
     @ApiOperation("删除存储对象")
+    @PreAuthorize("@pms.hasPermission('admin:storage:delete')")
     @PostMapping("/delete")
     public ResBean delete(@RequestBody YoungStorage youngStorage) {
         String key = youngStorage.getKey();

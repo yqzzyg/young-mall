@@ -14,6 +14,7 @@ import com.young.mall.service.MallGrouponService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -40,6 +41,7 @@ public class AdminGrouponController extends BaseController {
     private MallGroupRuleService mallGroupRuleService;
 
     @ApiOperation("分页查询团购列表")
+    @PreAuthorize("@pms.hasPermission('admin:groupon:list')")
     @GetMapping("/list")
     public ResBean list(String goodsSn, @RequestParam(defaultValue = "1") Integer page,
                         @RequestParam(defaultValue = "10") Integer size,
@@ -55,6 +57,7 @@ public class AdminGrouponController extends BaseController {
     }
 
     @ApiOperation("更新团购")
+    @PreAuthorize("@pms.hasPermission('admin:groupon:update')")
     @PostMapping("/update")
     public ResBean update(@RequestBody YoungGrouponRules youngGrouponRules) {
         validate(youngGrouponRules);
@@ -75,6 +78,7 @@ public class AdminGrouponController extends BaseController {
     }
 
     @ApiOperation("新增团购")
+    @PreAuthorize("@pms.hasPermission('admin:groupon:create')")
     @PostMapping("/create")
     public ResBean create(@RequestBody YoungGrouponRules youngGrouponRules) {
         validate(youngGrouponRules);
@@ -94,6 +98,7 @@ public class AdminGrouponController extends BaseController {
     }
 
     @ApiOperation("删除团购")
+    @PreAuthorize("@pms.hasPermission('admin:groupon:delete')")
     @PostMapping("/delete")
     public ResBean delete(@RequestBody YoungGrouponRules youngGrouponRules) {
         Integer id = youngGrouponRules.getId();
@@ -108,6 +113,7 @@ public class AdminGrouponController extends BaseController {
     }
 
     @ApiOperation("团购活动")
+    @PreAuthorize("@pms.hasPermission('admin:groupon:listRecord')")
     @GetMapping("/listRecord")
     public ResBean listGroupOn(String goodsSn,
                                @RequestParam(defaultValue = "1") Integer page,

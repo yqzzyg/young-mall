@@ -10,6 +10,7 @@ import com.young.mall.service.MallCouponUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -34,6 +35,7 @@ public class AdminCouponController extends BaseController {
     private MallCouponUserService mallCouponUserService;
 
     @ApiOperation("分页查询优惠券")
+    @PreAuthorize("@pms.hasPermission('admin:coupon:list')")
     @GetMapping("/list")
     public ResBean list(String name, Short type,
                         Short status, @RequestParam(defaultValue = "1") Integer page,
@@ -52,6 +54,7 @@ public class AdminCouponController extends BaseController {
     }
 
     @ApiOperation("增加优惠券")
+    @PreAuthorize("@pms.hasPermission('admin:coupon:create')")
     @PostMapping("/create")
     public ResBean create(@Valid @RequestBody YoungCoupon youngCoupon) {
 
@@ -67,6 +70,7 @@ public class AdminCouponController extends BaseController {
     }
 
     @ApiOperation("优惠券详情")
+    @PreAuthorize("@pms.hasPermission('admin:coupon:read')")
     @GetMapping("/read")
     public ResBean read(@NotNull Integer id) {
 
@@ -78,6 +82,7 @@ public class AdminCouponController extends BaseController {
     }
 
     @ApiOperation("更新优惠券")
+    @PreAuthorize("@pms.hasPermission('admin:coupon:update')")
     @PostMapping("/update")
     public ResBean update(@RequestBody YoungCoupon youngCoupon) {
 
@@ -89,6 +94,7 @@ public class AdminCouponController extends BaseController {
     }
 
     @ApiOperation("删除优惠券")
+    @PreAuthorize("@pms.hasPermission('admin:coupon:delete')")
     @PostMapping("/delete")
     public ResBean delete(@RequestBody YoungCoupon youngCoupon) {
         Optional<Integer> optional = mallCouponService.delete(youngCoupon.getId());
@@ -99,6 +105,7 @@ public class AdminCouponController extends BaseController {
     }
 
     @ApiOperation("查询优惠券用户")
+    @PreAuthorize("@pms.hasPermission('admin:coupon:userList')")
     @GetMapping("/userList")
     public ResBean userList(Integer userId, Integer couponId, Short status,
                             @RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer limit,

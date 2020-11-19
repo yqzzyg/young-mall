@@ -8,6 +8,7 @@ import com.young.mall.service.OrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -31,6 +32,7 @@ public class OrderController extends BaseController {
 
 
     @ApiOperation("订单列表")
+    @PreAuthorize("@pms.hasPermission('admin:order:list')")
     @GetMapping("/list")
     public ResBean list(Integer userId, String orderSn,
                         @RequestParam(required = false) List<Short> orderStatusArray,
@@ -50,6 +52,7 @@ public class OrderController extends BaseController {
 
 
     @ApiOperation("订单详情")
+    @PreAuthorize("@pms.hasPermission('admin:order:detail')")
     @GetMapping("/detail")
     public ResBean detail(@NotNull @RequestParam("id") Integer id) {
         logger.info("订单详情接口入参：{}", id);
@@ -63,6 +66,7 @@ public class OrderController extends BaseController {
     }
 
     @ApiOperation("订单退款")
+    @PreAuthorize("@pms.hasPermission('admin:order:refund')")
     @PostMapping("/refund")
     public ResBean refund(@Valid @RequestBody RefundVo refundVo) {
 

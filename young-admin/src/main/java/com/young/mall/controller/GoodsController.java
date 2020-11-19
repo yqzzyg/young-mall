@@ -9,6 +9,7 @@ import com.young.mall.service.GoodsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -32,6 +33,7 @@ public class GoodsController extends BaseController {
 
 
     @ApiOperation("分页查询商品")
+    @PreAuthorize("@pms.hasPermission('admin:goods:list')")
     @GetMapping("/list")
     public ResBean list(String goodsSn, String name,
                         @RequestParam(defaultValue = "1") Integer page,
@@ -50,6 +52,7 @@ public class GoodsController extends BaseController {
     }
 
     @ApiOperation("商品分类和品牌")
+    @PreAuthorize("@pms.hasPermission('admin:goods:catAndBrand')")
     @GetMapping("/catAndBrand")
     public ResBean catAndBrand() {
         Optional<Map> map = goodsService.catAndBrand();
@@ -58,6 +61,7 @@ public class GoodsController extends BaseController {
     }
 
     @ApiOperation("商品详情")
+    @PreAuthorize("@pms.hasPermission('admin:goods:detail')")
     @GetMapping("/detail")
     public ResBean detail(@NotNull @RequestParam("id") Integer id) {
         Optional<Map> detail = goodsService.detail(id);
@@ -68,6 +72,7 @@ public class GoodsController extends BaseController {
     }
 
     @ApiOperation("更新商品")
+    @PreAuthorize("@pms.hasPermission('admin:goods:update')")
     @PostMapping("/update")
     public ResBean update(@RequestBody YoungGoods goods) {
 
@@ -75,6 +80,7 @@ public class GoodsController extends BaseController {
     }
 
     @ApiOperation("删除商品")
+    @PreAuthorize("@pms.hasPermission('admin:goods:delete')")
     @PostMapping("/delete")
     public ResBean delete(@RequestBody YoungGoods youngGoods) {
         Optional<Integer> optional = goodsService.delete(youngGoods);
@@ -85,6 +91,7 @@ public class GoodsController extends BaseController {
     }
 
     @ApiOperation("创建商品")
+    @PreAuthorize("@pms.hasPermission('admin:goods:create')")
     @PostMapping("/create")
     public ResBean create(@RequestBody GoodsArguments goodsArguments) {
         goodsService.create(goodsArguments);
