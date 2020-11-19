@@ -31,17 +31,16 @@ public class PermissionService {
             return false;
         }
         final Iterator<? extends GrantedAuthority> iterator = authentication.getAuthorities().iterator();
-        boolean contains = authentication.getAuthorities().contains("*");
-
-        boolean flag = false;
         while (iterator.hasNext()) {
             String per = iterator.next().toString();
             if (per.equals("*")) {
                 return true;
             }
-            flag = PatternMatchUtils.simpleMatch(permission, per);
+            if (PatternMatchUtils.simpleMatch(permission, per)) {
+                return true;
+            }
         }
-        return flag;
+        return false;
         /*return authentication
                 .getAuthorities()
                 .stream()
