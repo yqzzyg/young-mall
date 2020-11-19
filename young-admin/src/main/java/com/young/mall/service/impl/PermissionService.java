@@ -6,7 +6,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.PatternMatchUtils;
-import org.springframework.util.StringUtils;
+
+import java.util.Iterator;
 
 /**
  * @Description: 接口权限判断工具
@@ -29,11 +30,23 @@ public class PermissionService {
         if (authentication == null) {
             return false;
         }
-        return authentication
+        final Iterator<? extends GrantedAuthority> iterator = authentication.getAuthorities().iterator();
+        boolean contains = authentication.getAuthorities().contains("*");
+
+        boolean flag = false;
+        while (iterator.hasNext()) {
+            String per = iterator.next().toString();
+            if (per.equals("*")) {
+                return true;
+            }
+            flag = PatternMatchUtils.simpleMatch(permission, per);
+        }
+        return flag;
+        /*return authentication
                 .getAuthorities()
                 .stream()
                 .map(GrantedAuthority::getAuthority)
                 .filter(StringUtils::hasText)
-                .anyMatch(x -> PatternMatchUtils.simpleMatch(permission, x));
+                .anyMatch(x -> PatternMatchUtils.simpleMatch(permission, x));*/
     }
 }
