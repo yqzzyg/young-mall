@@ -3,6 +3,7 @@ package com.young.mall.controller;
 import com.young.db.entity.YoungRole;
 import com.young.mall.common.CommonPage;
 import com.young.mall.common.ResBean;
+import com.young.mall.service.AdminPermissionsService;
 import com.young.mall.service.AdminRoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,6 +26,9 @@ public class AdminRoleController extends BaseController {
 
     @Autowired
     private AdminRoleService adminRoleService;
+
+    @Autowired
+    private AdminPermissionsService adminPermissionsService;
 
     @ApiOperation("查询所有角色")
     @GetMapping("/options")
@@ -102,5 +106,17 @@ public class AdminRoleController extends BaseController {
             return ResBean.failed("删除失败");
         }
         return ResBean.success("删除成功");
+    }
+
+    @ApiOperation("管理员的权限情况")
+    @GetMapping("/permissions")
+    public ResBean getPermissions(Integer roleId) {
+        List<String> permissionsList = adminPermissionsService.getPermissionsList(roleId);
+        //list转Set
+        Set<String> permissions = new HashSet<>(permissionsList);
+        Map<String, Object> data = new HashMap<>(2);
+//        data.put("systemPermissions", optional.get());
+        data.put("assignedPermissions", permissions);
+        return ResBean.success(data);
     }
 }
