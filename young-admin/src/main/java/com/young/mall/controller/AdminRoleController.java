@@ -1,6 +1,7 @@
 package com.young.mall.controller;
 
 import com.young.db.entity.YoungRole;
+import com.young.db.pojo.RolePermissionPojo;
 import com.young.mall.common.CommonPage;
 import com.young.mall.common.ResBean;
 import com.young.mall.service.AdminPermissionsService;
@@ -112,10 +113,11 @@ public class AdminRoleController extends BaseController {
     @GetMapping("/permissions")
     public ResBean getPermissions(Integer roleId) {
         List<String> permissionsList = adminPermissionsService.getPermissionsList(roleId);
+        List<RolePermissionPojo> listRolePermission = adminPermissionsService.listRolePermission();
         //list转Set
         Set<String> permissions = new HashSet<>(permissionsList);
         Map<String, Object> data = new HashMap<>(2);
-//        data.put("systemPermissions", optional.get());
+        data.put("systemPermissions", listRolePermission);
         data.put("assignedPermissions", permissions);
         return ResBean.success(data);
     }

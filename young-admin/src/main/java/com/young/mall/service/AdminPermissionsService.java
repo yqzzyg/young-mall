@@ -1,6 +1,7 @@
 package com.young.mall.service;
 
 import com.young.db.entity.YoungPermission;
+import com.young.db.pojo.RolePermissionPojo;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,4 +28,11 @@ public interface AdminPermissionsService {
      * @return
      */
     List<String> getPermissionsList(Integer roleId);
+
+    /**
+     * 查询嵌套权限
+     *
+     * @return
+     */
+    List<RolePermissionPojo> listRolePermission();
 }

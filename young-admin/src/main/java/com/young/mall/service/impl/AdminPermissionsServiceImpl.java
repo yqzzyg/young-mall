@@ -3,7 +3,8 @@ package com.young.mall.service.impl;
 import com.young.db.dao.YoungPermissionMapper;
 import com.young.db.entity.YoungPermission;
 import com.young.db.entity.YoungPermissionExample;
-import com.young.mall.common.ResBean;
+import com.young.db.mapper.RolePermissionMapper;
+import com.young.db.pojo.RolePermissionPojo;
 import com.young.mall.exception.Asserts;
 import com.young.mall.service.AdminPermissionsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +25,21 @@ public class AdminPermissionsServiceImpl implements AdminPermissionsService {
     @Autowired
     private YoungPermissionMapper youngPermissionMapper;
 
+    @Autowired
+    private RolePermissionMapper rolePermissionMapper;
+
     @Override
     public Optional<List<YoungPermission>> getPermissions(Integer roleId) {
 
         YoungPermissionExample example = new YoungPermissionExample();
         example.createCriteria().andRoleIdEqualTo(roleId).andDeletedEqualTo(false);
         List<YoungPermission> permissionList = youngPermissionMapper.selectByExample(example);
+        for (YoungPermission permission : permissionList) {
+            //如果是管理员直接返回所有权限
+            if (permission.getPermission().equals("*")) {
+                return Optional.ofNullable(youngPermissionMapper.selectByExample(new YoungPermissionExample()));
+            }
+        }
         return Optional.ofNullable(permissionList);
     }
 
@@ -43,5 +53,13 @@ public class AdminPermissionsServiceImpl implements AdminPermissionsService {
                 .map(youngPermission -> youngPermission.getPermission())
                 .collect(Collectors.toList());
         return permissionList;
+    }
+
+    @Override
+    public List<RolePermissionPojo> listRolePermission() {
+
+        List<RolePermissionPojo> listRolePermission = rolePermissionMapper.listRolePermission();
+
+        return listRolePermission;
     }
 }

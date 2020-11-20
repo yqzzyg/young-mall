@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.young.db.mapper.RolePermissionMapper">
+
+    <resultMap id="rolePermissionList" type="com.young.db.pojo.RolePermissionPojo">
+        <result property="id" column="idA"></result>
+        <result property="label" column="labelA"></result>
+        <collection property="children" ofType="com.young.db.pojo.RolePermissionChildren"
+                    javaType="ArrayList">
+            <result property="id" column="idB"></result>
+            <result property="label" column="labelB"></result>
+            <collection property="children" ofType="com.young.db.pojo.RolePermissionChildrenLabel"
+                        javaType="ArrayList">
+                <result property="id" column="permission"></result>
+                <result property="label" column="labelC"></result>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <select id="listRolePermission" resultMap="rolePermissionList">
+            SELECT
+            a1.label idA,
+            a1.label labelA,
+            a2.label idB,
+            a2.label labelB,
+            a3.label labelC,
+            b1.permission
+            FROM young_role_permission a1
+            LEFT JOIN young_role_permission a2 on a1.id=a2.pid
+            LEFT JOIN young_role_permission a3 ON a2.id = a3.pid
+            LEFT JOIN young_permission b1 ON a3.permission_id = b1.id
+            WHERE a1.level=1
+    </select>
+</mapper>
