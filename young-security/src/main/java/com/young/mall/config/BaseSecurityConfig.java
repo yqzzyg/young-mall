@@ -39,6 +39,8 @@ public class BaseSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(
                         "/admin/auth/login",
+                        //小程序首页
+                        "/wx/home/*",
                         "/doc.html",
                         "/swagger-resources/**",
                         "/swagger/**",
