@@ -1,6 +1,7 @@
 package com.young.mall.service;
 
 import com.young.db.entity.YoungCategory;
+import com.young.db.pojo.CategoryAndGoodsPojo;
 
 import java.util.List;
 
@@ -17,5 +18,12 @@ public interface ClientCategoryService {
      * @return
      */
     List<YoungCategory> queryLevelFirst();
+
+    /**
+     * 查询商品及其所属分类
+     *
+     * @return
+     */
+    List<CategoryAndGoodsPojo> getCategoryAndGoodsPojo(int page,int size);
 
 }

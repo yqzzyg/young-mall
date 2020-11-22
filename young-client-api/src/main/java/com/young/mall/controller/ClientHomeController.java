@@ -1,6 +1,7 @@
 package com.young.mall.controller;
 
 import com.young.db.entity.*;
+import com.young.db.pojo.CategoryAndGoodsPojo;
 import com.young.mall.common.ResBean;
 import com.young.mall.service.*;
 import com.young.mall.system.SystemConfig;
@@ -16,7 +17,7 @@ import java.util.Map;
 import java.util.concurrent.*;
 
 /**
- * @Description:
+ * @Description: 微信小程序首页
  * @Author: yqz
  * @CreateDate: 2020/11/21 20:24
  */
@@ -75,6 +76,9 @@ public class ClientHomeController {
         Callable<List<Map<String, Object>>> grouponListCallable = () -> grouponRulesService.queryList(0, 6);
         //活动专场
         Callable<List<YoungTopic>> topicListCallable = () -> topicService.queryList(0, SystemConfig.getTopicLimit());
+        //首页底部商品及其所属分类
+        Callable<List<CategoryAndGoodsPojo>> floorGoodsListCallable = () -> clientCategoryService.getCategoryAndGoodsPojo(0, SystemConfig.getCatlogListLimit());
+
 
         FutureTask<List<YoungAd>> bannerTask = new FutureTask<>(bannerListCallable);
         FutureTask<List<YoungCategory>> channelTask = new FutureTask<>(channelListCallable);
@@ -86,6 +90,7 @@ public class ClientHomeController {
 
         FutureTask<List<Map<String, Object>>> grouponListTask = new FutureTask<>(grouponListCallable);
         FutureTask<List<YoungTopic>> topicListTask = new FutureTask<>(topicListCallable);
+        FutureTask<List<CategoryAndGoodsPojo>> floorGoodsListTask = new FutureTask<>(floorGoodsListCallable);
 
         executorService.submit(bannerTask);
         executorService.submit(channelTask);
@@ -96,6 +101,7 @@ public class ClientHomeController {
         executorService.submit(brandListTask);
         executorService.submit(grouponListTask);
         executorService.submit(topicListTask);
+        executorService.submit(floorGoodsListTask);
 
 
         Map<String, Object> entity = new HashMap<>();
@@ -109,6 +115,7 @@ public class ClientHomeController {
             entity.put("brandList", brandListTask.get());
             entity.put("grouponList", grouponListTask.get());
             entity.put("topicList", topicListTask.get());
+            entity.put("floorGoodsList", floorGoodsListTask.get());
 
             //缓存数据
         } catch (Exception e) {

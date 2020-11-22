@@ -12,6 +12,22 @@
         </collection>
     </resultMap>
 
+    <resultMap id="categoryAndGoods" type="com.young.db.pojo.CategoryAndGoodsPojo">
+        <result property="id" column="id"></result>
+        <result property="name" column="name"></result>
+        <collection property="goodsList" ofType="com.young.db.pojo.CategoryAndGoodsChildrenPojo"
+                    javaType="ArrayList">
+            <result property="id" column="gid"></result>
+            <result property="name" column="gname"></result>
+            <result property="brief" column="brief"></result>
+            <result property="picUrl" column="pic_url"></result>
+            <result property="isHot" column="is_hot"></result>
+            <result property="isNew" column="is_new"></result>
+            <result property="counterPrice" column="counter_price"></result>
+            <result property="retailPrice" column="retail_price"></result>
+        </collection>
+    </resultMap>
+
     <select id="selectCatAndBrand" resultMap="CatAndBrand">
         SELECT a.id,a.`name`,
         b.id `value`,b.`name` `label` FROM young_category a
@@ -19,6 +35,16 @@
         <where>
             a.LEVEL='L1' AND b.deleted = 0
         </where>
+    </select>
+
+    <select id="getCategoryAndGoods" resultMap="categoryAndGoods">
+        SELECT
+        L1.id,L1.`name`,
+        yg.id gid,yg.`name` gname,yg.brief,yg.pic_url,yg.is_hot,yg.is_new,yg.counter_price,yg.retail_price
+        FROM young_category L1
+        INNER JOIN young_category L2 ON L1.id = L2.pid
+        INNER JOIN young_goods yg ON yg.category_id = L2.id
+        WHERE L1.`level`='L1' AND L1.`name` != '推荐' AND L1.deleted =FALSE
     </select>
 
 </mapper>

@@ -1,6 +1,7 @@
 package com.young.db.mapper;
 
 import com.young.db.pojo.CatAndBrand;
+import com.young.db.pojo.CategoryAndGoodsPojo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -17,4 +18,11 @@ public interface CategoryMapper {
      * @return list
      */
     List<CatAndBrand> selectCatAndBrand();
+
+    /**
+     * 查询商品分类以及分类对应商品
+     *
+     * @return
+     */
+    List<CategoryAndGoodsPojo> getCategoryAndGoods();
 }
