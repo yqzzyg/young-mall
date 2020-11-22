@@ -13,7 +13,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 @EnableKnife4j
-public class WxSwaggerConfig extends BaseSwaggerConfig {
+public class ClientSwaggerConfig extends BaseSwaggerConfig {
     @Override
     public void swaggerApiInfo(SwaggerApiInfo swaggerApiInfo) {
         swaggerApiInfo.setApiBasePackage("com.young.mall.controller");

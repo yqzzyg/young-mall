@@ -3,7 +3,7 @@ package com.young.mall.service.impl;
 import com.young.db.dao.YoungAdMapper;
 import com.young.db.entity.YoungAd;
 import com.young.db.entity.YoungAdExample;
-import com.young.mall.service.WxAdService;
+import com.young.mall.service.ClientAdService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ import java.util.List;
  * @CreateDate: 2020/11/21 20:35
  */
 @Service
-public class WxAdServiceImpl implements WxAdService {
+public class ClientAdServiceImpl implements ClientAdService {
 
     @Autowired
     private YoungAdMapper youngAdMapper;

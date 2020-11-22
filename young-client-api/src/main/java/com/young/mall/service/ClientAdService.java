@@ -9,7 +9,7 @@ import java.util.List;
  * @Author: yqz
  * @CreateDate: 2020/11/21 20:34
  */
-public interface WxAdService {
+public interface ClientAdService {
 
     /**
      * 查询所有广告

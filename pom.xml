@@ -19,7 +19,7 @@
         <module>young-common</module>
         <module>young-db</module>
         <module>young-security</module>
-        <module>young-wx-api</module>
+        <module>young-client-api</module>
     </modules>
     <properties>
         <java.version>1.8</java.version>
@@ -39,7 +39,6 @@
         <spring-data-commons.version>2.3.0.RELEASE</spring-data-commons.version>
         <jjwt.version>0.9.0</jjwt.version>
         <knife4j.version>2.0.4</knife4j.version>
-        <minio.version>7.1.0</minio.version>
         <redisson.version>3.11.3</redisson.version>
         <young-db.version>0.0.1-SNAPSHOT</young-db.version>
         <young-common.version>0.0.1-SNAPSHOT</young-common.version>
@@ -53,7 +52,7 @@
         <aliyunOSS.version>3.10.2</aliyunOSS.version>
         <tencentOSS.version>5.6.24</tencentOSS.version>
         <qiniuOSS.version>7.3.0</qiniuOSS.version>
-        <minioOSS.version>7.1.0</minioOSS.version>
+        <minio.version>7.1.0</minio.version>
     </properties>
 
     <dependencyManagement>
@@ -62,7 +61,7 @@
             <dependency>
                 <groupId>io.minio</groupId>
                 <artifactId>minio</artifactId>
-                <version>${minioOSS.version}</version>
+                <version>${minio.version}</version>
             </dependency>
             <!--七牛云-->
             <dependency>
@@ -223,12 +222,7 @@
                 <artifactId>jjwt</artifactId>
                 <version>${jjwt.version}</version>
             </dependency>
-            <!--MinIO JAVA SDK-->
-            <dependency>
-                <groupId>io.minio</groupId>
-                <artifactId>minio</artifactId>
-                <version>${minio.version}</version>
-            </dependency>
+
         </dependencies>
     </dependencyManagement>
     <dependencies>

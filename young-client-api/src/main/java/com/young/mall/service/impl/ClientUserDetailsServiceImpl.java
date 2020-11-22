@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
  * @CreateDate: 2020/11/21 22:03
  */
 @Service
-public class WxUserDetailsServiceImpl implements UserDetailsService {
+public class ClientUserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     private YoungUserMapper youngUserMapper;

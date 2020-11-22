@@ -1,6 +1,6 @@
 package com.young.mall.config;
 
-import com.young.mall.service.impl.WxUserDetailsServiceImpl;
+import com.young.mall.service.impl.ClientUserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,10 +14,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  */
 @Configuration
 @EnableWebSecurity
-public class WxSecurityConfig extends BaseSecurityConfig{
+public class ClientSecurityConfig extends BaseSecurityConfig{
 
     @Autowired
-    private WxUserDetailsServiceImpl detailsService;
+    private ClientUserDetailsServiceImpl detailsService;
 
     @Bean
     public UserDetailsService userDetailsService() {

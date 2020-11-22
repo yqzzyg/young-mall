@@ -8,9 +8,9 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <groupId>com.young.mall</groupId>
-    <artifactId>young-wx-api</artifactId>
+    <artifactId>young-client-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>young-wx-api</name>
+    <name>young-client-api</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
