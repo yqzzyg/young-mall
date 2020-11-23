@@ -44,7 +44,7 @@
         FROM young_category L1
         INNER JOIN young_category L2 ON L1.id = L2.pid
         INNER JOIN young_goods yg ON yg.category_id = L2.id
-        WHERE L1.`level`='L1' AND L1.`name` != '推荐' AND L1.deleted =FALSE
+        WHERE L1.`level`='L1' AND L1.`name` != '推荐' AND L1.deleted =FALSE AND L2.deleted = FALSE AND yg.deleted = FALSE
     </select>
 
 </mapper>
