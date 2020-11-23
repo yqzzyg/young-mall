@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Map;
 
 /**
  * @Description: 用户端登录、注册相关
@@ -33,9 +34,7 @@ public class ClientAuthController {
 
     @ApiOperation("注册")
     @PostMapping("register")
-    public ResBean register(@Valid @RequestBody RegisterDto registerDto, HttpServletRequest request) {
-
-        ResBean result = clientUserService.register(registerDto, request);
-        return result;
+    public ResBean<Map<Object, Object>> register(@Valid @RequestBody RegisterDto registerDto, HttpServletRequest request) {
+        return clientUserService.register(registerDto, request);
     }
 }

@@ -1,5 +1,6 @@
 package com.young.mall.utils;
 
+
 import com.young.mall.domain.CaptchaItem;
 
 import java.time.LocalDateTime;

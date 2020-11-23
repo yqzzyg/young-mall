@@ -9,22 +9,27 @@ import com.young.db.entity.YoungUserExample;
 import com.young.mall.common.ResBean;
 import com.young.mall.constant.CommonConstants;
 import com.young.mall.domain.RegisterDto;
+import com.young.mall.domain.UserInfo;
 import com.young.mall.domain.enums.WxResponseCode;
 import com.young.mall.exception.Asserts;
+import com.young.mall.service.ClientCouponAssignService;
 import com.young.mall.service.ClientUserService;
 import com.young.mall.utils.CaptchaCodeManager;
 import com.young.mall.utils.IpUtil;
+import com.young.mall.utils.JwtTokenUtil;
 import com.young.mall.utils.RegexUtil;
 import me.chanjar.weixin.common.error.WxErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Description: 客户端用户相关业务
@@ -43,8 +48,15 @@ public class ClientUserServiceImpl implements ClientUserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private ClientCouponAssignService clientCouponAssignService;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
+    @Transactional
     @Override
-    public ResBean register(RegisterDto registerDto, HttpServletRequest request) {
+    public ResBean<Map<Object, Object>> register(RegisterDto registerDto, HttpServletRequest request) {
         //校验参数
         String openId = checkParams(registerDto);
 
@@ -52,6 +64,7 @@ public class ClientUserServiceImpl implements ClientUserService {
         YoungUser user = new YoungUser();
 
         BeanUtil.copyProperties(registerDto, user);
+        user.setPassword(passwd);
         user.setWeixinOpenid(openId);
         user.setAvatar(CommonConstants.DEFAULT_AVATAR);
         user.setNickname(registerDto.getUsername());
@@ -60,8 +73,23 @@ public class ClientUserServiceImpl implements ClientUserService {
         user.setStatus((byte) 0);
         user.setLastLoginTime(LocalDateTime.now());
         user.setLastLoginIp(IpUtil.client(request));
+        //用户信息存入数据库
+        Integer count = addUser(user);
 
-        return null;
+        // 给新用户发送注册优惠券
+        clientCouponAssignService.assignForRegister(user.getId());
+
+        // userInfo
+        UserInfo userInfo = new UserInfo();
+        userInfo.setNickName(registerDto.getUsername());
+        userInfo.setAvatarUrl(user.getAvatar());
+        // 4 生成自定义token
+
+        Map<Object, Object> result = new HashMap<Object, Object>();
+        result.put("token", UUID.randomUUID());
+        result.put("tokenExpire", new Date());
+        result.put("userInfo", userInfo);
+        return ResBean.success(result);
     }
 
     public String checkParams(RegisterDto registerDto) {
@@ -123,5 +151,13 @@ public class ClientUserServiceImpl implements ClientUserService {
         YoungUserExample example = new YoungUserExample();
         example.createCriteria().andWeixinOpenidEqualTo(openId).andDeletedEqualTo(false);
         return youngUserMapper.selectByExample(example);
+    }
+
+    @Override
+    public Integer addUser(YoungUser youngUser) {
+        youngUser.setAddTime(LocalDateTime.now());
+        youngUser.setUpdateTime(LocalDateTime.now());
+        int count = youngUserMapper.insertSelective(youngUser);
+        return count;
     }
 }

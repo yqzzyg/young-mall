@@ -45,4 +45,12 @@ public interface ClientUserService {
      * @return
      */
     List<YoungUser> getUserByOpenId(String openId);
+
+    /**
+     * 新增客户端用户
+     *
+     * @param youngUser
+     * @return
+     */
+    Integer addUser(YoungUser youngUser);
 }
