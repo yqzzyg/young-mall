@@ -1,9 +1,11 @@
-package com.young.mall.config.Aspect;
+package com.young.mall.config.aspect;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
 import cn.hutool.json.JSONUtil;
+import com.young.mall.domain.AdminUser;
 import com.young.mall.domain.MallLog;
+import com.young.mall.service.AuthService;
 import io.swagger.annotations.ApiOperation;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -11,6 +13,7 @@ import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,6 +39,9 @@ import java.util.Map;
 public class MallLogAspect {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    private AuthService authService;
 
     @Pointcut("execution(public * com.young.mall.controller.*.*(..)) || execution(public * com.young.mall.*.controller.*.*(..))")
     public void mallLog() {
@@ -71,7 +77,8 @@ public class MallLogAspect {
             ApiOperation log = method.getAnnotation(ApiOperation.class);
             mallLog.setDescription(log.value());
         }
-
+        //获取当前用户
+        AdminUser userInfo = authService.getUserInfo();
         Object parameter = getParameter(method, joinPoint.getArgs());
 
         long endTime = System.currentTimeMillis();
@@ -80,6 +87,7 @@ public class MallLogAspect {
         mallLog.setIp(request.getRemoteUser());
         mallLog.setMethod(request.getMethod());
         mallLog.setParameter(parameter);
+        mallLog.setUsername(userInfo.getUsername());
         mallLog.setResult(result);
         mallLog.setSpendTime(((int) (endTime - startTime)));
         mallLog.setStartTime(startTime);
@@ -91,7 +99,7 @@ public class MallLogAspect {
         logMap.put("parameter", mallLog.getParameter());
         logMap.put("spendTime", mallLog.getSpendTime());
         logMap.put("description", mallLog.getDescription());
-        logger.info("接口切面日志：{}", JSONUtil.toJsonStr(mallLog));
+        logger.info("后台系统接口切面日志：{}", JSONUtil.toJsonStr(mallLog));
         return result;
     }
 

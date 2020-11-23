@@ -1,20 +1,15 @@
 package com.young.mall.controller;
 
-import com.young.db.entity.*;
-import com.young.db.pojo.CategoryAndGoodsPojo;
 import com.young.mall.common.ResBean;
 import com.young.mall.service.*;
-import com.young.mall.system.SystemConfig;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.*;
 
 /**
  * @Description: 微信小程序首页
@@ -27,104 +22,13 @@ import java.util.concurrent.*;
 public class ClientHomeController {
 
     @Autowired
-    private ClientAdService clientAdService;
+    private WxHomeService wxHomeService;
 
-    @Autowired
-    private ClientCategoryService clientCategoryService;
-
-    @Autowired
-    private ClientCouponService clientCouponService;
-
-    @Autowired
-    private ClientArticleService clientArticleService;
-
-    @Autowired
-    private ClientGoodsService clientGoodsService;
-
-    @Autowired
-    private ClientBrandService clientBrandService;
-
-    @Autowired
-    private ClientGrouponRulesService grouponRulesService;
-
-    @Autowired
-    private ClientTopicService topicService;
-
+    @ApiOperation("查询客户端主页展示数据")
     @GetMapping("/index")
     public ResBean index(Integer userId) {
-
-        ExecutorService executorService = Executors.newFixedThreadPool(10);
-        //轮播图
-        Callable<List<YoungAd>> bannerListCallable = () -> clientAdService.queryIndex();
-        //首页九宫格
-        Callable<List<YoungCategory>> channelListCallable = () -> clientCategoryService.queryLevelFirst();
-        //优惠券
-        Callable<List<YoungCoupon>> couponListCallable;
-        if (userId == null) {
-            couponListCallable = () -> clientCouponService.queryList(0, 3);
-        } else {
-            couponListCallable = () -> clientCouponService.queryAvailableList(userId, 0, 3);
-        }
-        Callable<List<YoungArticle>> articleListCallable = () -> clientArticleService.queryList(0, 5, "add_time", "desc");
-        //首页新品首发模块
-        Callable<List<YoungGoods>> newGoodsListCallable = () -> clientGoodsService.queryByNew(0, SystemConfig.getNewLimit());
-        //首页人气推荐
-        Callable<List<YoungGoods>> hotGoodsListCallable = () -> clientGoodsService.queryByHot(0, SystemConfig.getHotLimit());
-        //首页品牌厂商直供
-        Callable<List<YoungBrand>> brandListCallable = () -> clientBrandService.queryBrand(0, SystemConfig.getBrandLimit());
-        //团购专区
-        Callable<List<Map<String, Object>>> grouponListCallable = () -> grouponRulesService.queryList(0, 6);
-        //活动专场
-        Callable<List<YoungTopic>> topicListCallable = () -> topicService.queryList(0, SystemConfig.getTopicLimit());
-        //首页底部商品及其所属分类
-        // Callable<List<CategoryAndGoodsPojo>> floorGoodsListCallable = () -> clientCategoryService.getCategoryAndGoodsPojo(0, SystemConfig.getCatlogListLimit());
-        Callable<List<Map<String, Object>>> floorGoodsListCallable = () -> clientCategoryService.getCategoryList(0, SystemConfig.getCatlogListLimit());
-
-
-        FutureTask<List<YoungAd>> bannerTask = new FutureTask<>(bannerListCallable);
-        FutureTask<List<YoungCategory>> channelTask = new FutureTask<>(channelListCallable);
-        FutureTask<List<YoungCoupon>> couponListTask = new FutureTask<>(couponListCallable);
-        FutureTask<List<YoungArticle>> articleTask = new FutureTask<>(articleListCallable);
-        FutureTask<List<YoungGoods>> newGoodsListTask = new FutureTask<>(newGoodsListCallable);
-        FutureTask<List<YoungGoods>> hotGoodsListTask = new FutureTask<>(hotGoodsListCallable);
-        FutureTask<List<YoungBrand>> brandListTask = new FutureTask<>(brandListCallable);
-
-        FutureTask<List<Map<String, Object>>> grouponListTask = new FutureTask<>(grouponListCallable);
-        FutureTask<List<YoungTopic>> topicListTask = new FutureTask<>(topicListCallable);
-        FutureTask<List<Map<String, Object>>> floorGoodsListTask = new FutureTask<>(floorGoodsListCallable);
-
-        executorService.submit(bannerTask);
-        executorService.submit(channelTask);
-        executorService.submit(couponListTask);
-        executorService.submit(articleTask);
-        executorService.submit(newGoodsListTask);
-        executorService.submit(hotGoodsListTask);
-        executorService.submit(brandListTask);
-        executorService.submit(grouponListTask);
-        executorService.submit(topicListTask);
-        executorService.submit(floorGoodsListTask);
-
-
-        Map<String, Object> entity = new HashMap<>();
-        try {
-            entity.put("banner", bannerTask.get());
-            entity.put("channel", channelTask.get());
-            entity.put("couponList", couponListTask.get());
-            entity.put("articles", articleTask.get());
-            entity.put("newGoodsList", newGoodsListTask.get());
-            entity.put("hotGoodsList", hotGoodsListTask.get());
-            entity.put("brandList", brandListTask.get());
-            entity.put("grouponList", grouponListTask.get());
-            entity.put("topicList", topicListTask.get());
-            entity.put("floorGoodsList", floorGoodsListTask.get());
-
-            //缓存数据
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            executorService.shutdown();
-        }
-        return ResBean.success(entity);
+        Map<String, Object> homeIndexData = wxHomeService.getIndexData(userId);
+        return ResBean.success(homeIndexData);
     }
 
 }
