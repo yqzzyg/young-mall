@@ -77,7 +77,8 @@ public class ClientHomeController {
         //活动专场
         Callable<List<YoungTopic>> topicListCallable = () -> topicService.queryList(0, SystemConfig.getTopicLimit());
         //首页底部商品及其所属分类
-        Callable<List<CategoryAndGoodsPojo>> floorGoodsListCallable = () -> clientCategoryService.getCategoryAndGoodsPojo(0, SystemConfig.getCatlogListLimit());
+        // Callable<List<CategoryAndGoodsPojo>> floorGoodsListCallable = () -> clientCategoryService.getCategoryAndGoodsPojo(0, SystemConfig.getCatlogListLimit());
+        Callable<List<Map<String, Object>>> floorGoodsListCallable = () -> clientCategoryService.getCategoryList(0, SystemConfig.getCatlogListLimit());
 
 
         FutureTask<List<YoungAd>> bannerTask = new FutureTask<>(bannerListCallable);
@@ -90,7 +91,7 @@ public class ClientHomeController {
 
         FutureTask<List<Map<String, Object>>> grouponListTask = new FutureTask<>(grouponListCallable);
         FutureTask<List<YoungTopic>> topicListTask = new FutureTask<>(topicListCallable);
-        FutureTask<List<CategoryAndGoodsPojo>> floorGoodsListTask = new FutureTask<>(floorGoodsListCallable);
+        FutureTask<List<Map<String, Object>>> floorGoodsListTask = new FutureTask<>(floorGoodsListCallable);
 
         executorService.submit(bannerTask);
         executorService.submit(channelTask);

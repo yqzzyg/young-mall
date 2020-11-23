@@ -44,8 +44,18 @@ public class ClientGoodsServiceImpl implements ClientGoodsService {
         example.createCriteria().andIsHotEqualTo(true).andIsOnSaleEqualTo(true).andDeletedEqualTo(false);
         example.setOrderByClause("browse desc");
 
-        PageHelper.startPage(page,size);
+        PageHelper.startPage(page, size);
         List<YoungGoods> newGoodsList = youngGoodsMapper.selectByExampleSelective(example, columns);
         return newGoodsList;
+    }
+
+    @Override
+    public List<YoungGoods> getGoodByCategoryId(List<Integer> cid, int page, int size) {
+        YoungGoodsExample example = new YoungGoodsExample();
+        example.or().andCategoryIdIn(cid).andIsOnSaleEqualTo(true).andDeletedEqualTo(false);
+        example.setOrderByClause("sort_order  asc");
+        PageHelper.startPage(page, size);
+        List<YoungGoods> goodsList = youngGoodsMapper.selectByExampleSelective(example, columns);
+        return goodsList;
     }
 }

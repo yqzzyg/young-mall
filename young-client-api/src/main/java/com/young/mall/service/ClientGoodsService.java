@@ -29,4 +29,14 @@ public interface ClientGoodsService {
      * @return
      */
     List<YoungGoods> queryByHot(int page, int size);
+
+    /**
+     * 根据商品分类 id 查询该分类下的商品
+     *
+     * @param cid
+     * @param page
+     * @param size
+     * @return
+     */
+    List<YoungGoods> getGoodByCategoryId(List<Integer> cid, int page, int size);
 }
