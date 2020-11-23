@@ -26,7 +26,7 @@ public class ClientHomeController {
 
     @ApiOperation("查询客户端主页展示数据")
     @GetMapping("/index")
-    public ResBean index(Integer userId) {
+    public ResBean<Map<String, Object>> index(Integer userId) {
         Map<String, Object> homeIndexData = wxHomeService.getIndexData(userId);
         return ResBean.success(homeIndexData);
     }
