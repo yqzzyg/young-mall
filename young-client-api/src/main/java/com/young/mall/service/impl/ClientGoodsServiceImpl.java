@@ -58,4 +58,11 @@ public class ClientGoodsServiceImpl implements ClientGoodsService {
         List<YoungGoods> goodsList = youngGoodsMapper.selectByExampleSelective(example, columns);
         return goodsList;
     }
+
+    @Override
+    public Integer getGoodsCountOnSale() {
+        YoungGoodsExample example = new YoungGoodsExample();
+        example.createCriteria().andIsOnSaleEqualTo(true).andDeletedEqualTo(false);
+        return (int) youngGoodsMapper.countByExample(example);
+    }
 }

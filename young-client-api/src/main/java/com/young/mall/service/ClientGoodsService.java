@@ -39,4 +39,11 @@ public interface ClientGoodsService {
      * @return
      */
     List<YoungGoods> getGoodByCategoryId(List<Integer> cid, int page, int size);
+
+    /**
+     * 查询在售商品的数量
+     *
+     * @return
+     */
+    Integer getGoodsCountOnSale();
 }

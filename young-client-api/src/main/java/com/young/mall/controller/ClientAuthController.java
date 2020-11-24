@@ -23,7 +23,7 @@ import java.util.Map;
  * @Author: yqz
  * @CreateDate: 2020/11/23 15:40
  */
-@Api(tags = "ClientAuthController", description = "用户端登录")
+@Api(tags = "ClientAuthController")
 @RestController
 @RequestMapping("/wx/auth")
 public class ClientAuthController {
