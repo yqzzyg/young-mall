@@ -1,6 +1,7 @@
 package com.young.mall.controller;
 
 import com.young.mall.common.ResBean;
+import com.young.mall.domain.ClientLoginDto;
 import com.young.mall.domain.ClientUserDto;
 import com.young.mall.service.ClientAuthService;
 import io.swagger.annotations.Api;
@@ -34,15 +35,17 @@ public class ClientAuthController {
 
     @ApiOperation("注册")
     @PostMapping("register")
-    public ResBean<Map<Object, Object>> register(@Valid @RequestBody ClientUserDto clientUserDto, HttpServletRequest request) {
+    public ResBean<Map<String, Object>> register(@Valid @RequestBody ClientUserDto clientUserDto, HttpServletRequest request) {
         logger.info("客户端注册入参：{}", clientUserDto);
 
         return clientAuthService.register(clientUserDto, request);
     }
 
-    @ApiOperation("登录")
+    @ApiOperation("账户密码方式登录")
     @PostMapping("/login")
-    public ResBean login() {
-        return ResBean.success("成功");
+    public ResBean<Map<String, Object>> login(@Valid @RequestBody ClientLoginDto clientLoginDto, HttpServletRequest request) {
+        logger.info("客户端登录入参：{}", clientLoginDto);
+
+        return clientAuthService.login(clientLoginDto, request);
     }
 }

@@ -3,10 +3,10 @@ package com.young.mall.service.impl;
 import cn.binarywang.wx.miniapp.api.WxMaService;
 import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
 import cn.hutool.core.bean.BeanUtil;
-import com.young.db.dao.YoungUserMapper;
 import com.young.db.entity.YoungUser;
 import com.young.mall.common.ResBean;
 import com.young.mall.constant.CommonConstants;
+import com.young.mall.domain.ClientLoginDto;
 import com.young.mall.domain.ClientUserDetails;
 import com.young.mall.domain.ClientUserDto;
 import com.young.mall.domain.UserInfo;
@@ -24,14 +24,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +62,9 @@ public class ClientAuthServiceImpl implements ClientAuthService {
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @Value("${jwt.tokenHead}")
     private String tokenHead;
@@ -95,7 +101,42 @@ public class ClientAuthServiceImpl implements ClientAuthService {
         // 4 生成自定义token
         ClientUserDetails userDetails = new ClientUserDetails(user);
         String token = jwtTokenUtil.generateToken(userDetails);
-        Map<String, Object> result = new HashMap<>(2);
+        Map<String, Object> result = new HashMap<>(4);
+        result.put("token", token);
+        result.put("tokenHead", tokenHead);
+        result.put("userInfo", userInfo);
+        return ResBean.success(result);
+    }
+
+    @Override
+    public ResBean<Map<String, Object>> login(ClientLoginDto clientLoginDto, HttpServletRequest request) {
+
+        logger.debug("进入AuthServiceImpl login方法,入参：username：{}，password：{}", clientLoginDto.getUsername(), clientLoginDto.getPassword());
+        // 1 创建UsernamePasswordAuthenticationToken
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(clientLoginDto.getUsername(), clientLoginDto.getPassword());
+        // 2 认证。调用UserDetailsServiceImpl.loadUserByUsername
+        Authentication authenticate = null;
+        try {
+            authenticate = this.authenticationManager.authenticate(authenticationToken);
+        } catch (Exception e) {
+            if (e instanceof BadCredentialsException) {
+                Asserts.fail("密码错误");
+            } else {
+                Asserts.fail("用户名错误");
+            }
+        }
+        // 3 保存认证信息
+        SecurityContextHolder.getContext().setAuthentication(authenticate);
+        // 4 生成自定义token
+        ClientUserDetails userDetails = (ClientUserDetails) authenticate.getPrincipal();
+        YoungUser youngUser = userDetails.getYoungUser();
+
+        String token = jwtTokenUtil.generateToken(userDetails);
+        Map<String, Object> result = new HashMap<>(4);
+
+        UserInfo userInfo = new UserInfo();
+        userInfo.setNickName(youngUser.getUsername());
+        userInfo.setAvatarUrl(youngUser.getAvatar());
         result.put("token", token);
         result.put("tokenHead", tokenHead);
         result.put("userInfo", userInfo);
@@ -113,7 +154,7 @@ public class ClientAuthServiceImpl implements ClientAuthService {
             logger.info("{}，注册失败：{}", registerDto, WxResponseCode.AUTH_INVALID_MOBILE);
             Asserts.fail(WxResponseCode.AUTH_INVALID_MOBILE);
         }
-        List<YoungUser> userList =clientUserService.getUserByName(registerDto.getUsername());
+        List<YoungUser> userList = clientUserService.getUserByName(registerDto.getUsername());
         if (userList.size() > 0) {
             logger.info("{}，注册失败：{}", registerDto, WxResponseCode.AUTH_NAME_REGISTERED);
             Asserts.fail(WxResponseCode.AUTH_NAME_REGISTERED);
