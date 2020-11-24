@@ -34,7 +34,15 @@ public class ClientAuthController {
 
     @ApiOperation("注册")
     @PostMapping("register")
-    public ResBean<Map<Object, Object>> register(@Valid @RequestBody ClientUserDto registerDto, HttpServletRequest request) {
-        return clientAuthService.register(registerDto, request);
+    public ResBean<Map<Object, Object>> register(@Valid @RequestBody ClientUserDto clientUserDto, HttpServletRequest request) {
+        logger.info("客户端注册入参：{}", clientUserDto);
+
+        return clientAuthService.register(clientUserDto, request);
+    }
+
+    @ApiOperation("登录")
+    @PostMapping("/login")
+    public ResBean login() {
+        return ResBean.success("成功");
     }
 }

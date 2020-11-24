@@ -23,6 +23,7 @@ import me.chanjar.weixin.common.error.WxErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -44,9 +45,6 @@ import java.util.Map;
 public class ClientAuthServiceImpl implements ClientAuthService {
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
-
-    @Autowired
-    private YoungUserMapper youngUserMapper;
     @Autowired
     private WxMaService wxService;
 
@@ -57,17 +55,17 @@ public class ClientAuthServiceImpl implements ClientAuthService {
     private ClientCouponAssignService clientCouponAssignService;
 
     @Autowired
-    private UserDetailsService userDetailsService;
-
-    @Autowired
     private ClientUserService clientUserService;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
+    @Value("${jwt.tokenHead}")
+    private String tokenHead;
+
     @Transactional
     @Override
-    public ResBean<Map<Object, Object>> register(ClientUserDto registerDto, HttpServletRequest request) {
+    public ResBean<Map<String, Object>> register(ClientUserDto registerDto, HttpServletRequest request) {
         //校验参数
         String openId = checkParams(registerDto);
 
@@ -97,9 +95,9 @@ public class ClientAuthServiceImpl implements ClientAuthService {
         // 4 生成自定义token
         ClientUserDetails userDetails = new ClientUserDetails(user);
         String token = jwtTokenUtil.generateToken(userDetails);
-        Map<Object, Object> result = new HashMap<Object, Object>();
+        Map<String, Object> result = new HashMap<>(2);
         result.put("token", token);
-        result.put("tokenExpire", new Date());
+        result.put("tokenHead", tokenHead);
         result.put("userInfo", userInfo);
         return ResBean.success(result);
     }
@@ -107,10 +105,10 @@ public class ClientAuthServiceImpl implements ClientAuthService {
     public String checkParams(ClientUserDto registerDto) {
         // 判断验证码是否正确
         String cacheCode = CaptchaCodeManager.getCachedCaptcha(registerDto.getMobile());
-        if (cacheCode == null || cacheCode.isEmpty() || !cacheCode.equals(registerDto.getCode())) {
+/*        if (cacheCode == null || cacheCode.isEmpty() || !cacheCode.equals(registerDto.getCode())) {
             logger.error("请求账号注册出错:{}", WxResponseCode.AUTH_CAPTCHA_UNMATCH);
             Asserts.fail(WxResponseCode.AUTH_CAPTCHA_UNMATCH);
-        }
+        }*/
         if (!RegexUtil.isMobileExact(registerDto.getMobile())) {
             logger.info("{}，注册失败：{}", registerDto, WxResponseCode.AUTH_INVALID_MOBILE);
             Asserts.fail(WxResponseCode.AUTH_INVALID_MOBILE);
