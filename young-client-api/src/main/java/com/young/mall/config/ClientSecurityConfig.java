@@ -8,13 +8,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
- * @Description:
+ * @Description: 安全配置
  * @Author: yqz
  * @CreateDate: 2020/11/21 22:02
  */
 @Configuration
 @EnableWebSecurity
-public class ClientSecurityConfig extends BaseSecurityConfig{
+public class ClientSecurityConfig extends BaseSecurityConfig {
 
     @Autowired
     private ClientUserDetailsServiceImpl detailsService;
@@ -24,4 +24,5 @@ public class ClientSecurityConfig extends BaseSecurityConfig{
         //获取登录用户信息
         return username -> detailsService.loadUserByUsername(username);
     }
+
 }

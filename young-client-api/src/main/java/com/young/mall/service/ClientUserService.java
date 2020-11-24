@@ -2,7 +2,7 @@ package com.young.mall.service;
 
 import com.young.db.entity.YoungUser;
 import com.young.mall.common.ResBean;
-import com.young.mall.domain.RegisterDto;
+import com.young.mall.domain.ClientUserDto;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -13,14 +13,6 @@ import java.util.List;
  * @CreateDate: 2020/11/23 16:17
  */
 public interface ClientUserService {
-
-    /**
-     * 用户注册
-     *
-     * @param registerDto
-     * @return
-     */
-    ResBean register(RegisterDto registerDto, HttpServletRequest request);
 
     /**
      * 根据用户名查询用户

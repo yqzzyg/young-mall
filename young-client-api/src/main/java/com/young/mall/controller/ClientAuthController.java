@@ -1,8 +1,8 @@
 package com.young.mall.controller;
 
 import com.young.mall.common.ResBean;
-import com.young.mall.domain.RegisterDto;
-import com.young.mall.service.ClientUserService;
+import com.young.mall.domain.ClientUserDto;
+import com.young.mall.service.ClientAuthService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -30,11 +30,11 @@ public class ClientAuthController {
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private ClientUserService clientUserService;
+    private ClientAuthService clientAuthService;
 
     @ApiOperation("注册")
     @PostMapping("register")
-    public ResBean<Map<Object, Object>> register(@Valid @RequestBody RegisterDto registerDto, HttpServletRequest request) {
-        return clientUserService.register(registerDto, request);
+    public ResBean<Map<Object, Object>> register(@Valid @RequestBody ClientUserDto registerDto, HttpServletRequest request) {
+        return clientAuthService.register(registerDto, request);
     }
 }

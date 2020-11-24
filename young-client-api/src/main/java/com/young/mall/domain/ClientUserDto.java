@@ -14,7 +14,7 @@ import javax.validation.constraints.NotEmpty;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterDto {
+public class ClientUserDto {
 
     @NotEmpty(message = "用户名不能为空")
     private String username;
