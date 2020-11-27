@@ -1,6 +1,7 @@
 package com.young.mall.service;
 
 import com.young.db.entity.YoungUser;
+
 import java.util.List;
 
 /**
@@ -33,6 +34,14 @@ public interface ClientUserService {
      * @return
      */
     List<YoungUser> getUserByOpenId(String openId);
+
+    /**
+     * 根据微信openid查询一个用户
+     *
+     * @param openId
+     * @return
+     */
+    YoungUser getOneUserByOpenId(String openId);
 
     /**
      * 新增客户端用户

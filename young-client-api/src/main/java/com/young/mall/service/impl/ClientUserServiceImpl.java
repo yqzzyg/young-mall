@@ -46,6 +46,13 @@ public class ClientUserServiceImpl implements ClientUserService {
     }
 
     @Override
+    public YoungUser getOneUserByOpenId(String openId) {
+        YoungUserExample example = new YoungUserExample();
+        example.createCriteria().andWeixinOpenidEqualTo(openId).andDeletedEqualTo(false);
+        return youngUserMapper.selectOneByExample(example);
+    }
+
+    @Override
     public Integer addUser(YoungUser youngUser) {
         youngUser.setAddTime(LocalDateTime.now());
         youngUser.setUpdateTime(LocalDateTime.now());

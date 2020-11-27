@@ -157,9 +157,8 @@ public class ClientAuthServiceImpl implements ClientAuthService {
         if (StrUtil.isEmpty(sessionKey) || StrUtil.isEmpty(openid)) {
             return ResBean.failed("调用微信失败");
         }
-        YoungUser user = clientUserService.getUserByOpenId(openid).get(0);
+        YoungUser user = clientUserService.getOneUserByOpenId(openid);
         if (BeanUtil.isEmpty(user)) {
-            user = new YoungUser();
             user.setUsername(openid);
             user.setPassword(openid);
             user.setWeixinOpenid(openid);
