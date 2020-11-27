@@ -3,11 +3,17 @@ package com.young.mall.service.impl;
 import com.young.db.dao.YoungUserMapper;
 import com.young.db.entity.YoungUser;
 import com.young.db.entity.YoungUserExample;
+import com.young.mall.domain.ClientUserDetails;
 import com.young.mall.service.ClientUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -64,5 +70,16 @@ public class ClientUserServiceImpl implements ClientUserService {
     public Integer updateById(YoungUser user) {
         user.setUpdateTime(LocalDateTime.now());
         return youngUserMapper.updateByPrimaryKeySelective(user);
+    }
+
+    @Override
+    public ClientUserDetails getUserInfo() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        //判断当前是否用户是否在线
+        if (principal instanceof ClientUserDetails) {
+            ClientUserDetails user = (ClientUserDetails) principal;
+            return user;
+        }
+        return null;
     }
 }

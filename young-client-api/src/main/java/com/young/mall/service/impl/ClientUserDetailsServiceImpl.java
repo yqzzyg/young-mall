@@ -1,8 +1,10 @@
 package com.young.mall.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.young.db.dao.YoungUserMapper;
 import com.young.db.entity.YoungUser;
 import com.young.mall.domain.ClientUserDetails;
+import com.young.mall.exception.Asserts;
 import com.young.mall.service.ClientUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,15 +23,15 @@ import java.util.List;
 public class ClientUserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private YoungUserMapper youngUserMapper;
-
-    @Autowired
     private ClientUserService clientUserService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         List<YoungUser> userList = clientUserService.getUserByName(username);
+        if (CollectionUtil.isEmpty(userList)) {
+            Asserts.fail("无该用户");
+        }
         YoungUser youngUser = userList.get(0);
         ClientUserDetails userDetails = new ClientUserDetails(youngUser);
         return userDetails;

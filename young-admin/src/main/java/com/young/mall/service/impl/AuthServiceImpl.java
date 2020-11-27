@@ -59,9 +59,12 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public AdminUser getUserInfo() {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        AdminUser adminUser = (AdminUser) authentication.getPrincipal();
-
-        return adminUser;
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        //判断当前是否用户是否在线
+        if (principal instanceof AdminUser) {
+            AdminUser user = (AdminUser) principal;
+            return user;
+        }
+        return null;
     }
 }

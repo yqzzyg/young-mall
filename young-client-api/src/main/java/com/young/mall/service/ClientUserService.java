@@ -1,6 +1,9 @@
 package com.young.mall.service;
 
 import com.young.db.entity.YoungUser;
+import com.young.mall.common.ResBean;
+import com.young.mall.domain.ClientUserDetails;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 
@@ -58,4 +61,11 @@ public interface ClientUserService {
      * @return
      */
     Integer updateById(YoungUser user);
+
+    /**
+     * 获取当前在线用户信息
+     *
+     * @return
+     */
+    ClientUserDetails getUserInfo();
 }

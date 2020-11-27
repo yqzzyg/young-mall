@@ -1,5 +1,6 @@
 package com.young.mall.controller;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.json.JSONUtil;
 import com.young.mall.common.ResBean;
 import com.young.mall.domain.AdminUser;
@@ -67,7 +68,9 @@ public class AdminAuthController {
 
 
         AdminUser adminUser = authService.getUserInfo();
-
+        if (BeanUtil.isEmpty(adminUser)) {
+            return ResBean.failed("当前用户未登录");
+        }
         Collection<? extends GrantedAuthority> authorities = adminUser.getAuthorities();
 
         List<String> list = new ArrayList<>();

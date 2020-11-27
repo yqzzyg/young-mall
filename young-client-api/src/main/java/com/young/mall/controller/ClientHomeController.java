@@ -1,6 +1,8 @@
 package com.young.mall.controller;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.young.mall.common.ResBean;
+import com.young.mall.domain.ClientUserDetails;
 import com.young.mall.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,9 +26,18 @@ public class ClientHomeController {
     @Autowired
     private WxHomeService wxHomeService;
 
+    @Autowired
+    private ClientUserService clientUserService;
+
     @ApiOperation("查询客户端主页展示数据")
     @GetMapping("/index")
-    public ResBean<Map<String, Object>> index(Integer userId) {
+    public ResBean<Map<String, Object>> index() {
+        ClientUserDetails userInfo = clientUserService.getUserInfo();
+
+        Integer userId = null;
+        if (!BeanUtil.isEmpty(userInfo)) {
+            userId = userInfo.getYoungUser().getId();
+        }
         Map<String, Object> homeIndexData = wxHomeService.getIndexData(userId);
         return ResBean.success(homeIndexData);
     }
