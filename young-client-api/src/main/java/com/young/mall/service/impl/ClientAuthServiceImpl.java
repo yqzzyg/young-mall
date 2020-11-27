@@ -159,6 +159,7 @@ public class ClientAuthServiceImpl implements ClientAuthService {
         }
         YoungUser user = clientUserService.getOneUserByOpenId(openid);
         if (BeanUtil.isEmpty(user)) {
+            user = new YoungUser();
             user.setUsername(openid);
             user.setPassword(openid);
             user.setWeixinOpenid(openid);
