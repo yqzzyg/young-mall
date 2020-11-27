@@ -3,6 +3,8 @@ package com.young.mall.service;
 import com.young.mall.common.ResBean;
 import com.young.mall.domain.ClientLoginDto;
 import com.young.mall.domain.ClientUserDto;
+import com.young.mall.domain.WxLoginInfo;
+import me.chanjar.weixin.common.error.WxErrorException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -24,11 +26,20 @@ public interface ClientAuthService {
 
     /**
      * 用户登录
+     *
      * @param clientLoginDto
      * @param request
      * @return
      */
     ResBean<Map<String, Object>> login(ClientLoginDto clientLoginDto, HttpServletRequest request);
 
+    /**
+     * 通过微信登录
+     *
+     * @param wxLoginInfo
+     * @param request
+     * @return
+     */
+    ResBean loginByWeixin(WxLoginInfo wxLoginInfo, HttpServletRequest request) throws WxErrorException;
 
 }

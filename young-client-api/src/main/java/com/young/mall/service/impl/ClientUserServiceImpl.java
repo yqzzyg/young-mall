@@ -52,4 +52,10 @@ public class ClientUserServiceImpl implements ClientUserService {
         int count = youngUserMapper.insertSelective(youngUser);
         return count;
     }
+
+    @Override
+    public Integer updateById(YoungUser user) {
+        user.setUpdateTime(LocalDateTime.now());
+        return youngUserMapper.updateByPrimaryKeySelective(user);
+    }
 }

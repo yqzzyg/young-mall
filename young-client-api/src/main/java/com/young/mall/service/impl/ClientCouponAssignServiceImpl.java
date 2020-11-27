@@ -4,7 +4,6 @@ import com.young.db.dao.YoungCouponMapper;
 import com.young.db.entity.YoungCoupon;
 import com.young.db.entity.YoungCouponExample;
 import com.young.db.entity.YoungCouponUser;
-import com.young.db.entity.YoungUser;
 import com.young.mall.domain.CouponConstant;
 import com.young.mall.service.ClientCouponAssignService;
 import com.young.mall.service.ClientCouponUserService;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 
 /**

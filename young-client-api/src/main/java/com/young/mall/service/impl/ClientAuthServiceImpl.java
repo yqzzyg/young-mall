@@ -3,14 +3,13 @@ package com.young.mall.service.impl;
 import cn.binarywang.wx.miniapp.api.WxMaService;
 import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
 import com.young.db.entity.YoungUser;
 import com.young.mall.common.ResBean;
 import com.young.mall.constant.CommonConstants;
-import com.young.mall.domain.ClientLoginDto;
-import com.young.mall.domain.ClientUserDetails;
-import com.young.mall.domain.ClientUserDto;
-import com.young.mall.domain.UserInfo;
+import com.young.mall.domain.*;
 import com.young.mall.domain.enums.WxResponseCode;
+import com.young.mall.enums.UserTypeEnum;
 import com.young.mall.exception.Asserts;
 import com.young.mall.service.ClientAuthService;
 import com.young.mall.service.ClientCouponAssignService;
@@ -32,9 +31,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -141,6 +142,69 @@ public class ClientAuthServiceImpl implements ClientAuthService {
         result.put("tokenHead", tokenHead);
         result.put("userInfo", userInfo);
         return ResBean.success(result);
+    }
+
+    @Override
+    public ResBean<Map<String, Object>> loginByWeixin(WxLoginInfo wxLoginInfo, HttpServletRequest request) throws WxErrorException {
+
+        String code = wxLoginInfo.getCode();
+        UserInfo userInfo = wxLoginInfo.getUserInfo();
+        Integer shareUserId = wxLoginInfo.getShareUserId();
+
+        WxMaJscode2SessionResult result = wxService.getUserService().getSessionInfo(code);
+        String sessionKey = result.getSessionKey();
+        String openid = result.getOpenid();
+        if (StrUtil.isEmpty(sessionKey) || StrUtil.isEmpty(openid)) {
+            return ResBean.failed("调用微信失败");
+        }
+        YoungUser user = clientUserService.getUserByOpenId(openid).get(0);
+        if (BeanUtil.isEmpty(user)) {
+            user = new YoungUser();
+            user.setUsername(openid);
+            user.setPassword(openid);
+            user.setWeixinOpenid(openid);
+            user.setAvatar(userInfo.getAvatarUrl());
+            user.setNickname(userInfo.getNickName());
+            user.setGender(userInfo.getGender());
+            user.setUserLevel((byte) 0);
+            user.setStatus((byte) 0);
+            user.setLastLoginTime(LocalDateTime.now());
+            user.setLastLoginIp(IpUtil.client(request));
+            user.setShareUserId(shareUserId);
+
+            Integer count = clientUserService.addUser(user);
+            // 给新用户发送注册优惠券
+            clientCouponAssignService.assignForRegister(user.getId());
+
+        } else {
+            user.setLastLoginTime(LocalDateTime.now());
+            user.setLastLoginIp(IpUtil.client(request));
+            if (clientUserService.updateById(user) == 0) {
+                return ResBean.failed("更新数据失败");
+            }
+        }
+
+        userInfo.setUserId(user.getId());
+        if (!StringUtils.isEmpty(user.getMobile())) {// 手机号存在则设置
+            userInfo.setPhone(user.getMobile());
+        }
+        String registerDate = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                .format(user.getAddTime() != null ? user.getAddTime() : LocalDateTime.now());
+        userInfo.setRegisterDate(registerDate);
+        userInfo.setStatus(user.getStatus());
+        // 用户层级
+        userInfo.setUserLevel(user.getUserLevel());
+        // 用户层级描述
+        userInfo.setUserLevelDesc(UserTypeEnum.getInstance(user.getUserLevel()).getDesc());
+
+        // 4 生成自定义token
+        ClientUserDetails userDetails = new ClientUserDetails(user);
+        String token = jwtTokenUtil.generateToken(userDetails);
+        Map<String, Object> responseData = new HashMap<>(4);
+        responseData.put("token", token);
+        responseData.put("tokenHead", tokenHead);
+        responseData.put("userInfo", userInfo);
+        return ResBean.success(responseData);
     }
 
     public String checkParams(ClientUserDto registerDto) {

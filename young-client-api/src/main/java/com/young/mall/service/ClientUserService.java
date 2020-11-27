@@ -1,10 +1,6 @@
 package com.young.mall.service;
 
 import com.young.db.entity.YoungUser;
-import com.young.mall.common.ResBean;
-import com.young.mall.domain.ClientUserDto;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -45,4 +41,12 @@ public interface ClientUserService {
      * @return
      */
     Integer addUser(YoungUser youngUser);
+
+    /**
+     * 通过主键ID更新用户表
+     *
+     * @param user
+     * @return
+     */
+    Integer updateById(YoungUser user);
 }

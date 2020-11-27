@@ -3,9 +3,11 @@ package com.young.mall.controller;
 import com.young.mall.common.ResBean;
 import com.young.mall.domain.ClientLoginDto;
 import com.young.mall.domain.ClientUserDto;
+import com.young.mall.domain.WxLoginInfo;
 import com.young.mall.service.ClientAuthService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import me.chanjar.weixin.common.error.WxErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,5 +49,18 @@ public class ClientAuthController {
         logger.info("客户端登录入参：{}", clientLoginDto);
 
         return clientAuthService.login(clientLoginDto, request);
+    }
+
+    @ApiOperation("通过微信登录")
+    @PostMapping("/loginByWeixin")
+    public ResBean<Map<String, Object>> loginByWeixin(@Valid @RequestBody WxLoginInfo wxLoginInfo, HttpServletRequest request) {
+        ResBean<Map<String, Object>> resBean = new ResBean<>();
+        try {
+            resBean = clientAuthService.loginByWeixin(wxLoginInfo, request);
+        } catch (WxErrorException e) {
+            logger.info("微信登录失败：{}",e.getError());
+            e.printStackTrace();
+        }
+        return resBean;
     }
 }
