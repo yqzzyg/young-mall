@@ -1,30 +1,23 @@
 package com.young.mall.controller;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.collection.CollectionUtil;
 import com.young.db.entity.YoungCoupon;
-import com.young.db.entity.YoungCouponUser;
 import com.young.db.entity.YoungUser;
 import com.young.mall.common.ResBean;
 import com.young.mall.domain.ClientUserDetails;
-import com.young.mall.domain.CouponConstant;
 import com.young.mall.exception.Asserts;
 import com.young.mall.service.ClientCouponService;
-import com.young.mall.service.ClientCouponUserService;
 import com.young.mall.service.ClientUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +29,7 @@ import java.util.Map;
  */
 @Api(tags = "ClientCouponController")
 @RestController
-@RequestMapping("/wx/coupon")
+@RequestMapping("/client/coupon")
 public class ClientCouponController {
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
 

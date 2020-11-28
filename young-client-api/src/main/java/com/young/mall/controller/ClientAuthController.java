@@ -27,7 +27,7 @@ import java.util.Map;
  */
 @Api(tags = "ClientAuthController")
 @RestController
-@RequestMapping("/wx/auth")
+@RequestMapping("/client/auth")
 public class ClientAuthController {
 
     protected Logger logger = LoggerFactory.getLogger(this.getClass());

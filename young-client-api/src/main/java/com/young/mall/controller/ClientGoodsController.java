@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Api(tags = "ClientGoodsController")
 @RestController
-@RequestMapping("/wx/goods")
+@RequestMapping("/client/goods")
 public class ClientGoodsController {
 
     @Autowired

@@ -18,9 +18,9 @@ import java.util.Map;
  * @Author: yqz
  * @CreateDate: 2020/11/21 20:24
  */
-@Api(tags = "WxHomeController", description = "微信首页")
+@Api(tags = "ClientHomeController", description = "微信首页")
 @RestController
-@RequestMapping("/wx/home")
+@RequestMapping("/client/home")
 public class ClientHomeController {
 
     @Autowired
