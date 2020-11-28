@@ -3,7 +3,9 @@ package com.young.mall.config.aspect;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
 import cn.hutool.json.JSONUtil;
+import com.young.mall.domain.ClientUserDetails;
 import com.young.mall.domain.MallLog;
+import com.young.mall.service.ClientUserService;
 import io.swagger.annotations.ApiOperation;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -11,6 +13,7 @@ import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,6 +38,9 @@ import java.util.Map;
 @Component
 public class ClientLogAspect {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    private ClientUserService clientUserService;
 
     @Pointcut("execution(public * com.young.mall.controller.*.*(..)) || execution(public * com.young.mall.*.controller.*.*(..))")
     public void clientLog() {
@@ -72,6 +78,7 @@ public class ClientLogAspect {
         }
 
         Object parameter = getParameter(method, joinPoint.getArgs());
+        ClientUserDetails userInfo = clientUserService.getUserInfo();
 
         long endTime = System.currentTimeMillis();
         String urlStr = request.getRequestURL().toString();
@@ -79,6 +86,7 @@ public class ClientLogAspect {
         mallLog.setIp(request.getRemoteUser());
         mallLog.setMethod(request.getMethod());
         mallLog.setParameter(parameter);
+        mallLog.setUsername(userInfo.getUsername());
         mallLog.setResult(result);
         mallLog.setSpendTime(((int) (endTime - startTime)));
         mallLog.setStartTime(startTime);

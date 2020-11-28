@@ -53,6 +53,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     LOGGER.info("已认证的用户：{}", username);
+                    //重新把认证添加到上下文中，即使部署集群，由于采用的是jwt，所有不管每次用户请求到哪个应用，都会有认证
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             }
