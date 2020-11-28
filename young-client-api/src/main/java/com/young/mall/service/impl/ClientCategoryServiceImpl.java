@@ -61,6 +61,7 @@ public class ClientCategoryServiceImpl implements ClientCategoryService {
     @Override
     public List<Map<String, Object>> getCategoryList(int page, int size) {
         List<Map<String, Object>> categoryList = new ArrayList<>();
+        //此处分页为首页下半部分展示商品的商品分类
         List<YoungCategory> leveFirst = getLeveFirst(page, size);
         for (YoungCategory category : leveFirst) {
             //根据一级分类的 id 查询该 id 对应的二级分类，二级分类的pid为一级分类的id
@@ -69,6 +70,7 @@ public class ClientCategoryServiceImpl implements ClientCategoryService {
             List<Integer> catLeveSecondIds = categoryLeveSecond.stream().map(youngCategory -> youngCategory.getId())
                     .collect(Collectors.toList());
             //根据商品二级 id 查询该id对应的商品，young_goods表
+            //此处分页为首页下半部分每个分类下展示的商品数量
             List<YoungGoods> goodsList = goodsService.getGoodByCategoryId(catLeveSecondIds, 0, SystemConfig.getCatlogMoreLimit());
 
             Map<String, Object> categoryAndGoods = new HashMap<>();

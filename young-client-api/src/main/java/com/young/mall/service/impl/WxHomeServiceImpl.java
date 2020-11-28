@@ -72,7 +72,8 @@ public class WxHomeServiceImpl implements WxHomeService {
         Callable<List<YoungTopic>> topicListCallable = () -> topicService.queryList(0, SystemConfig.getTopicLimit());
         //首页底部商品及其所属分类
         // Callable<List<CategoryAndGoodsPojo>> floorGoodsListCallable = () -> clientCategoryService.getCategoryAndGoodsPojo(0, SystemConfig.getCatlogListLimit());
-        Callable<List<Map<String, Object>>> floorGoodsListCallable = () -> clientCategoryService.getCategoryList(0, SystemConfig.getCatlogListLimit());
+        //此处分页为首页下半部分展示商品的商品分类，此时数据库只要8类商品，分10为展示所有，PageHelper起始页默认值 1。
+        Callable<List<Map<String, Object>>> floorGoodsListCallable = () -> clientCategoryService.getCategoryList(1, SystemConfig.getCatlogListLimit());
 
 
         FutureTask<List<YoungAd>> bannerTask = new FutureTask<>(bannerListCallable);

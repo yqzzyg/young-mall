@@ -1,5 +1,6 @@
 package com.young.mall.config.aspect;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
 import cn.hutool.json.JSONUtil;
@@ -79,14 +80,15 @@ public class ClientLogAspect {
 
         Object parameter = getParameter(method, joinPoint.getArgs());
         ClientUserDetails userInfo = clientUserService.getUserInfo();
-
+        if (!BeanUtil.isEmpty(userInfo)) {
+            mallLog.setUsername(userInfo.getUsername());
+        }
         long endTime = System.currentTimeMillis();
         String urlStr = request.getRequestURL().toString();
         mallLog.setBasePath(StrUtil.removeSuffix(urlStr, URLUtil.getPath(urlStr)));
         mallLog.setIp(request.getRemoteUser());
         mallLog.setMethod(request.getMethod());
         mallLog.setParameter(parameter);
-        mallLog.setUsername(userInfo.getUsername());
         mallLog.setResult(result);
         mallLog.setSpendTime(((int) (endTime - startTime)));
         mallLog.setStartTime(startTime);
