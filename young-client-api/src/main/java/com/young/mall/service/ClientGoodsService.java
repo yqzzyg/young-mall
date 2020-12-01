@@ -55,4 +55,34 @@ public interface ClientGoodsService {
      * @return
      */
     Map<String, Object> getCategoryById(Integer id);
+
+    /**
+     * 分页查询商品
+     *
+     * @param catId    分类id
+     * @param brandId  品牌id
+     * @param keywords 关键词
+     * @param isHot    是否热品
+     * @param isNew    是否新品
+     * @param page     起始页
+     * @param limit    每页大小
+     * @param sort     排序依据
+     * @param order    排序方式
+     * @return
+     */
+    List<YoungGoods> querySelective(Integer catId, Integer brandId,
+                                    String keywords,
+                                    Boolean isHot, Boolean isNew,
+                                    Integer page, Integer limit, String sort, String order);
+
+    /**
+     * 查询商品所属类目列表
+     *
+     * @param brandId  品牌id
+     * @param keywords 关键词
+     * @param isHot
+     * @param isNew
+     * @return
+     */
+    List<Integer> getCatIds(Integer brandId, String keywords, Boolean isHot, Boolean isNew);
 }

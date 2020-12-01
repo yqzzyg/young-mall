@@ -63,4 +63,12 @@ public interface ClientCategoryService {
      * @return
      */
     YoungCategory findById(Integer id);
+
+    /**
+     * 根据商品类目id集合，查询所有类目
+     *
+     * @param ids
+     * @return
+     */
+    List<YoungCategory> queryL2ByIds(List<Integer> ids);
 }

@@ -105,4 +105,11 @@ public class ClientCategoryServiceImpl implements ClientCategoryService {
     public YoungCategory findById(Integer id) {
         return youngCategoryMapper.selectByPrimaryKey(id);
     }
+
+    @Override
+    public List<YoungCategory> queryL2ByIds(List<Integer> ids) {
+        YoungCategoryExample example = new YoungCategoryExample();
+        example.createCriteria().andIdIn(ids).andLevelEqualTo("L2").andDeletedEqualTo(false);
+        return youngCategoryMapper.selectByExample(example);
+    }
 }
