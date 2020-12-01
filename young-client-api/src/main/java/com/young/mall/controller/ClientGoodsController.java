@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotNull;
+import java.util.Map;
+
 /**
  * @Description: 用户端商品相关
  * @Author: yqz
@@ -22,10 +25,20 @@ public class ClientGoodsController {
     @Autowired
     private ClientGoodsService clientGoodsService;
 
+
     @ApiOperation("查询在售商品数量")
     @GetMapping("/count")
     public ResBean<Integer> count() {
         Integer countOnSale = clientGoodsService.getGoodsCountOnSale();
         return ResBean.success(countOnSale);
+    }
+
+    @ApiOperation("商品分类类目")
+    @GetMapping("/category")
+    public ResBean<Map<String, Object>> category(@NotNull Integer id) {
+
+        Map<String, Object> category = clientGoodsService.getCategoryById(id);
+
+        return ResBean.success(category);
     }
 }

@@ -100,4 +100,9 @@ public class ClientCategoryServiceImpl implements ClientCategoryService {
         List<YoungCategory> categoryList = youngCategoryMapper.selectByExampleSelective(example, result);
         return categoryList;
     }
+
+    @Override
+    public YoungCategory findById(Integer id) {
+        return youngCategoryMapper.selectByPrimaryKey(id);
+    }
 }

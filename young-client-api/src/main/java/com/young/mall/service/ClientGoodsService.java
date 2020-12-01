@@ -3,6 +3,7 @@ package com.young.mall.service;
 import com.young.db.entity.YoungGoods;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description: 小程序端
@@ -46,4 +47,12 @@ public interface ClientGoodsService {
      * @return
      */
     Integer getGoodsCountOnSale();
+
+    /**
+     * 通过商品类目id查询商品类目
+     *
+     * @param id
+     * @return
+     */
+    Map<String, Object> getCategoryById(Integer id);
 }

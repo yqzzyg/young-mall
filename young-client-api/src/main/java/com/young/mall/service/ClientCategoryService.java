@@ -55,4 +55,12 @@ public interface ClientCategoryService {
      * @return
      */
     List<YoungCategory> getLeveSecondByPid(Integer pid);
+
+    /**
+     * 通过id查询商品类目
+     *
+     * @param id
+     * @return
+     */
+    YoungCategory findById(Integer id);
 }
