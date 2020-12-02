@@ -85,4 +85,13 @@ public interface ClientGoodsService {
      * @return
      */
     List<Integer> getCatIds(Integer brandId, String keywords, Boolean isHot, Boolean isNew);
+
+    /**
+     * 查看商品详情
+     *
+     * @param userId 用户id
+     * @param id     商品id
+     * @return
+     */
+    Map<String, Object> details(Integer userId, Integer id);
 }

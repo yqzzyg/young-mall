@@ -5,17 +5,17 @@ import com.young.db.dao.YoungGoodsMapper;
 import com.young.db.entity.YoungCategory;
 import com.young.db.entity.YoungGoods;
 import com.young.db.entity.YoungGoods.Column;
+import com.young.db.entity.YoungGoodsAttribute;
 import com.young.db.entity.YoungGoodsExample;
-import com.young.mall.service.ClientCategoryService;
-import com.young.mall.service.ClientGoodsService;
+import com.young.mall.domain.ClientGoodsSpecificationVO;
+import com.young.mall.exception.Asserts;
+import com.young.mall.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.Callable;
 
 /**
  * @Description: 客户端商品业务
@@ -30,6 +30,16 @@ public class ClientGoodsServiceImpl implements ClientGoodsService {
 
     @Autowired
     private ClientCategoryService clientCategoryService;
+
+    @Autowired
+    private MallGoodsService mallGoodsService;
+
+    @Autowired
+    private ClientGoodsAttributeService clientGoodsAttributeService;
+
+    @Autowired
+    private ClientGoodsSpecificationService clientGoodsSpecificationService;
+
 
     Column[] columns = new Column[]{Column.id, Column.name, Column.brief, Column.picUrl, Column.isHot, Column.isNew,
             Column.counterPrice, Column.retailPrice};
@@ -181,5 +191,23 @@ public class ClientGoodsServiceImpl implements ClientGoodsService {
             cats.add(goods.getCategoryId());
         }
         return cats;
+    }
+
+    @Override
+    public Map<String, Object> details(Integer userId, Integer id) {
+
+        Optional<YoungGoods> optional = mallGoodsService.findById(id);
+        if (!optional.isPresent()) {
+            Asserts.fail("查询失败");
+        }
+        // 商品信息
+        YoungGoods goods = optional.get();
+
+        // 商品属性
+        Callable<List> goodsAttributeListCallable = () -> clientGoodsAttributeService.queryByGid(id);
+
+        // 商品规格 返回的是定制的GoodsSpecificationVo
+        Callable<List> objectCallable = () -> clientGoodsSpecificationService.getSpecificationVoList(id);
+        return null;
     }
 }

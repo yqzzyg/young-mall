@@ -112,4 +112,17 @@ public class ClientGoodsController {
         data.put("totalPages", pageInfo.getPages());
         return ResBean.success(data);
     }
+
+    @ApiOperation("商品详情")
+    @GetMapping("/details")
+    public ResBean details(@NotNull Integer id) {
+
+        ClientUserDetails userInfo = clientUserService.getUserInfo();
+        if (BeanUtil.isEmpty(userInfo)) {
+            return ResBean.unauthorized("请登录！");
+        }
+        Integer userId = userInfo.getYoungUser().getId();
+        Map<String, Object> details = clientGoodsService.details(userId, id);
+        return ResBean.success(details);
+    }
 }
