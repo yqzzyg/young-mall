@@ -9,10 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.FutureTask;
+import java.util.concurrent.*;
 
 /**
  * @Description: 客户端首页数据
@@ -45,9 +42,23 @@ public class WxHomeServiceImpl implements WxHomeService {
     @Autowired
     private ClientTopicService topicService;
 
+    private final static ArrayBlockingQueue<Runnable> WORK_QUEUE = new ArrayBlockingQueue<>(9);
+
+    private final static RejectedExecutionHandler HANDLER = new ThreadPoolExecutor.CallerRunsPolicy();
+    private static ThreadPoolExecutor executorService = new ThreadPoolExecutor(16, 16, 1000, TimeUnit.MILLISECONDS,
+            WORK_QUEUE, HANDLER);
+
     @Override
     public Map<String, Object> getIndexData(Integer userId) {
-        ExecutorService executorService = Executors.newFixedThreadPool(10);
+
+        /**
+         * 线程池不允许使用Executors去创建，而是通过ThreadPoolExecutor的方式，这样的处理方式让写的同学更加明确线程池的运行规则，规避资源耗尽的风险。 说明：Executors返回的线程池对象的弊端如下：
+         * 1）FixedThreadPool和SingleThreadPool:
+         * 允许的请求队列长度为Integer.MAX_VALUE，可能会堆积大量的请求，从而导致OOM。
+         * 2）CachedThreadPool:
+         * 允许的创建线程数量为Integer.MAX_VALUE，可能会创建大量的线程，从而导致OOM。
+         */
+        //ExecutorService executorService = Executors.newFixedThreadPool(10);
         //轮播图
         Callable<List<YoungAd>> bannerListCallable = () -> clientAdService.queryIndex();
         //首页九宫格
@@ -117,7 +128,8 @@ public class WxHomeServiceImpl implements WxHomeService {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            executorService.shutdown();
+            //如果线程池使用成员变量，则不用每次shutdown
+            //executorService.shutdown();
         }
         return entity;
     }

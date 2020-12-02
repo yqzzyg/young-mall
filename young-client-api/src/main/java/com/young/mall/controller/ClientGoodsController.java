@@ -107,6 +107,7 @@ public class ClientGoodsController {
         PageInfo<YoungGoods> pageInfo = PageInfo.of(goodsList);
         data.put("goodsList", goodsList);
         data.put("count", pageInfo.getTotal());
+        //用于展示”筛选--分类“
         data.put("filterCategoryList", categoryList);
         data.put("totalPages", pageInfo.getPages());
         return ResBean.success(data);
