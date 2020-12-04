@@ -326,15 +326,23 @@ public class ClientGoodsServiceImpl implements ClientGoodsService {
 
         Map<String, Object> data = new HashMap<>(14);
         try {
-
+            //商品信息
             data.put("info", goods);
+            //用户收藏数量
             data.put("userHasCollect", userHasCollect);
+            //常见问题
             data.put("issue", issueCallableTask.get());
+            //评论
             data.put("comment", commentsCallableTsk.get());
+            //商品规格
             data.put("specificationList", objectCallableTask.get());
+            //商品规格对应的数量和价格
             data.put("productList", productListCallableTask.get());
+            //商品属性
             data.put("attribute", goodsAttributeListTask.get());
+            //商品品牌商
             data.put("brand", brandCallableTask.get());
+            //团购信息
             data.put("groupon", grouponRulesCallableTask.get());
         } catch (Exception e) {
             logger.error("获取商品详情出错:{}", e.getMessage());
