@@ -3,11 +3,8 @@ package com.young.mall.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.young.db.dao.YoungGoodsMapper;
 import com.young.db.dao.YoungGrouponRulesMapper;
-import com.young.db.entity.YoungGoods;
+import com.young.db.entity.*;
 import com.young.db.entity.YoungGoods.Column;
-import com.young.db.entity.YoungGoodsExample;
-import com.young.db.entity.YoungGrouponRules;
-import com.young.db.entity.YoungGrouponRulesExample;
 import com.young.mall.service.ClientGrouponRulesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,5 +64,12 @@ public class ClientGrouponRulesServiceImpl implements ClientGrouponRulesService 
             grouponList.add(item);
         }
         return grouponList;
+    }
+
+    @Override
+    public List<YoungGrouponRules> queryByGoodsSn(String goodsSn) {
+        YoungGrouponRulesExample example = new YoungGrouponRulesExample();
+        example.or().andGoodsSnEqualTo(goodsSn).andDeletedEqualTo(false);
+        return grouponRulesMapper.selectByExample(example);
     }
 }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.young.db.mapper.GoodsMapper">
+    <update id="addBrowse" parameterType="map">
+        update young_goods
+        set browse = browse + #{num,jdbcType=INTEGER}, update_time = now()
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+
+</mapper>

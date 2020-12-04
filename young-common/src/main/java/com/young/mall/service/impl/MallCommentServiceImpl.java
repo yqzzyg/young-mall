@@ -99,4 +99,13 @@ public class MallCommentServiceImpl implements MallCommentService {
         int count = youngCommentMapper.logicalDeleteByPrimaryKey(cid);
         return count;
     }
+
+    @Override
+    public List<YoungComment> queryGoodsByGid(Integer id, int page, int size) {
+        YoungCommentExample example = new YoungCommentExample();
+        example.setOrderByClause(YoungComment.Column.addTime.desc());
+        example.or().andValueIdEqualTo(id).andTypeEqualTo((byte) 0).andDeletedEqualTo(false);
+        PageHelper.startPage(page, size);
+        return youngCommentMapper.selectByExample(example);
+    }
 }

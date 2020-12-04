@@ -94,4 +94,13 @@ public interface ClientGoodsService {
      * @return
      */
     Map<String, Object> details(Integer userId, Integer id);
+
+    /**
+     * 更新浏览记录
+     *
+     * @param id
+     * @param num
+     * @return
+     */
+    int addBrowse(Integer id, Short num);
 }

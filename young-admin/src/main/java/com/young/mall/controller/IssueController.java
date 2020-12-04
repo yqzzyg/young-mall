@@ -4,7 +4,7 @@ import cn.hutool.json.JSONUtil;
 import com.young.db.entity.YoungIssue;
 import com.young.mall.common.CommonPage;
 import com.young.mall.common.ResBean;
-import com.young.mall.service.IssueService;
+import com.young.mall.service.MallIssueService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ import java.util.Optional;
 public class IssueController extends BaseController {
 
     @Autowired
-    private IssueService issueService;
+    private MallIssueService issueService;
 
     @ApiOperation("分页查询")
     @PreAuthorize("@pms.hasPermission('admin:issue:list')")

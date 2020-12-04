@@ -8,12 +8,9 @@ import com.young.mall.service.ClientUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -81,5 +78,10 @@ public class ClientUserServiceImpl implements ClientUserService {
             return user;
         }
         return null;
+    }
+
+    @Override
+    public YoungUser findById(Integer id) {
+        return youngUserMapper.selectByPrimaryKey(id);
     }
 }

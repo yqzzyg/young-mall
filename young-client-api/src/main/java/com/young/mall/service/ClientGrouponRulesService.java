@@ -1,5 +1,7 @@
 package com.young.mall.service;
 
+import com.young.db.entity.YoungGrouponRules;
+
 import java.util.List;
 import java.util.Map;
 
@@ -19,4 +21,12 @@ public interface ClientGrouponRulesService {
     List<Map<String, Object>> queryList(int page, int size);
 
     List<Map<String, Object>> queryList(int page, int size, String sort, String order);
+
+    /**
+     * 根据商品编号查询团购信息
+     *
+     * @param goodsSn
+     * @return
+     */
+    List<YoungGrouponRules> queryByGoodsSn(String goodsSn);
 }

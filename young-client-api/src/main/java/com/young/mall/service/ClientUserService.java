@@ -1,9 +1,7 @@
 package com.young.mall.service;
 
 import com.young.db.entity.YoungUser;
-import com.young.mall.common.ResBean;
 import com.young.mall.domain.ClientUserDetails;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 
@@ -68,4 +66,12 @@ public interface ClientUserService {
      * @return
      */
     ClientUserDetails getUserInfo();
+
+    /**
+     * 根据id查询用户
+     *
+     * @param id
+     * @return
+     */
+    YoungUser findById(Integer id);
 }

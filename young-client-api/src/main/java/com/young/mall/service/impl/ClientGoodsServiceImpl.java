@@ -1,21 +1,22 @@
 package com.young.mall.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.young.db.dao.YoungGoodsMapper;
-import com.young.db.entity.YoungCategory;
-import com.young.db.entity.YoungGoods;
+import com.young.db.entity.*;
 import com.young.db.entity.YoungGoods.Column;
-import com.young.db.entity.YoungGoodsAttribute;
-import com.young.db.entity.YoungGoodsExample;
+import com.young.db.mapper.GoodsMapper;
 import com.young.mall.domain.ClientGoodsSpecificationVO;
 import com.young.mall.exception.Asserts;
 import com.young.mall.service.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
-import java.util.concurrent.Callable;
+import java.util.concurrent.*;
 
 /**
  * @Description: 客户端商品业务
@@ -24,9 +25,13 @@ import java.util.concurrent.Callable;
  */
 @Service
 public class ClientGoodsServiceImpl implements ClientGoodsService {
+    protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private YoungGoodsMapper youngGoodsMapper;
+
+    @Autowired
+    private GoodsMapper goodsMapper;
 
     @Autowired
     private ClientCategoryService clientCategoryService;
@@ -35,10 +40,41 @@ public class ClientGoodsServiceImpl implements ClientGoodsService {
     private MallGoodsService mallGoodsService;
 
     @Autowired
+    private MallGoodsProductService mallGoodsProductService;
+
+    @Autowired
+    private MallIssueService mallIssueService;
+
+    @Autowired
+    private MallBrandService mallBrandService;
+
+    @Autowired
+    private MallCommentService mallCommentService;
+
+    @Autowired
     private ClientGoodsAttributeService clientGoodsAttributeService;
 
     @Autowired
     private ClientGoodsSpecificationService clientGoodsSpecificationService;
+
+    @Autowired
+    private ClientUserService clientUserService;
+
+    @Autowired
+    private ClientGrouponRulesService clientGrouponRulesService;
+
+    @Autowired
+    private ClientCollectService clientCollectService;
+
+    @Autowired
+    private ClientFootPrintService clientFootPrintService;
+
+    private final static ArrayBlockingQueue<Runnable> WORK_QUEUE = new ArrayBlockingQueue<>(9);
+
+    private final static RejectedExecutionHandler HANDLER = new ThreadPoolExecutor.CallerRunsPolicy();
+
+    private static ThreadPoolExecutor executorService = new ThreadPoolExecutor(16, 16, 1000, TimeUnit.MILLISECONDS,
+            WORK_QUEUE, HANDLER);
 
 
     Column[] columns = new Column[]{Column.id, Column.name, Column.brief, Column.picUrl, Column.isHot, Column.isNew,
@@ -194,6 +230,12 @@ public class ClientGoodsServiceImpl implements ClientGoodsService {
     }
 
     @Override
+    public int addBrowse(Integer id, Short num) {
+        int count = goodsMapper.addBrowse(id, num);
+        return count;
+    }
+
+    @Override
     public Map<String, Object> details(Integer userId, Integer id) {
 
         Optional<YoungGoods> optional = mallGoodsService.findById(id);
@@ -206,8 +248,100 @@ public class ClientGoodsServiceImpl implements ClientGoodsService {
         // 商品属性
         Callable<List> goodsAttributeListCallable = () -> clientGoodsAttributeService.queryByGid(id);
 
-        // 商品规格 返回的是定制的GoodsSpecificationVo
+        // 商品规格 返回的是定制的ClientGoodsSpecificationVO
         Callable<List> objectCallable = () -> clientGoodsSpecificationService.getSpecificationVoList(id);
-        return null;
+
+        // 商品规格对应的数量和价格
+        Callable<List> productListCallable = () -> mallGoodsProductService.queryByGoodsId(id).get();
+
+        //商品问题，这里是一些通用问题
+        Callable<List> issueCallable = () -> mallIssueService.query();
+
+        // 商品品牌商
+        Callable<YoungBrand> brandCallable = () -> {
+            Integer brandId = goods.getBrandId();
+            YoungBrand brand;
+            if (brandId == 0) {
+                brand = new YoungBrand();
+            } else {
+                brand = mallBrandService.findById(brandId).get();
+            }
+            return brand;
+        };
+
+        // 评论
+        Callable<Map> commentsCallable = () -> {
+            List<YoungComment> comments = mallCommentService.queryGoodsByGid(id, 0, 2);
+            List<Map<String, Object>> commentsVo = new ArrayList<>(comments.size());
+
+            for (YoungComment comment : comments) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("id", comment.getId());
+                map.put("addTime", comment.getAddTime());
+                map.put("content", comment.getContent());
+                YoungUser user = clientUserService.findById(comment.getUserId());
+                map.put("nickname", user.getNickname());
+                map.put("avatar", user.getAvatar());
+                map.put("picList", comment.getPicUrls());
+                commentsVo.add(map);
+            }
+            Map<String, Object> commentList = new HashMap<>();
+            commentList.put("count", PageInfo.of(comments).getTotal());
+            commentList.put("data", commentsVo);
+            return commentList;
+        };
+
+        // 团购信息
+        String goodsSn = goods.getGoodsSn();
+        Callable<List> grouponRulesCallable = () -> clientGrouponRulesService.queryByGoodsSn(goodsSn);
+        // 用户收藏
+        int userHasCollect = clientCollectService.count(userId, id);
+        // 记录用户的足迹 异步处理
+        executorService.execute(() -> {
+            YoungFootprint footprint = new YoungFootprint();
+            footprint.setUserId(userId);
+            footprint.setGoodsId(id);
+            clientFootPrintService.add(footprint);
+            // 新增商品点击量
+            short num = 1;
+            this.addBrowse(id, num);//
+        });
+
+
+        FutureTask<List> goodsAttributeListTask = new FutureTask<>(goodsAttributeListCallable);
+        FutureTask<List> objectCallableTask = new FutureTask<>(objectCallable);
+        FutureTask<List> productListCallableTask = new FutureTask<>(productListCallable);
+        FutureTask<List> issueCallableTask = new FutureTask<>(issueCallable);
+        FutureTask<Map> commentsCallableTsk = new FutureTask<>(commentsCallable);
+        FutureTask<YoungBrand> brandCallableTask = new FutureTask<>(brandCallable);
+        FutureTask<List> grouponRulesCallableTask = new FutureTask<>(grouponRulesCallable);
+
+        executorService.submit(goodsAttributeListTask);
+        executorService.submit(objectCallableTask);
+        executorService.submit(productListCallableTask);
+        executorService.submit(issueCallableTask);
+        executorService.submit(commentsCallableTsk);
+        executorService.submit(brandCallableTask);
+        executorService.submit(grouponRulesCallableTask);
+
+        Map<String, Object> data = new HashMap<>(14);
+        try {
+
+            data.put("info", goods);
+            data.put("userHasCollect", userHasCollect);
+            data.put("issue", issueCallableTask.get());
+            data.put("comment", commentsCallableTsk.get());
+            data.put("specificationList", objectCallableTask.get());
+            data.put("productList", productListCallableTask.get());
+            data.put("attribute", goodsAttributeListTask.get());
+            data.put("brand", brandCallableTask.get());
+            data.put("groupon", grouponRulesCallableTask.get());
+        } catch (Exception e) {
+            logger.error("获取商品详情出错:{}", e.getMessage());
+        }
+        // 商品分享图片地址
+        data.put("shareImage", goods.getShareUrl());
+
+        return data;
     }
 }

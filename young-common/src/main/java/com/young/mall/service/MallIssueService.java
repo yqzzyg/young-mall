@@ -10,7 +10,7 @@ import java.util.Optional;
  * @Author: yqz
  * @CreateDate: 2020/11/8 21:43
  */
-public interface IssueService {
+public interface MallIssueService {
 
     /**
      * 分页查询
@@ -28,6 +28,7 @@ public interface IssueService {
 
     /**
      * 添加问题
+     *
      * @param issue
      * @return
      */
@@ -35,6 +36,7 @@ public interface IssueService {
 
     /**
      * 读取问题详情
+     *
      * @param id
      * @return
      */
@@ -42,10 +44,18 @@ public interface IssueService {
 
     /**
      * 更新通用问题
+     *
      * @param issue
      * @return
      */
     Optional<Integer> update(YoungIssue issue);
 
     Optional<Integer> delete(Integer id);
+
+    /**
+     * 查询通用问题
+     *
+     * @return
+     */
+    List<YoungIssue> query();
 }

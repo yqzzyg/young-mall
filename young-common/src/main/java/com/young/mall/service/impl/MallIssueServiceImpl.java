@@ -5,7 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.young.db.dao.YoungIssueMapper;
 import com.young.db.entity.YoungIssue;
 import com.young.db.entity.YoungIssueExample;
-import com.young.mall.service.IssueService;
+import com.young.mall.service.MallIssueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,7 @@ import java.util.Optional;
  * @CreateDate: 2020/11/8 21:45
  */
 @Service
-public class IssueServiceImpl implements IssueService {
+public class MallIssueServiceImpl implements MallIssueService {
 
     @Autowired
     private YoungIssueMapper issueMapper;
@@ -78,5 +78,12 @@ public class IssueServiceImpl implements IssueService {
         int count = issueMapper.logicalDeleteByPrimaryKey(id);
 
         return Optional.ofNullable(count);
+    }
+
+    @Override
+    public List<YoungIssue> query() {
+        YoungIssueExample example = new YoungIssueExample();
+        example.or().andDeletedEqualTo(false);
+        return issueMapper.selectByExample(example);
     }
 }

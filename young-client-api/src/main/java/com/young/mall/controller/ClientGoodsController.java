@@ -114,7 +114,7 @@ public class ClientGoodsController {
     }
 
     @ApiOperation("商品详情")
-    @GetMapping("/details")
+    @GetMapping("/detail")
     public ResBean details(@NotNull Integer id) {
 
         ClientUserDetails userInfo = clientUserService.getUserInfo();

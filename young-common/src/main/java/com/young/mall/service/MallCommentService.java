@@ -55,8 +55,19 @@ public interface MallCommentService {
 
     /**
      * 删除评论
+     *
      * @param cid
      * @return
      */
     Integer delete(Integer cid);
+
+    /**
+     * 根据商品id查询评论
+     *
+     * @param id   商品id
+     * @param page
+     * @param size
+     * @return
+     */
+    List<YoungComment> queryGoodsByGid(Integer id, int page, int size);
 }
