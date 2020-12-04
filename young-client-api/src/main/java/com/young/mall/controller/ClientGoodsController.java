@@ -6,7 +6,6 @@ import com.github.pagehelper.PageInfo;
 import com.young.db.entity.YoungCategory;
 import com.young.db.entity.YoungGoods;
 import com.young.db.entity.YoungSearchHistory;
-import com.young.mall.common.CommonPage;
 import com.young.mall.common.ResBean;
 import com.young.mall.domain.ClientUserDetails;
 import com.young.mall.service.ClientCategoryService;
@@ -124,5 +123,36 @@ public class ClientGoodsController {
         Integer userId = userInfo.getYoungUser().getId();
         Map<String, Object> details = clientGoodsService.details(userId, id);
         return ResBean.success(details);
+    }
+
+    @ApiOperation("商品详情页面“大家都在看”推荐商品")
+    @GetMapping("/related")
+    public ResBean related(@NotNull Integer id) {
+
+        YoungGoods goods = clientGoodsService.findById(id);
+        if (BeanUtil.isEmpty(goods)) {
+            return ResBean.failed("查询失败");
+        }
+
+        //目前的商品推荐算法仅仅是推荐同类目的其他商品
+        int cid = goods.getCategoryId().intValue();
+        int brandId = goods.getBrandId().intValue();
+
+        //查找六个相关商品,同店铺，同类优先
+        int limitBid = 10;
+        List<YoungGoods> goodsList = clientGoodsService.queryByBrandId(brandId, cid, 1, limitBid);
+        List<YoungGoods> relatedGoods = goodsList == null ? new ArrayList<>() : goodsList;
+        // 同店铺，同类商品小于6件，则获取其他店铺同类商品
+        if (goodsList == null || goodsList.size() < 6) {
+            int limitCid = 6;
+            List<YoungGoods> youngGoodsList = clientGoodsService.queryByCategoryAndNotSameBrandId(brandId, cid, 1, limitCid);
+            relatedGoods.addAll(youngGoodsList);
+        }
+
+
+        Map<String, Object> data = new HashMap<>(2);
+        data.put("goodsList", relatedGoods);
+
+        return ResBean.success(data);
     }
 }

@@ -103,4 +103,34 @@ public interface ClientGoodsService {
      * @return
      */
     int addBrowse(Integer id, Short num);
+
+    /**
+     * 根据id查找商品
+     *
+     * @param id
+     * @return
+     */
+    YoungGoods findById(Integer id);
+
+    /**
+     * 根据店铺，获取店铺对应类别的商品
+     *
+     * @param bid
+     * @param cid
+     * @param page
+     * @param limit
+     * @return
+     */
+    List<YoungGoods> queryByBrandId(int bid, int cid, int page, int limit);
+
+    /**
+     * 同类商品，且不同店铺
+     *
+     * @param bid
+     * @param cid
+     * @param page
+     * @param limit
+     * @return
+     */
+    List<YoungGoods> queryByCategoryAndNotSameBrandId(int bid, int cid, int page, int limit);
 }

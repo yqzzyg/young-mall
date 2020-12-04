@@ -1,6 +1,7 @@
 package com.young.mall.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.young.db.entity.YoungCart;
 import com.young.mall.common.ResBean;
 import com.young.mall.domain.ClientUserDetails;
 import com.young.mall.service.ClientCartService;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 
 /**
@@ -41,6 +44,21 @@ public class ClientCartController {
             return ResBean.unauthorized("请登录！");
         }
         return clientCartService.index(userInfo.getYoungUser().getId());
+    }
+
+    @ApiOperation("用户购物车数量")
+    @GetMapping("/goodscount")
+    public ResBean goodsCount() {
+        ClientUserDetails userInfo = clientUserService.getUserInfo();
+        if (BeanUtil.isEmpty(userInfo)) {
+            return ResBean.unauthorized("请登录！");
+        }
+        List<YoungCart> cartList = clientCartService.queryByUid(userInfo.getYoungUser().getId());
+        int goodsCount = 0;
+        for (YoungCart cart : cartList) {
+            goodsCount += cart.getNumber();
+        }
+        return ResBean.success(goodsCount);
     }
 
 }

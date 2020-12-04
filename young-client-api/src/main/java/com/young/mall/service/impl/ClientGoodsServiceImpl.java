@@ -352,4 +352,33 @@ public class ClientGoodsServiceImpl implements ClientGoodsService {
 
         return data;
     }
+
+    @Override
+    public YoungGoods findById(Integer id) {
+        YoungGoodsExample example = new YoungGoodsExample();
+        example.or().andIdEqualTo(id).andDeletedEqualTo(false);
+        return youngGoodsMapper.selectOneByExampleWithBLOBs(example);
+    }
+
+    @Override
+    public List<YoungGoods> queryByBrandId(int bid, int cid, int page, int limit) {
+        YoungGoodsExample example = new YoungGoodsExample();
+        example.or().andBrandIdEqualTo(bid).andCategoryIdEqualTo(cid).andIsOnSaleEqualTo(true).andDeletedEqualTo(false);
+        example.setOrderByClause("browse desc");
+
+        PageHelper.startPage(page, limit);
+        return youngGoodsMapper.selectByExampleSelective(example, columns);
+    }
+
+    @Override
+    public List<YoungGoods> queryByCategoryAndNotSameBrandId(int bid, int cid, int page, int limit) {
+        YoungGoodsExample example = new YoungGoodsExample();
+        example.or().andBrandIdNotEqualTo(bid).andCategoryIdEqualTo(cid).andIsOnSaleEqualTo(true)
+                .andDeletedEqualTo(false);
+        example.setOrderByClause("browse desc");
+
+        PageHelper.startPage(page, limit);
+        return youngGoodsMapper.selectByExampleSelective(example, columns);
+
+    }
 }
