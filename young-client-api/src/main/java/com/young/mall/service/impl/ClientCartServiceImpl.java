@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -104,6 +105,27 @@ public class ClientCartServiceImpl implements ClientCartService {
         }
 
         return ResBean.success(result);
+    }
+
+    @Override
+    public YoungCart queryExist(Integer goodsId, Integer productId, Integer userId) {
+        YoungCartExample example = new YoungCartExample();
+        example.or().andGoodsIdEqualTo(goodsId).andProductIdEqualTo(productId).andUserIdEqualTo(userId)
+                .andDeletedEqualTo(false);
+        return youngCartMapper.selectOneByExample(example);
+    }
+
+    @Override
+    public Integer add(YoungCart cart) {
+        cart.setAddTime(LocalDateTime.now());
+        cart.setUpdateTime(LocalDateTime.now());
+        return youngCartMapper.insertSelective(cart);
+    }
+
+    @Override
+    public Integer updateById(YoungCart cart) {
+        cart.setUpdateTime(LocalDateTime.now());
+        return youngCartMapper.updateByPrimaryKeySelective(cart);
     }
 
     @Override

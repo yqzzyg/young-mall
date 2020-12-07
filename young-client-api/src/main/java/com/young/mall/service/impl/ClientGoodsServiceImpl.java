@@ -6,7 +6,6 @@ import com.young.db.dao.YoungGoodsMapper;
 import com.young.db.entity.*;
 import com.young.db.entity.YoungGoods.Column;
 import com.young.db.mapper.GoodsMapper;
-import com.young.mall.domain.ClientGoodsSpecificationVO;
 import com.young.mall.exception.Asserts;
 import com.young.mall.service.*;
 import org.slf4j.Logger;
@@ -354,9 +353,9 @@ public class ClientGoodsServiceImpl implements ClientGoodsService {
     }
 
     @Override
-    public YoungGoods findById(Integer id) {
+    public YoungGoods findById(Integer gid) {
         YoungGoodsExample example = new YoungGoodsExample();
-        example.or().andIdEqualTo(id).andDeletedEqualTo(false);
+        example.or().andIdEqualTo(gid).andDeletedEqualTo(false);
         return youngGoodsMapper.selectOneByExampleWithBLOBs(example);
     }
 

@@ -28,4 +28,30 @@ public interface ClientCartService {
      * @return
      */
     ResBean<Map<String, Object>> index(Integer uid);
+
+    /**
+     * 根据商品id、商品货品表的货品id、用户id查询购物车
+     *
+     * @param goodsId
+     * @param productId
+     * @param userId
+     * @return
+     */
+    YoungCart queryExist(Integer goodsId, Integer productId, Integer userId);
+
+    /**
+     * 添加购物车
+     *
+     * @param cart
+     * @return
+     */
+    Integer add(YoungCart cart);
+
+    /**
+     * 根据购物车id，更新购物车
+     *
+     * @param cart
+     * @return
+     */
+    Integer updateById(YoungCart cart);
 }

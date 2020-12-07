@@ -105,12 +105,12 @@ public interface ClientGoodsService {
     int addBrowse(Integer id, Short num);
 
     /**
-     * 根据id查找商品
+     * 根据商品id查找商品
      *
-     * @param id
+     * @param gid
      * @return
      */
-    YoungGoods findById(Integer id);
+    YoungGoods findById(Integer gid);
 
     /**
      * 根据店铺，获取店铺对应类别的商品
