@@ -5,6 +5,7 @@ import com.young.db.entity.YoungCart;
 import com.young.db.entity.YoungGoods;
 import com.young.db.entity.YoungGoodsProduct;
 import com.young.mall.common.ResBean;
+import com.young.mall.domain.CartCheckDto;
 import com.young.mall.domain.ClientUserDetails;
 import com.young.mall.domain.enums.WxResponseCode;
 import com.young.mall.service.ClientCartService;
@@ -19,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -72,7 +74,7 @@ public class ClientCartController {
         return ResBean.success(goodsCount);
     }
 
-    @ApiOperation("/add")
+    @ApiOperation("加入商品到购物车")
     @PostMapping("/add")
     public ResBean addGoodsToCart(@RequestBody YoungCart cart) {
 
@@ -128,4 +130,21 @@ public class ClientCartController {
         return this.goodsCount();
     }
 
+    @ApiOperation("勾选购物车商品")
+    @PostMapping("/checked")
+    public ResBean checked(@Valid @RequestBody CartCheckDto cartCheckDto) {
+        ClientUserDetails userInfo = clientUserService.getUserInfo();
+        if (BeanUtil.isEmpty(userInfo)) {
+            logger.info("用户添加购物车失败，未登录。");
+            return ResBean.unauthorized("请登录！");
+        }
+
+        boolean isChecked = cartCheckDto.getIsChecked() == 1;
+
+        Integer count = clientCartService.updateCheck(userInfo.getYoungUser().getId(), cartCheckDto.getProductIds(), isChecked);
+        if (count >= 1) {
+            return this.index();
+        }
+        return ResBean.failed("勾选购物车商品");
+    }
 }

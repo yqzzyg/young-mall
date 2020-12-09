@@ -54,4 +54,14 @@ public interface ClientCartService {
      * @return
      */
     Integer updateById(YoungCart cart);
+
+    /**
+     * 更新购物车商品选中状态
+     *
+     * @param userId
+     * @param idsList
+     * @param checked
+     * @return
+     */
+    Integer updateCheck(Integer userId, List<Integer> idsList, boolean checked);
 }

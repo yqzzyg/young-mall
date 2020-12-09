@@ -129,6 +129,16 @@ public class ClientCartServiceImpl implements ClientCartService {
     }
 
     @Override
+    public Integer updateCheck(Integer userId, List<Integer> idsList, boolean checked) {
+        YoungCartExample example = new YoungCartExample();
+        example.or().andUserIdEqualTo(userId).andProductIdIn(idsList).andDeletedEqualTo(false);
+        YoungCart cart = new YoungCart();
+        cart.setChecked(checked);
+        cart.setUpdateTime(LocalDateTime.now());
+        return youngCartMapper.updateByExampleSelective(cart, example);
+    }
+
+    @Override
     public List<YoungCart> queryByUid(Integer uid) {
 
         YoungCartExample example = new YoungCartExample();
