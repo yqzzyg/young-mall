@@ -147,4 +147,9 @@ public class ClientCartServiceImpl implements ClientCartService {
         return cartList;
     }
 
+    @Override
+    public YoungCart findById(Integer id) {
+
+        return youngCartMapper.selectByPrimaryKey(id);
+    }
 }

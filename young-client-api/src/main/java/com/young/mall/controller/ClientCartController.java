@@ -74,6 +74,12 @@ public class ClientCartController {
         return ResBean.success(goodsCount);
     }
 
+    /**
+     * 如果已经存在购物车货品，则增加数量； 否则添加新的购物车货品项。
+     *
+     * @param cart 购物车商品信息， { goodsId: xxx, productId: xxx, number: xxx }
+     * @return
+     */
     @ApiOperation("加入商品到购物车")
     @PostMapping("/add")
     public ResBean addGoodsToCart(@RequestBody YoungCart cart) {
@@ -146,5 +152,60 @@ public class ClientCartController {
             return this.index();
         }
         return ResBean.failed("勾选购物车商品");
+    }
+
+
+    @ApiOperation("修改购物车商品货品数量")
+    @PostMapping("/update")
+    public ResBean update(@RequestBody YoungCart cart) {
+        ClientUserDetails userInfo = clientUserService.getUserInfo();
+        if (BeanUtil.isEmpty(userInfo)) {
+            logger.info("用户添加购物车失败，未登录。");
+            return ResBean.unauthorized("请登录！");
+        }
+        Integer productId = cart.getProductId();
+        Integer number = cart.getNumber().intValue();
+        Integer goodsId = cart.getGoodsId();
+        Integer id = cart.getId();
+        if (!ObjectUtils.allNotNull(id, productId, number, goodsId)) {
+            return ResBean.validateFailed();
+        }
+
+        // 判断是否存在该订单
+        // 如果不存在，直接返回错误
+        YoungCart existCart = clientCartService.findById(id);
+        if (BeanUtil.isEmpty(existCart)) {
+            return ResBean.failed("该商品不在购车内");
+        }
+
+        // 判断goodsId和productId是否与当前cart里的值一致
+        if (!existCart.getGoodsId().equals(goodsId)) {
+            logger.info("当前修改商品信息与购物车中不一致");
+            return ResBean.failed("当前修改商品信息与购物车中不一致");
+        }
+        if (!existCart.getProductId().equals(productId)) {
+            logger.info("当前修改商品信息与购物车中不一致");
+
+            return ResBean.failed("当前修改商品信息与购物车中不一致");
+        }
+        // 判断商品是否可以购买
+        YoungGoods goods = clientGoodsService.findById(goodsId);
+        if (BeanUtil.isEmpty(goods) || !goods.getIsOnSale()) {
+            logger.info("修改购物车商品失败：{}", WxResponseCode.GOODS_UNSHELVE);
+            return ResBean.failed(WxResponseCode.GOODS_UNSHELVE);
+        }
+        // 取得规格的信息,判断规格库存
+        YoungGoodsProduct product = clientGoodsProductService.findById(productId);
+        if (BeanUtil.isEmpty(product) || product.getNumber() < number) {
+            logger.info("{}->修改购物车失败：{}", userInfo.getYoungUser().getNickname(), WxResponseCode.GOODS_NO_STOCK);
+        }
+        existCart.setNumber(number.shortValue());
+
+        Integer count = clientCartService.updateById(existCart);
+        if (count == 0) {
+            logger.info("{}->修改购物车失败:更新购物车信息失败!", userInfo.getYoungUser().getNickname());
+        }
+
+        return ResBean.success("修改购物车成功");
     }
 }
