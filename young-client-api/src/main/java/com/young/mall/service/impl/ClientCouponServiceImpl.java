@@ -125,4 +125,13 @@ public class ClientCouponServiceImpl implements ClientCouponService {
         }
         return ResBean.success("一键领取成功");
     }
+
+    @Override
+    public int queryUserCouponCnt(Integer userId) {
+        YoungCouponUserExample example = new YoungCouponUserExample();
+        YoungCouponUserExample.Criteria criteria = example.createCriteria();
+        criteria.andUserIdEqualTo(userId);
+        criteria.andDeletedEqualTo(false);
+        return (int) youngCouponUserMapper.countByExample(example);
+    }
 }

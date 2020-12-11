@@ -47,4 +47,12 @@ public interface ClientCouponService {
      * @return
      */
     ResBean receiveAll(Integer userId);
+
+    /**
+     * 查询用户的优惠券
+     *
+     * @param userId 用户id
+     * @return 优惠券个数
+     */
+    int queryUserCouponCnt(Integer userId);
 }
