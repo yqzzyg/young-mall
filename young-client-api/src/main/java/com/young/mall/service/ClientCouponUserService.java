@@ -2,6 +2,8 @@ package com.young.mall.service;
 
 import com.young.db.entity.YoungCouponUser;
 
+import java.util.List;
+
 /**
  * @Description: 优惠券用户使用
  * @Author: yqz
@@ -25,4 +27,21 @@ public interface ClientCouponUserService {
      * @return
      */
     Integer addCouponUser(YoungCouponUser youngCouponUser);
+
+    /**
+     * 个人优惠券列表
+     *
+     * @param userId   用户id
+     * @param couponId 优惠券id
+     * @param status   状态
+     * @param page     分页
+     * @param size     分页大小
+     * @param sort     排序依据
+     * @param order    排序方式
+     * @return
+     */
+    List<YoungCouponUser> queryList(Integer userId, Integer couponId,
+                                    Short status,
+                                    Integer page, Integer size,
+                                    String sort, String order);
 }
