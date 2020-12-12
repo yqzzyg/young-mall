@@ -73,7 +73,7 @@ public class ClientCouponController {
     }
 
     @ApiOperation("个人优惠券列表")
-    @GetMapping("/mylist")
+    @GetMapping("/myList")
     public ResBean myList(@NotNull Short status,
                           @RequestParam(defaultValue = "1") Integer page,
                           @RequestParam(defaultValue = "10") Integer size,
