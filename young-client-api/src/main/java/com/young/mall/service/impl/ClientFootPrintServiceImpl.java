@@ -5,8 +5,6 @@ import com.young.db.dao.YoungFootprintMapper;
 import com.young.db.dao.YoungGoodsMapper;
 import com.young.db.entity.YoungFootprint;
 import com.young.db.entity.YoungFootprintExample;
-import com.young.db.entity.YoungGoods;
-import com.young.db.entity.YoungGoodsExample;
 import com.young.mall.service.ClientFootPrintService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
