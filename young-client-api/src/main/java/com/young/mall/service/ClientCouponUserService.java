@@ -44,4 +44,13 @@ public interface ClientCouponUserService {
                                     Short status,
                                     Integer page, Integer size,
                                     String sort, String order);
+
+    /**
+     * 查询一个
+     *
+     * @param userId
+     * @param couponId
+     * @return
+     */
+    YoungCouponUser queryOne(Integer userId, Integer couponId);
 }

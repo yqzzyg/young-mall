@@ -235,4 +235,27 @@ public class ClientCartController {
         logger.info(userInfo.getYoungUser().getUsername(), "{}:删除购物车数量：{}", count);
         return this.index();
     }
+
+    /**
+     * @param cartId         购物车商品ID： 如果购物车商品ID是空，则下单当前用户所有购物车商品； 如果购物车商品ID非空，则只下单当前购物车商品。
+     * @param addressId      收货地址ID： 如果收货地址ID是空，则查询当前用户的默认地址。
+     * @param couponId       优惠券ID： 如果优惠券ID是空，则自动选择合适的优惠券。
+     * @param grouponRulesId
+     * @return
+     */
+    @ApiOperation("购物车下单")
+    @GetMapping("/checkout")
+    public ResBean checkout(Integer cartId, Integer addressId,
+                            Integer couponId, Integer grouponRulesId) {
+
+        ClientUserDetails userInfo = clientUserService.getUserInfo();
+        if (BeanUtil.isEmpty(userInfo)) {
+            logger.info("用户添加购物车失败，未登录。");
+            return ResBean.unauthorized("请登录！");
+        }
+        //收货地址
+
+        ResBean resBean = clientCartService.checkOut(userInfo.getYoungUser().getId(), cartId, addressId, couponId, grouponRulesId);
+        return resBean;
+    }
 }

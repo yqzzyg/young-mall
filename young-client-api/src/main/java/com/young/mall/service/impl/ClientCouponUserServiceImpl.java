@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.young.db.dao.YoungCouponUserMapper;
 import com.young.db.entity.YoungCouponUser;
 import com.young.db.entity.YoungCouponUserExample;
+import com.young.mall.domain.CouponUserConstant;
 import com.young.mall.service.ClientCouponUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,5 +65,15 @@ public class ClientCouponUserServiceImpl implements ClientCouponUserService {
         }
 
         return couponUserMapper.selectByExample(example);
+    }
+
+    @Override
+    public YoungCouponUser queryOne(Integer userId, Integer couponId) {
+        List<YoungCouponUser> couponUserList = queryList(userId, couponId, CouponUserConstant.STATUS_USABLE, 1, 1,
+                "add_time", "desc");
+        if (couponUserList.size() == 0) {
+            return null;
+        }
+        return couponUserList.get(0);
     }
 }
