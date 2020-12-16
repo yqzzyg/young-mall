@@ -116,6 +116,9 @@ public class ClientCartController {
         if (BeanUtil.isEmpty(existCart)) {
 
             BeanUtil.copyProperties(goods, cart);
+            cart.setGoodsName(goods.getName());
+            cart.setPrice(goodsProduct.getPrice());
+            cart.setSpecifications(goodsProduct.getSpecifications());
             cart.setUserId(userInfo.getYoungUser().getId());
             cart.setChecked(true);
             clientCartService.add(cart);
