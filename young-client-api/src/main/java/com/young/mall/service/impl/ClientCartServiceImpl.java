@@ -9,7 +9,6 @@ import com.young.mall.domain.CouponUserConstant;
 import com.young.mall.domain.enums.WxResponseCode;
 import com.young.mall.service.*;
 import com.young.mall.system.SystemConfig;
-import org.apache.tomcat.util.http.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
