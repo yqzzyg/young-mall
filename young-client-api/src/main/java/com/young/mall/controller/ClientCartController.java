@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -210,5 +211,28 @@ public class ClientCartController {
         }
 
         return ResBean.success("修改购物车成功");
+    }
+
+    /**
+     * @param body 购物车商品信息， { productIds: xxx }
+     * @return 删除结果
+     */
+    @ApiOperation("购物车商品删除")
+    @PostMapping("/delete")
+    public ResBean delete(@RequestBody Map<String, List<Integer>> body) {
+        ClientUserDetails userInfo = clientUserService.getUserInfo();
+        if (BeanUtil.isEmpty(userInfo)) {
+            logger.info("用户添加购物车失败，未登录。");
+            return ResBean.unauthorized("请登录！");
+        }
+
+        List<Integer> productIds = body.get("productIds");
+        if (productIds == null || productIds.size() == 0) {
+            return ResBean.validateFailed();
+        }
+
+        Integer count = clientCartService.delete(productIds, userInfo.getYoungUser().getId());
+        logger.info(userInfo.getYoungUser().getUsername(), "{}:删除购物车数量：{}", count);
+        return this.index();
     }
 }

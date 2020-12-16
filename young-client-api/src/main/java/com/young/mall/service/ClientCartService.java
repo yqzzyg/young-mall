@@ -72,4 +72,13 @@ public interface ClientCartService {
      * @return
      */
     YoungCart findById(Integer id);
+
+    /**
+     * 删除购物车
+     *
+     * @param productIdList 商品货品表的货品ID
+     * @param userId        用户id
+     * @return 删除个数
+     */
+    Integer delete(List<Integer> productIdList, int userId);
 }

@@ -152,4 +152,11 @@ public class ClientCartServiceImpl implements ClientCartService {
 
         return youngCartMapper.selectByPrimaryKey(id);
     }
+
+    @Override
+    public Integer delete(List<Integer> productIdList, int userId) {
+        YoungCartExample example = new YoungCartExample();
+        example.or().andUserIdEqualTo(userId).andProductIdIn(productIdList);
+        return youngCartMapper.logicalDeleteByExample(example);
+    }
 }
