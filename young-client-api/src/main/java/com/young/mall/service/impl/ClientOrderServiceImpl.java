@@ -129,4 +129,9 @@ public class ClientOrderServiceImpl implements ClientOrderService {
         PageHelper.startPage(page, size);
         return youngOrderMapper.selectByExample(example);
     }
+
+    @Override
+    public YoungOrder findById(Integer orderId) {
+        return youngOrderMapper.selectByPrimaryKey(orderId);
+    }
 }

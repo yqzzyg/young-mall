@@ -72,4 +72,11 @@ public class ClientGrouponRulesServiceImpl implements ClientGrouponRulesService 
         example.or().andGoodsSnEqualTo(goodsSn).andDeletedEqualTo(false);
         return grouponRulesMapper.selectByExample(example);
     }
+
+    @Override
+    public YoungGrouponRules queryById(Integer id) {
+        YoungGrouponRulesExample example = new YoungGrouponRulesExample();
+        example.or().andIdEqualTo(id).andDeletedEqualTo(false);
+        return grouponRulesMapper.selectOneByExample(example);
+    }
 }

@@ -29,4 +29,11 @@ public interface ClientGrouponRulesService {
      * @return
      */
     List<YoungGrouponRules> queryByGoodsSn(String goodsSn);
+
+    /**
+     * 根据ID查找对应团购项
+     * @param id
+     * @return
+     */
+    YoungGrouponRules queryById(Integer id);
 }

@@ -42,4 +42,12 @@ public interface ClientOrderService {
      * @return
      */
     List<YoungOrder> queryByOrderStatus(Integer userId, List<Short> orderStatus, Integer page, Integer size);
+
+    /**
+     * 根据订单id查询订单
+     *
+     * @param orderId 订单id
+     * @return
+     */
+    YoungOrder findById(Integer orderId);
 }

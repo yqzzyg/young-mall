@@ -7,6 +7,8 @@ import com.young.mall.service.ClientGrouponService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @Description:
  * @Author: yqz
@@ -23,5 +25,36 @@ public class ClientGrouponServiceImpl implements ClientGrouponService {
         YoungGrouponExample example = new YoungGrouponExample();
         example.or().andOrderIdEqualTo(orderId).andDeletedEqualTo(false);
         return youngGrouponMapper.selectOneByExample(example);
+    }
+
+    @Override
+    public List<YoungGroupon> queryMyGroupon(Integer userId) {
+        YoungGrouponExample example = new YoungGrouponExample();
+        example.or().andUserIdEqualTo(userId).andCreatorUserIdEqualTo(userId)
+                .andGrouponIdEqualTo(0).andDeletedEqualTo(false)
+                .andPayedEqualTo(true);
+        example.orderBy("add_time desc");
+
+        return youngGrouponMapper.selectByExample(example);
+    }
+
+    @Override
+    public List<YoungGroupon> queryMyJoinGroupon(Integer userId) {
+        YoungGrouponExample example = new YoungGrouponExample();
+        example.or().andUserIdEqualTo(userId).andGrouponIdNotEqualTo(0)
+                .andDeletedEqualTo(false).andPayedEqualTo(true);
+        example.orderBy("add_time desc");
+
+        return youngGrouponMapper.selectByExample(example);
+    }
+
+    @Override
+    public Integer countGroupon(Integer grouponId) {
+        YoungGrouponExample example = new YoungGrouponExample();
+        example.or().andGrouponIdEqualTo(grouponId)
+                .andDeletedEqualTo(false)
+                .andPayedEqualTo(true);
+        long count = youngGrouponMapper.countByExample(example);
+        return (int) count;
     }
 }
