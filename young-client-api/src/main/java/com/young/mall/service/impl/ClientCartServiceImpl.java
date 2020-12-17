@@ -295,9 +295,13 @@ public class ClientCartServiceImpl implements ClientCartService {
 
                 checkBrandGoodsList.add(bcg);
             }
+            //是否需要拆单
             data.put("isMultiOrderModel", 1);
+            //商品总价
             data.put("goodsTotalPrice", goodsTotalPrice);
+            //运费
             data.put("freightPrice", totalFreightPrice);
+            //购物车品牌商品
             data.put("brandCartgoods", checkBrandGoodsList);
             // 不拆订单，则统一呈现
         } else {
@@ -371,10 +375,16 @@ public class ClientCartServiceImpl implements ClientCartService {
         BigDecimal actualPrice = orderTotalPrice.subtract(integralPrice);
 
         // 返回界面的通用数据
+
+        //地址id标识
         data.put("addressId", addressId);
+        //收货地址
         data.put("checkedAddress", checkedAddress);
+        //优惠券id
         data.put("couponId", couponId);
+        //获取优惠券减免金额，优惠券可用数量
         data.put("availableCouponLength", availableCouponLength);
+        //团购id
         data.put("grouponRulesId", grouponRulesId);
 
         // 团购优惠的商品价格（团购商品需减免的优惠金额）
