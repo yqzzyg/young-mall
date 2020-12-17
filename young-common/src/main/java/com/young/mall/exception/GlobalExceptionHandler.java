@@ -1,6 +1,5 @@
 package com.young.mall.exception;
 
-import cn.hutool.json.JSONUtil;
 import com.young.mall.common.ResBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.nio.file.AccessDeniedException;
 
 /**
  * @Description: 全局异常
@@ -60,6 +58,13 @@ public class GlobalExceptionHandler {
                 message = fieldError.getField() + fieldError.getDefaultMessage();
             }
         }
+        return ResBean.validateFailed(message);
+    }
+
+    @ResponseBody
+    @ExceptionHandler(value = Exception.class)
+    public ResBean Exception(Exception e) {
+        String message = e.getMessage();
         return ResBean.validateFailed(message);
     }
 }
