@@ -65,12 +65,12 @@ public class ClientAddressServiceImpl implements ClientAddressService {
         List<YoungRegion> regionList = regionService.getRegions();
 
         for (YoungAddress address : addressList) {
-            Map<String, Object> addressVo = new HashMap<>();
+            Map<String, Object> addressVo = new HashMap<>(8);
             addressVo.put("id", address.getId());
             addressVo.put("name", address.getName());
             addressVo.put("mobile", address.getMobile());
             addressVo.put("isDefault", address.getIsDefault());
-
+            //用户添加的收货地址是省份+城市+地区，所对应的码值，所有需要根据码值与全国的所有省市码值进行匹配
             Callable<String> provinceCallable = () -> regionList.stream()
                     .filter(region -> region.getId().equals(address.getProvinceId())).findAny().orElse(null)
                     .getName();
