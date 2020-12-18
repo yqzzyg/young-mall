@@ -133,4 +133,59 @@ public class WxHomeServiceImpl implements WxHomeService {
         }
         return entity;
     }
+
+
+/*    @Override
+    public Map<String, Object> getIndexData(Integer userId) {
+
+        //轮播图
+        List<YoungAd> banner = clientAdService.queryIndex();
+        //首页九宫格
+        List<YoungCategory> youngCategories = clientCategoryService.queryLevelFirst();
+        //优惠券
+        List<YoungCoupon> youngCoupons;
+        if (userId == null) {
+            youngCoupons = clientCouponService.queryList(0, 3);
+        } else {
+            youngCoupons = clientCouponService.queryAvailableList(userId, 0, 3);
+        }
+        List<YoungArticle> youngArticles = clientArticleService.queryList(0, 5, "add_time", "desc");
+        //首页新品首发模块
+        List<YoungGoods> goodsList = clientGoodsService.queryByNew(0, SystemConfig.getNewLimit());
+        //首页人气推荐
+        List<YoungGoods> goodsList1 = clientGoodsService.queryByHot(0, SystemConfig.getHotLimit());
+        //首页品牌厂商直供
+        List<YoungBrand> youngBrands = clientBrandService.queryBrand(0, SystemConfig.getBrandLimit());
+        //团购专区
+        List<Map<String, Object>> maps = grouponRulesService.queryList(0, 6);
+        //活动专场
+        List<YoungTopic> youngTopics = topicService.queryList(0, SystemConfig.getTopicLimit());
+        //首页底部商品及其所属分类
+        // Callable<List<CategoryAndGoodsPojo>> floorGoodsListCallable = () -> clientCategoryService.getCategoryAndGoodsPojo(0, SystemConfig.getCatlogListLimit());
+        //此处分页为首页下半部分展示商品的商品分类，此时数据库只要8类商品，分10为展示所有，PageHelper起始页默认值 1。
+        List<Map<String, Object>> categoryList = clientCategoryService.getCategoryList(1, SystemConfig.getCatlogListLimit());
+
+
+        Map<String, Object> entity = new HashMap<>();
+        try {
+            entity.put("banner", banner);
+            entity.put("channel", youngCategories);
+            entity.put("couponList", youngCoupons);
+            entity.put("articles", youngArticles);
+            entity.put("newGoodsList", goodsList);
+            entity.put("hotGoodsList", goodsList1);
+            entity.put("brandList", youngBrands);
+            entity.put("grouponList", maps);
+            entity.put("topicList", youngTopics);
+            entity.put("floorGoodsList", categoryList);
+
+            //后续可以添加缓存数据
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            //如果线程池使用成员变量，则不用每次shutdown
+            //executorService.shutdown();
+        }
+        return entity;
+    }*/
 }
