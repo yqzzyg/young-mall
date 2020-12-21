@@ -11,6 +11,8 @@ import com.young.db.entity.YoungOrderGoods;
 import com.young.mall.domain.enums.WxResponseCode;
 import com.young.mall.domain.vo.OrderVo;
 import com.young.mall.exception.Asserts;
+import com.young.mall.express.ExpressService;
+import com.young.mall.express.entity.ExpressInfo;
 import com.young.mall.service.ClientOrderGoodsService;
 import com.young.mall.service.ClientOrderService;
 import com.young.mall.service.ClientGrouponService;
@@ -44,6 +46,8 @@ public class ClientOrderServiceImpl implements ClientOrderService {
     @Autowired
     private ClientOrderGoodsService clientOrderGoodsService;
 
+    @Autowired
+    private ExpressService expressService;
 
     @Override
     public Map<String, Object> orderInfo(Integer userId) {
@@ -182,8 +186,9 @@ public class ClientOrderServiceImpl implements ClientOrderService {
         // "YTO", "800669400640887922"
 
         if (OrderUtil.STATUS_SHIP.equals(order.getOrderStatus())) {
-
+            ExpressInfo expressInfo = expressService.getExpressInfo(order.getShipChannel(), order.getShipSn());
+            result.put("expressInfo", expressInfo);
         }
-        return null;
+        return result;
     }
 }
