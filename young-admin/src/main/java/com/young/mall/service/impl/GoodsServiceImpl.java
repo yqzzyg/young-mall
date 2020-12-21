@@ -165,9 +165,9 @@ public class GoodsServiceImpl implements GoodsService {
      * 编辑商品
      * <p>
      * TODO 目前商品修改的逻辑是
-     * 1. 更新Dts_goods表
-     * 2. 逻辑删除Dts_goods_specification、Dts_goods_attribute、Dts_goods_product
-     * 3. 添加Dts_goods_specification、Dts_goods_attribute、Dts_goods_product
+     * 1. 更新Young_goods表
+     * 2. 逻辑删除Young_goods_specification、Young_goods_attribute、Young_goods_product
+     * 3. 添加Young_goods_specification、Young_goods_attribute、Young_goods_product
      * <p>
      * 这里商品三个表的数据采用删除再添加的策略是因为 商品编辑页面，支持管理员添加删除商品规格、添加删除商品属性，因此这里仅仅更新是不可能的，
      * 只能删除三个表旧的数据，然后添加新的数据。 但是这里又会引入新的问题，就是存在订单商品货品ID指向了失效的商品货品表。

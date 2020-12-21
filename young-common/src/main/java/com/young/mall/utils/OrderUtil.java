@@ -149,40 +149,40 @@ public class OrderUtil {
         return status;
     }
 
-    public static boolean isCreateStatus(YoungOrder dtsOrder) {
-        return OrderUtil.STATUS_CREATE == dtsOrder.getOrderStatus().shortValue();
+    public static boolean isCreateStatus(YoungOrder order) {
+        return OrderUtil.STATUS_CREATE == order.getOrderStatus().shortValue();
     }
 
-    public static boolean isPayStatus(YoungOrder dtsOrder) {
-        return OrderUtil.STATUS_PAY == dtsOrder.getOrderStatus().shortValue();
+    public static boolean isPayStatus(YoungOrder order) {
+        return OrderUtil.STATUS_PAY == order.getOrderStatus().shortValue();
     }
 
-    public static boolean isShipStatus(YoungOrder dtsOrder) {
-        return OrderUtil.STATUS_SHIP == dtsOrder.getOrderStatus().shortValue();
+    public static boolean isShipStatus(YoungOrder order) {
+        return OrderUtil.STATUS_SHIP == order.getOrderStatus().shortValue();
     }
 
-    public static boolean isConfirmStatus(YoungOrder dtsOrder) {
-        return OrderUtil.STATUS_CONFIRM == dtsOrder.getOrderStatus().shortValue();
+    public static boolean isConfirmStatus(YoungOrder order) {
+        return OrderUtil.STATUS_CONFIRM == order.getOrderStatus().shortValue();
     }
 
-    public static boolean isCancelStatus(YoungOrder dtsOrder) {
-        return OrderUtil.STATUS_CANCEL == dtsOrder.getOrderStatus().shortValue();
+    public static boolean isCancelStatus(YoungOrder order) {
+        return OrderUtil.STATUS_CANCEL == order.getOrderStatus().shortValue();
     }
 
-    public static boolean isAutoCancelStatus(YoungOrder dtsOrder) {
-        return OrderUtil.STATUS_AUTO_CANCEL == dtsOrder.getOrderStatus().shortValue();
+    public static boolean isAutoCancelStatus(YoungOrder order) {
+        return OrderUtil.STATUS_AUTO_CANCEL == order.getOrderStatus().shortValue();
     }
 
-    public static boolean isRefundStatus(YoungOrder dtsOrder) {
-        return OrderUtil.STATUS_REFUND == dtsOrder.getOrderStatus().shortValue();
+    public static boolean isRefundStatus(YoungOrder order) {
+        return OrderUtil.STATUS_REFUND == order.getOrderStatus().shortValue();
     }
 
-    public static boolean isRefundConfirmStatus(YoungOrder dtsOrder) {
-        return OrderUtil.STATUS_REFUND_CONFIRM == dtsOrder.getOrderStatus().shortValue();
+    public static boolean isRefundConfirmStatus(YoungOrder order) {
+        return OrderUtil.STATUS_REFUND_CONFIRM == order.getOrderStatus().shortValue();
     }
 
-    public static boolean isAutoConfirmStatus(YoungOrder dtsOrder) {
-        return OrderUtil.STATUS_AUTO_CONFIRM == dtsOrder.getOrderStatus().shortValue();
+    public static boolean isAutoConfirmStatus(YoungOrder order) {
+        return OrderUtil.STATUS_AUTO_CONFIRM == order.getOrderStatus().shortValue();
     }
 
     /**

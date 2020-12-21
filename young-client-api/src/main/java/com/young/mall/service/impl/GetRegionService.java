@@ -18,18 +18,18 @@ public class GetRegionService {
     @Autowired
     private ClientRegionService youngRegionService;
 
-    private static List<YoungRegion> DtsRegions;
+    private static List<YoungRegion> regions;
 
     protected List<YoungRegion> getRegions() {
-        if (DtsRegions == null) {
+        if (regions == null) {
             createRegion();
         }
-        return DtsRegions;
+        return regions;
     }
 
     private synchronized void createRegion() {
-        if (DtsRegions == null) {
-            DtsRegions = youngRegionService.getAll();
+        if (regions == null) {
+            regions = youngRegionService.getAll();
         }
     }
 
