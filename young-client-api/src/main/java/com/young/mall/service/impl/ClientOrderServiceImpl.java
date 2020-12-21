@@ -13,6 +13,7 @@ import com.young.mall.domain.vo.OrderVo;
 import com.young.mall.exception.Asserts;
 import com.young.mall.express.ExpressService;
 import com.young.mall.express.entity.ExpressInfo;
+import com.young.mall.express.entity.Traces;
 import com.young.mall.service.ClientOrderGoodsService;
 import com.young.mall.service.ClientOrderService;
 import com.young.mall.service.ClientGrouponService;
@@ -22,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -188,6 +190,49 @@ public class ClientOrderServiceImpl implements ClientOrderService {
         if (OrderUtil.STATUS_SHIP.equals(order.getOrderStatus())) {
             ExpressInfo expressInfo = expressService.getExpressInfo(order.getShipChannel(), order.getShipSn());
             result.put("expressInfo", expressInfo);
+        }
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> expressTrace(Integer userId, Integer orderId) {
+
+        // 订单信息
+        YoungOrder order = this.findById(orderId);
+        if (BeanUtil.isEmpty(order)) {
+            logger.info("{}:获取订单详情失败：{}", userId, WxResponseCode.ORDER_UNKNOWN.getMsg());
+            Asserts.fail(WxResponseCode.ORDER_UNKNOWN);
+        }
+        if (!order.getUserId().equals(userId)) {
+            logger.info("{}:获取订单详情失败：{}", userId, WxResponseCode.ORDER_INVALID.getMsg());
+            Asserts.fail(WxResponseCode.ORDER_INVALID);
+        }
+        Map<String, Object> result = new HashMap<>();
+        DateTimeFormatter dateSdf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        DateTimeFormatter timeSdf = DateTimeFormatter.ofPattern("HH:mm");
+
+        result.put("shipDate", dateSdf.format(order.getShipTime()));
+        result.put("shipTime", timeSdf.format(order.getShipTime()));
+        result.put("shipperCode", order.getShipSn());
+        result.put("address", order.getAddress());
+
+        if (OrderUtil.STATUS_SHIP.equals(order.getOrderStatus())) {
+            ExpressInfo ei = expressService.getExpressInfo(order.getShipChannel(), order.getShipSn());
+            if (!BeanUtil.isEmpty(ei)) {
+                result.put("state", ei.getState());
+                result.put("shipperName", ei.getShipperName());
+                List<Traces> eiTrace = ei.getTraces();
+                List<Map<String, Object>> traces = new ArrayList<Map<String, Object>>();
+                for (Traces trace : eiTrace) {
+                    Map<String, Object> traceMap = new HashMap<String, Object>();
+                    traceMap.put("date", trace.getAcceptTime().substring(0, 10));
+                    traceMap.put("time", trace.getAcceptTime().substring(11, 16));
+                    traceMap.put("acceptTime", trace.getAcceptTime());
+                    traceMap.put("acceptStation", trace.getAcceptStation());
+                    traces.add(traceMap);
+                }
+                result.put("traces", traces);
+            }
         }
         return result;
     }

@@ -59,4 +59,14 @@ public interface ClientOrderService {
      * @return
      */
     Map<String, Object> detail(Integer userId, Integer orderId);
+
+
+    /**
+     * 订单物流跟踪
+     *
+     * @param userId  用户ID
+     * @param orderId 订单ID
+     * @return
+     */
+    Map<String, Object> expressTrace(Integer userId, Integer orderId);
 }

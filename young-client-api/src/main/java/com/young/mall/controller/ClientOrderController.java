@@ -65,4 +65,17 @@ public class ClientOrderController {
         Map<String, Object> detail = clientOrderService.detail(userInfo.getYoungUser().getId(), orderId);
         return ResBean.success(detail);
     }
+
+    @ApiOperation("物流跟踪")
+    @GetMapping("/expressTrace")
+    public ResBean expressTrace(@NotNull(message = "订单id不能为空") Integer orderId) {
+        ClientUserDetails userInfo = clientUserService.getUserInfo();
+        if (BeanUtil.isEmpty(userInfo)) {
+            logger.info("物流跟踪失败，未登录。");
+            return ResBean.unauthorized("请登录！");
+        }
+
+        Map<String, Object> expressTrace = clientOrderService.expressTrace(userInfo.getYoungUser().getId(), orderId);
+        return ResBean.success(expressTrace);
+    }
 }
