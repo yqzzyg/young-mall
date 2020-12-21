@@ -32,4 +32,9 @@ public class ClientArticleServiceImpl implements ClientArticleService {
         List<YoungArticle> articleList = youngArticleMapper.selectByExampleSelective(example, columns);
         return articleList;
     }
+
+    @Override
+    public YoungArticle findById(Integer id) {
+        return youngArticleMapper.selectByPrimaryKey(id);
+    }
 }

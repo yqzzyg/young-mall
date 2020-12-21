@@ -21,4 +21,12 @@ public interface ClientArticleService {
      * @return
      */
     List<YoungArticle> queryList(int page, int size, String sort, String order);
+
+    /**
+     * 通过id查询公告
+     *
+     * @param id
+     * @return
+     */
+    YoungArticle findById(Integer id);
 }
