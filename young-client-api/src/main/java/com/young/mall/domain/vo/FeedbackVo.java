@@ -1,4 +1,4 @@
-package com.young.mall.domain;
+package com.young.mall.domain.vo;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;

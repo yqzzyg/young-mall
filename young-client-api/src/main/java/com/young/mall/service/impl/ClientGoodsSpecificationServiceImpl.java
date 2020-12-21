@@ -3,7 +3,7 @@ package com.young.mall.service.impl;
 import com.young.db.dao.YoungGoodsSpecificationMapper;
 import com.young.db.entity.YoungGoodsSpecification;
 import com.young.db.entity.YoungGoodsSpecificationExample;
-import com.young.mall.domain.ClientGoodsSpecificationVO;
+import com.young.mall.domain.vo.ClientGoodsSpecificationVO;
 import com.young.mall.service.ClientGoodsSpecificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

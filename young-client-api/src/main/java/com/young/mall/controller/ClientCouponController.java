@@ -7,7 +7,7 @@ import com.young.db.entity.YoungCouponUser;
 import com.young.db.entity.YoungUser;
 import com.young.mall.common.ResBean;
 import com.young.mall.domain.ClientUserDetails;
-import com.young.mall.domain.CouponVo;
+import com.young.mall.domain.vo.CouponVo;
 import com.young.mall.exception.Asserts;
 import com.young.mall.service.ClientCouponService;
 import com.young.mall.service.ClientCouponUserService;

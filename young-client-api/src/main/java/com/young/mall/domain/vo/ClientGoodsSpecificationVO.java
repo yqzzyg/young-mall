@@ -1,4 +1,4 @@
-package com.young.mall.domain;
+package com.young.mall.domain.vo;
 
 import com.young.db.entity.YoungGoodsSpecification;
 import lombok.AllArgsConstructor;

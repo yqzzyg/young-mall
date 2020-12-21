@@ -50,4 +50,13 @@ public interface ClientOrderService {
      * @return
      */
     YoungOrder findById(Integer orderId);
+
+    /**
+     * 订单详情
+     *
+     * @param userId  用户ID
+     * @param orderId 订单ID
+     * @return
+     */
+    Map<String, Object> detail(Integer userId, Integer orderId);
 }

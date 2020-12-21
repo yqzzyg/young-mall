@@ -4,7 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.young.db.dao.YoungFeedbackMapper;
 import com.young.db.entity.YoungFeedback;
 import com.young.mall.domain.ClientUserDetails;
-import com.young.mall.domain.FeedbackVo;
+import com.young.mall.domain.vo.FeedbackVo;
 import com.young.mall.service.ClientFeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

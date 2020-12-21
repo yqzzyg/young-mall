@@ -1,7 +1,7 @@
 package com.young.mall.service;
 
 import com.young.db.entity.YoungGoodsSpecification;
-import com.young.mall.domain.ClientGoodsSpecificationVO;
+import com.young.mall.domain.vo.ClientGoodsSpecificationVO;
 
 import java.util.List;
 

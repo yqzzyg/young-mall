@@ -4,7 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.young.db.entity.YoungCollect;
 import com.young.db.entity.YoungGoods;
 import com.young.mall.common.ResBean;
-import com.young.mall.domain.AddOrDeleteVo;
+import com.young.mall.domain.vo.AddOrDeleteVo;
 import com.young.mall.domain.ClientUserDetails;
 import com.young.mall.service.ClientCollectService;
 import com.young.mall.service.ClientGoodsService;

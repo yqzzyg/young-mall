@@ -3,7 +3,7 @@ package com.young.mall.controller;
 import cn.hutool.core.bean.BeanUtil;
 import com.young.mall.common.ResBean;
 import com.young.mall.domain.ClientUserDetails;
-import com.young.mall.domain.FeedbackVo;
+import com.young.mall.domain.vo.FeedbackVo;
 import com.young.mall.exception.Asserts;
 import com.young.mall.service.ClientFeedbackService;
 import com.young.mall.service.ClientUserService;

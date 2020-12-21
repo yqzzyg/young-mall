@@ -1,7 +1,7 @@
 package com.young.mall.service;
 
 import com.young.mall.domain.ClientUserDetails;
-import com.young.mall.domain.FeedbackVo;
+import com.young.mall.domain.vo.FeedbackVo;
 
 /**
  * @Description: 意见反馈

@@ -1,5 +1,6 @@
 package com.young.mall.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.young.db.dao.YoungOrderMapper;
@@ -7,10 +8,15 @@ import com.young.db.entity.YoungGroupon;
 import com.young.db.entity.YoungOrder;
 import com.young.db.entity.YoungOrderExample;
 import com.young.db.entity.YoungOrderGoods;
+import com.young.mall.domain.enums.WxResponseCode;
+import com.young.mall.domain.vo.OrderVo;
+import com.young.mall.exception.Asserts;
 import com.young.mall.service.ClientOrderGoodsService;
 import com.young.mall.service.ClientOrderService;
 import com.young.mall.service.ClientGrouponService;
 import com.young.mall.utils.OrderUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +32,8 @@ import java.util.Map;
  */
 @Service
 public class ClientOrderServiceImpl implements ClientOrderService {
+
+    protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private YoungOrderMapper youngOrderMapper;
@@ -133,5 +141,49 @@ public class ClientOrderServiceImpl implements ClientOrderService {
     @Override
     public YoungOrder findById(Integer orderId) {
         return youngOrderMapper.selectByPrimaryKey(orderId);
+    }
+
+    @Override
+    public Map<String, Object> detail(Integer userId, Integer orderId) {
+
+        //订单信息
+        YoungOrder order = this.findById(orderId);
+        if (BeanUtil.isEmpty(order)) {
+            logger.info("{}:获取订单详情失败：{}", userId, WxResponseCode.ORDER_UNKNOWN.getMsg());
+            Asserts.fail(WxResponseCode.ORDER_UNKNOWN);
+        }
+        if (!order.getUserId().equals(userId)) {
+            logger.info("{}:获取订单详情失败：{}", userId, WxResponseCode.ORDER_INVALID.getMsg());
+            Asserts.fail(WxResponseCode.ORDER_INVALID);
+        }
+
+        OrderVo orderVo = OrderVo.builder()
+                .id(order.getId())
+                .orderSn(order.getOrderSn())
+                .addTime(order.getAddTime())
+                .consignee(order.getConsignee())
+                .mobile(order.getMobile())
+                .address(order.getAddress())
+                .goodsPrice(order.getGoodsPrice())
+                .freightPrice(order.getFreightPrice())
+                .discountPrice(order.getIntegralPrice().add(order.getGrouponPrice()).add(order.getCouponPrice()))
+                .actualPrice(order.getActualPrice())
+                .orderStatusText(OrderUtil.orderStatusText(order))
+                .handleOption(OrderUtil.build(order))
+                .expCode(order.getShipChannel())
+                .expNo(order.getShipSn()).build();
+
+        List<YoungOrderGoods> orderGoodsList = clientOrderGoodsService.queryByOid(orderId);
+        Map<String, Object> result = new HashMap<>();
+        result.put("orderInfo", orderVo);
+        result.put("orderGoods", orderGoodsList);
+
+        // 订单状态为已发货且物流信息不为空
+        // "YTO", "800669400640887922"
+
+        if (OrderUtil.STATUS_SHIP.equals(order.getOrderStatus())) {
+
+        }
+        return null;
     }
 }

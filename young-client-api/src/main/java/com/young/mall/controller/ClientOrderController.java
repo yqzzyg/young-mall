@@ -10,11 +10,13 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotNull;
 import java.util.Map;
 
 /**
@@ -24,6 +26,7 @@ import java.util.Map;
  */
 @Api(tags = "ClientOrderController")
 @RestController
+@Validated
 @RequestMapping("/client/order")
 public class ClientOrderController {
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -48,5 +51,13 @@ public class ClientOrderController {
         Map<String, Object> result = clientOrderService.list(userInfo.getYoungUser().getId(), showType, page, size);
 
         return ResBean.success(result);
+    }
+
+
+    @ApiOperation("订单详情")
+    @GetMapping("/detail")
+    public ResBean detail(@NotNull(message = "订单id不能为空") Integer orderId) {
+
+        return null;
     }
 }
