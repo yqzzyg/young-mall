@@ -33,4 +33,9 @@ public class ClientBrandServiceImpl implements ClientBrandService {
         List<YoungBrand> brandList = youngBrandMapper.selectByExampleSelective(example, columns);
         return brandList;
     }
+
+    @Override
+    public YoungBrand findById(Integer id) {
+        return youngBrandMapper.selectByPrimaryKey(id);
+    }
 }

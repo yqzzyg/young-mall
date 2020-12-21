@@ -19,4 +19,12 @@ public interface ClientBrandService {
      * @return
      */
     List<YoungBrand> queryBrand(int page, int size);
+
+    /**
+     * 根据品牌id查询品牌详情
+     *
+     * @param id
+     * @return
+     */
+    YoungBrand findById(Integer id);
 }
