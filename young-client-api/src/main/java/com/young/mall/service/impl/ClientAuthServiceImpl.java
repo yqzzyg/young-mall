@@ -14,6 +14,7 @@ import com.young.mall.exception.Asserts;
 import com.young.mall.service.ClientAuthService;
 import com.young.mall.service.ClientCouponAssignService;
 import com.young.mall.service.ClientUserService;
+import com.young.mall.service.RedisService;
 import com.young.mall.utils.CaptchaCodeManager;
 import com.young.mall.utils.IpUtil;
 import com.young.mall.utils.JwtTokenUtil;
@@ -33,6 +34,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -66,6 +68,9 @@ public class ClientAuthServiceImpl implements ClientAuthService {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Resource
+    private RedisService redisService;
 
     @Value("${jwt.tokenHead}")
     private String tokenHead;
@@ -209,11 +214,12 @@ public class ClientAuthServiceImpl implements ClientAuthService {
 
     public String checkParams(ClientUserDto registerDto) {
         // 判断验证码是否正确
-        String cacheCode = CaptchaCodeManager.getCachedCaptcha(registerDto.getMobile());
-/*        if (cacheCode == null || cacheCode.isEmpty() || !cacheCode.equals(registerDto.getCode())) {
+
+        Object cacheCode = redisService.get(registerDto.getMobile());
+        if (BeanUtil.isEmpty(cacheCode) || !cacheCode.equals(registerDto.getCode())) {
             logger.error("请求账号注册出错:{}", WxResponseCode.AUTH_CAPTCHA_UNMATCH);
             Asserts.fail(WxResponseCode.AUTH_CAPTCHA_UNMATCH);
-        }*/
+        }
         if (!RegexUtil.isMobileExact(registerDto.getMobile())) {
             logger.info("{}，注册失败：{}", registerDto, WxResponseCode.AUTH_INVALID_MOBILE);
             Asserts.fail(WxResponseCode.AUTH_INVALID_MOBILE);
