@@ -15,7 +15,6 @@ import com.young.mall.service.ClientAuthService;
 import com.young.mall.service.ClientCouponAssignService;
 import com.young.mall.service.ClientUserService;
 import com.young.mall.service.RedisService;
-import com.young.mall.utils.CaptchaCodeManager;
 import com.young.mall.utils.IpUtil;
 import com.young.mall.utils.JwtTokenUtil;
 import com.young.mall.utils.RegexUtil;

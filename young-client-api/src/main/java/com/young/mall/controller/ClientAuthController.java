@@ -3,14 +3,17 @@ package com.young.mall.controller;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.young.db.entity.YoungUser;
 import com.young.mall.common.ResBean;
 import com.young.mall.domain.ClientLoginDto;
 import com.young.mall.domain.ClientUserDto;
 import com.young.mall.domain.WxLoginInfo;
 import com.young.mall.domain.enums.WxResponseCode;
+import com.young.mall.domain.vo.ResetVo;
 import com.young.mall.notify.NotifyService;
 import com.young.mall.notify.NotifyType;
 import com.young.mall.service.ClientAuthService;
+import com.young.mall.service.ClientUserService;
 import com.young.mall.service.RedisService;
 import com.young.mall.utils.CharUtil;
 import com.young.mall.utils.RegexUtil;
@@ -20,6 +23,7 @@ import me.chanjar.weixin.common.error.WxErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +33,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -43,7 +48,7 @@ public class ClientAuthController {
 
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
+    @Resource
     private ClientAuthService clientAuthService;
 
     @Resource
@@ -51,6 +56,12 @@ public class ClientAuthController {
 
     @Resource
     private RedisService redisService;
+
+    @Resource
+    private ClientUserService clientUserService;
+
+    @Resource
+    private PasswordEncoder passwordEncoder;
 
     @ApiOperation("注册")
     @PostMapping("register")
@@ -116,5 +127,38 @@ public class ClientAuthController {
             e.printStackTrace();
         }
         return resBean;
+    }
+
+
+    @ApiOperation("账号密码重置")
+    @PostMapping("/reset")
+    public ResBean reset(@Valid @RequestBody ResetVo reset) {
+
+        // 判断验证码是否正确
+        Object cacheCode = redisService.get(reset.getMobile());
+
+        if (BeanUtil.isEmpty(cacheCode) || !reset.getCode().equals(cacheCode)) {
+            logger.info("账号密码重置出错:{}", WxResponseCode.AUTH_CAPTCHA_UNMATCH.getMsg());
+            return ResBean.failed(WxResponseCode.AUTH_CAPTCHA_UNMATCH);
+        }
+
+        List<YoungUser> userList = clientUserService.getUserByMobile(reset.getMobile());
+
+        if (userList.size() > 1) {
+            logger.info("账号密码重置出错,账户不唯一,查询手机号:{}", reset.getMobile());
+            return ResBean.failed("账号密码重置出错,账户不唯一");
+        } else if (userList.size() == 0) {
+            logger.info("账号密码重置出错,账户不存在,查询手机号:{},{}", reset.getMobile(), WxResponseCode.AUTH_MOBILE_UNREGISTERED.getMsg());
+            return ResBean.failed(WxResponseCode.AUTH_MOBILE_UNREGISTERED);
+        }
+
+        YoungUser user = userList.get(0);
+        String encode = passwordEncoder.encode(reset.getPassword());
+        user.setPassword(encode);
+        if (clientUserService.updateById(user) == 0) {
+            logger.info("账号密码重置更新用户信息出错:{}", user);
+            return ResBean.failed("更新数据失败");
+        }
+        return ResBean.success("更新成功");
     }
 }
