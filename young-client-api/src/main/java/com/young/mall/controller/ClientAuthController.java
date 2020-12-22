@@ -1,5 +1,6 @@
 package com.young.mall.controller;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.young.mall.common.ResBean;
@@ -10,7 +11,7 @@ import com.young.mall.domain.enums.WxResponseCode;
 import com.young.mall.notify.NotifyService;
 import com.young.mall.notify.NotifyType;
 import com.young.mall.service.ClientAuthService;
-import com.young.mall.utils.CaptchaCodeManager;
+import com.young.mall.service.RedisService;
 import com.young.mall.utils.CharUtil;
 import com.young.mall.utils.RegexUtil;
 import io.swagger.annotations.Api;
@@ -48,6 +49,9 @@ public class ClientAuthController {
     @Resource
     private NotifyService notifyService;
 
+    @Resource
+    private RedisService redisService;
+
     @ApiOperation("注册")
     @PostMapping("register")
     public ResBean<Map<String, Object>> register(@Valid @RequestBody ClientUserDto clientUserDto, HttpServletRequest request) {
@@ -79,12 +83,11 @@ public class ClientAuthController {
         jsonObject.put("code", code);
         map.put("params", jsonObject);
 
-        String captcha = CaptchaCodeManager.getCachedCaptcha(mobile);
+        Object captcha = redisService.get(mobile);
         //如果缓存中没有验证码，则调用发送接口
-        if (StrUtil.isEmpty(captcha)) {
+        if (BeanUtil.isEmpty(captcha)) {
             notifyService.notifySmsTemplate(mobile, NotifyType.CAPTCHA, map);
-            boolean flag = CaptchaCodeManager.addToCache(mobile, code);
-            logger.info("{}->添加验证码到缓存是否成功：{}", mobile, flag);
+            redisService.set(mobile, code, 60 * 1000);
         } else {
             logger.info("请求验证码出错:{}", WxResponseCode.AUTH_CAPTCHA_FREQUENCY.getMsg());
             return ResBean.failed(WxResponseCode.AUTH_CAPTCHA_FREQUENCY.getMsg());
