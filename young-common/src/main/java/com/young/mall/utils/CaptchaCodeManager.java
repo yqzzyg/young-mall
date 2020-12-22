@@ -6,6 +6,7 @@ import com.young.mall.domain.CaptchaItem;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @Description: 本地缓存
@@ -13,7 +14,8 @@ import java.util.Map;
  * @CreateDate: 2020/11/23 16:06
  */
 public class CaptchaCodeManager {
-    private static Map<String, CaptchaItem> captchaCodeCache = new HashMap<>();
+
+    private static Map<String, CaptchaItem> captchaCodeCache = new ConcurrentHashMap<>();
 
     /**
      * 添加到缓存

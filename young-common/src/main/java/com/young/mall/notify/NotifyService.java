@@ -36,6 +36,18 @@ public class NotifyService {
     private WxTemplateSender wxTemplateSender;
     private List<Map<String, String>> wxTemplate = new ArrayList<>();
 
+    public boolean isMailEnable() {
+        return mailSender != null;
+    }
+
+    public boolean isSmsEnable() {
+        return smsSender != null;
+    }
+
+    public boolean isWxEnable() {
+        return wxTemplateSender != null;
+    }
+
     /**
      * 短信消息通知
      *
@@ -54,6 +66,10 @@ public class NotifyService {
 
     /**
      * 短信模版消息通知
+     * <p>
+     * 对于异步方法调用，从Spring3开始提供了@Async注解，该注解可以被标注在方法上，
+     * 以便异步地调用该方法。调用者将在调用时立即返回，方法的实际执行将提交给Spring TaskExecutor的任务中，
+     * 由指定的线程池中的线程执行。
      *
      * @param phoneNumber 接收通知的电话号码
      * @param notifyType  通知类别，通过该枚举值在配置文件中获取相应的模版ID
@@ -161,6 +177,7 @@ public class NotifyService {
 
     /**
      * 根据收件人邮箱发送邮件
+     *
      * @param mailDto
      */
     @Async
@@ -170,7 +187,7 @@ public class NotifyService {
         }
         sslMailSender.setToAddress(mailDto.getTo());
         boolean status = sslMailSender.sendMails(mailDto.getTitle(), mailDto.getContent());
-        logger.info("根据收件人邮箱发送邮件，发送状态：{}",status);
+        logger.info("根据收件人邮箱发送邮件，发送状态：{}", status);
     }
 
     private String getTemplateId(NotifyType notifyType, List<Map<String, String>> values) {

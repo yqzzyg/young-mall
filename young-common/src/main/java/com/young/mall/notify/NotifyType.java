@@ -11,7 +11,7 @@ public enum NotifyType {
     // 申请退款
     APPLYREFUND("applyRefund"),
     REFUND("refund"),
-    CAPTCHA("captcha");
+    CAPTCHA("young-mall");
 
     private String type;
 
