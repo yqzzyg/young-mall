@@ -198,7 +198,8 @@ public class ClientAuthServiceImpl implements ClientAuthService {
         }
 
         userInfo.setUserId(user.getId());
-        if (!StringUtils.isEmpty(user.getMobile())) {// 手机号存在则设置
+        // 手机号存在则设置
+        if (!StringUtils.isEmpty(user.getMobile())) {
             userInfo.setPhone(user.getMobile());
         }
         String registerDate = DateTimeFormatter.ofPattern("yyyy-MM-dd")

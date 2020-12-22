@@ -1,11 +1,14 @@
 package com.young.mall.controller;
 
+import cn.binarywang.wx.miniapp.api.WxMaService;
+import cn.binarywang.wx.miniapp.bean.WxMaPhoneNumberInfo;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.young.db.entity.YoungUser;
 import com.young.mall.common.ResBean;
 import com.young.mall.domain.ClientLoginDto;
+import com.young.mall.domain.ClientUserDetails;
 import com.young.mall.domain.ClientUserDto;
 import com.young.mall.domain.WxLoginInfo;
 import com.young.mall.domain.enums.WxResponseCode;
@@ -20,14 +23,13 @@ import com.young.mall.utils.RegexUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import me.chanjar.weixin.common.error.WxErrorException;
+import org.apache.tomcat.util.http.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -48,6 +50,11 @@ public class ClientAuthController {
 
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    @Value("${jwt.tokenHeader}")
+    private String tokenHeader;
+    @Value("${jwt.tokenHead}")
+    private String tokenHead;
+
     @Resource
     private ClientAuthService clientAuthService;
 
@@ -62,6 +69,9 @@ public class ClientAuthController {
 
     @Resource
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private WxMaService wxService;
 
     @ApiOperation("注册")
     @PostMapping("register")
@@ -164,10 +174,38 @@ public class ClientAuthController {
 
     @ApiOperation("绑定手机号码")
     @PostMapping("/bindPhone")
-    public ResBean bindPhone(@RequestBody String body) {
+    public ResBean bindPhone(@RequestBody Map<String, String> body, HttpServletRequest request) {
+
+        ClientUserDetails userInfo = clientUserService.getUserInfo();
+        if (BeanUtil.isEmpty(userInfo)) {
+            logger.info("绑定手机号码失败，未登录。");
+            return ResBean.unauthorized("请登录！");
+        }
+        String header = request.getHeader(this.tokenHeader);
+
+        String token = header.substring(this.tokenHead.length());
 
 
-        return null;
+        String encryptedData = body.get("encryptedData");
+        String iv = body.get("iv");
 
+        WxMaPhoneNumberInfo phoneNumberInfo = wxService.getUserService().getPhoneNoInfo(token, encryptedData, iv);
+        String phone = phoneNumberInfo.getPhoneNumber();
+
+        YoungUser user = clientUserService.findById(userInfo.getYoungUser().getId());
+        user.setMobile(phone);
+        if (clientUserService.updateById(user) == 0) {
+            logger.info("绑定手机号码,更新用户信息出错,name：{}", userInfo.getUsername());
+            return ResBean.failed("更新数据失败");
+        }
+        Map<Object, Object> data = new HashMap<>(4);
+        data.put("phone", phone);
+        return ResBean.success(data);
+    }
+
+    @ApiOperation(value = "登出功能")
+    @PostMapping(value = "/logout")
+    public ResBean logout() {
+        return ResBean.success(null);
     }
 }
