@@ -11,8 +11,17 @@ public interface ClientAccountService {
 
     /**
      * 根据用户id，查询用户账号的总金额和剩余金额
+     *
      * @param shareUserId
      * @return
      */
     YoungUserAccount findShareUserAccountByUserId(Integer shareUserId);
+
+    /**
+     * 添加用户账户
+     *
+     * @param userAccount
+     * @return
+     */
+    Integer add(YoungUserAccount userAccount);
 }

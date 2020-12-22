@@ -7,6 +7,7 @@ import com.young.mall.service.ClientAccountService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -31,5 +32,12 @@ public class ClientAccountServiceImpl implements ClientAccountService {
             return null;
         }
         return accounts.get(0);
+    }
+
+    @Override
+    public Integer add(YoungUserAccount userAccount) {
+        userAccount.setCreateTime(LocalDateTime.now());
+        userAccount.setModifyTime(LocalDateTime.now());
+        return youngUserAccountMapper.insert(userAccount);
     }
 }

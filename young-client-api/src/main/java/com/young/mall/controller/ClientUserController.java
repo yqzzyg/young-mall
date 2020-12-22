@@ -2,9 +2,11 @@ package com.young.mall.controller;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
+import com.young.db.entity.YoungUser;
 import com.young.db.entity.YoungUserAccount;
 import com.young.mall.common.ResBean;
 import com.young.mall.domain.ClientUserDetails;
+import com.young.mall.domain.enums.WxResponseCode;
 import com.young.mall.service.ClientAccountService;
 import com.young.mall.service.ClientCouponService;
 import com.young.mall.service.ClientOrderService;
@@ -14,7 +16,9 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -94,5 +98,47 @@ public class ClientUserController {
             data.put("userSharedUrl", userAccount.getShareUrl());
         }
         return ResBean.success(data);
+    }
+
+
+    @ApiOperation("申请代理用户")
+    @PostMapping("/applyAgency")
+    public ResBean applyAgency() {
+        ClientUserDetails userInfo = clientUserService.getUserInfo();
+        if (BeanUtil.isEmpty(userInfo)) {
+            logger.info("申请代理用户失败，未登录。");
+            return ResBean.unauthorized("请登录！");
+        }
+
+        Integer userId = userInfo.getYoungUser().getId();
+
+        YoungUser user = clientUserService.findById(userId);
+        //用户存在且未注销，未禁用
+        if (!BeanUtil.isEmpty(user) && user.getStatus().intValue() != 1 && user.getStatus() != 2) {
+            // 查询用户账号,不存在则删除，如已经存在，不管状态如何都不做改变
+            YoungUserAccount userAccount = clientAccountService.findShareUserAccountByUserId(userId);
+            //如果不存在则新建一个账户
+            if (BeanUtil.isEmpty(userAccount)) {
+                userAccount = new YoungUserAccount();
+                userAccount.setRemainAmount(new BigDecimal(0));
+                //默认5%的比例
+                userAccount.setSettlementRate(5);
+                //生效
+                userAccount.setStatus((byte) 1);
+                userAccount.setTotalAmount(new BigDecimal(0));
+                userAccount.setUserId(userId);
+                clientAccountService.add(userAccount);
+
+            }
+            //代理申请中
+            user.setStatus((byte) 3);
+            clientUserService.updateById(user);
+        } else {
+            logger.info("用户个人页面代理申请出错:{}", WxResponseCode.INVALID_USER.getMsg());
+            return ResBean.failed(WxResponseCode.INVALID_USER);
+        }
+
+        return ResBean.success("代理申请成功");
+
     }
 }
