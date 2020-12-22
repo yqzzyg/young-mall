@@ -41,12 +41,6 @@ public class AdminAuthController {
     private AuthService authService;
 
     @Autowired
-    private AdminService adminService;
-
-    @Autowired
-    private PermissionService permissionService;
-
-    @Autowired
     private RoleService roleService;
 
 
