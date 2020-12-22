@@ -74,7 +74,7 @@ public class ClientCouponController {
 
     @ApiOperation("个人优惠券列表")
     @GetMapping("/myList")
-    public ResBean myList(@NotNull Short status,
+    public ResBean myList(@NotNull @RequestParam("status") Short status,
                           @RequestParam(defaultValue = "1") Integer page,
                           @RequestParam(defaultValue = "10") Integer size,
                           @RequestParam(defaultValue = "add_time") String sort,
