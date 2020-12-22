@@ -35,6 +35,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -116,7 +117,7 @@ public class ClientAuthServiceImpl implements ClientAuthService {
     @Override
     public ResBean<Map<String, Object>> login(ClientLoginDto clientLoginDto, HttpServletRequest request) {
 
-        logger.debug("进入AuthServiceImpl login方法,入参：username：{}，password：{}", clientLoginDto.getUsername(), clientLoginDto.getPassword());
+        logger.info("进入AuthServiceImpl login方法,入参：username：{}，password：{}", clientLoginDto.getUsername(), clientLoginDto.getPassword());
         // 1 创建UsernamePasswordAuthenticationToken
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(clientLoginDto.getUsername(), clientLoginDto.getPassword());
         // 2 认证。调用UserDetailsServiceImpl.loadUserByUsername
@@ -142,6 +143,14 @@ public class ClientAuthServiceImpl implements ClientAuthService {
         UserInfo userInfo = new UserInfo();
         userInfo.setNickName(youngUser.getUsername());
         userInfo.setAvatarUrl(youngUser.getAvatar());
+
+        userInfo.setRegisterDate(youngUser.getAddTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        userInfo.setStatus(youngUser.getStatus());
+        // 用户层级
+        userInfo.setUserLevel(youngUser.getUserLevel());
+        // 用户层级描述
+        userInfo.setUserLevelDesc(UserTypeEnum.getInstance(youngUser.getUserLevel()).getDesc());
+
         result.put("token", token);
         result.put("tokenHead", tokenHead);
         result.put("userInfo", userInfo);

@@ -33,6 +33,8 @@ public class UserInfo implements Serializable {
     // 代理用户描述
     private String userLevelDesc;
 
-    private Byte status;//状态
-    private String registerDate;//注册日期
+    //状态
+    private Byte status;
+    //注册日期
+    private String registerDate;
 }

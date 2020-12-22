@@ -98,7 +98,7 @@ public class ClientAuthController {
         //如果缓存中没有验证码，则调用发送接口
         if (BeanUtil.isEmpty(captcha)) {
             notifyService.notifySmsTemplate(mobile, NotifyType.CAPTCHA, map);
-            redisService.set(mobile, code, 60 * 1000);
+            redisService.set(mobile, code, 60);
         } else {
             logger.info("请求验证码出错:{}", WxResponseCode.AUTH_CAPTCHA_FREQUENCY.getMsg());
             return ResBean.failed(WxResponseCode.AUTH_CAPTCHA_FREQUENCY.getMsg());
@@ -160,5 +160,14 @@ public class ClientAuthController {
             return ResBean.failed("更新数据失败");
         }
         return ResBean.success("更新成功");
+    }
+
+    @ApiOperation("绑定手机号码")
+    @PostMapping("/bindPhone")
+    public ResBean bindPhone(@RequestBody String body) {
+
+
+        return null;
+
     }
 }
