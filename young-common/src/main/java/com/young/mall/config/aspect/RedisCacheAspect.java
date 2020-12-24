@@ -27,7 +27,7 @@ public class RedisCacheAspect {
 
     private static Logger LOGGER = LoggerFactory.getLogger(RedisCacheAspect.class);
 
-    @Pointcut("execution(public * com.young.mall.service.RedisService.*(..))")
+    @Pointcut("execution(public * com.young.mall.service.AdminCacheService.*(..))")
     public void cacheAspect() {
     }
 

@@ -1,6 +1,7 @@
 package com.young.mall.service;
 
 
+import com.young.db.entity.YoungAd;
 import com.young.db.entity.YoungAdmin;
 
 import java.util.List;
@@ -18,4 +19,11 @@ public interface AdminService {
      * @return
      */
     Optional<YoungAdmin> findAdminByName(String username);
+
+    /**
+     * 通过id查询admin
+     * @param id
+     * @return
+     */
+    YoungAdmin findAdminById(Integer id);
 }

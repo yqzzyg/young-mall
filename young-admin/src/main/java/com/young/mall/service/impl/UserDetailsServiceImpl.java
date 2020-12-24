@@ -3,9 +3,9 @@ package com.young.mall.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.json.JSONUtil;
 import com.young.db.entity.YoungAdmin;
-import com.young.mall.constant.RedisConstant;
 import com.young.mall.domain.AdminUser;
 import com.young.mall.exception.Asserts;
+import com.young.mall.service.AdminCacheService;
 import com.young.mall.service.PermissionService;
 import com.young.mall.service.RedisService;
 import com.young.mall.service.AdminService;
@@ -21,6 +21,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import javax.annotation.Resource;
 import java.io.Serializable;
 import java.util.*;
 
@@ -40,6 +41,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     private RedisService redisService;
+
+    @Resource
+    private AdminCacheService adminCacheService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -64,10 +68,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         YoungAdmin youngAdmin = null;
 
-        Optional<YoungAdmin> admin = redisService.get(RedisConstant.REDIS_KEY_ADMIN + ":" + username, YoungAdmin.class);
-        if (admin.isPresent() && BeanUtil.isEmpty(admin)) {
-            logger.info("缓存中获取用户信息：{}", JSONUtil.toJsonStr(admin.get()));
-            return admin.get();
+        YoungAdmin admin = adminCacheService.getAdmin(username);
+        if (!BeanUtil.isEmpty(admin)) {
+            logger.info("缓存中获取用户信息：{}", JSONUtil.toJsonStr(admin));
+            return admin;
         }
         Optional<YoungAdmin> adminOptional = adminService.findAdminByName(username);
         if (!adminOptional.isPresent()) {
@@ -76,7 +80,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         youngAdmin = adminOptional.get();
         logger.info("数据库中获取用户信息：{}", JSONUtil.toJsonStr(youngAdmin));
 
-        redisService.set(RedisConstant.REDIS_KEY_ADMIN + ":" + youngAdmin.getUsername(), youngAdmin, RedisConstant.REDIS_EXPIRE);
+        adminCacheService.setAdmin(admin);
         return youngAdmin;
     }
 
@@ -88,10 +92,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      */
     public Set<GrantedAuthority> getAuthorities(AdminUser adminUser) {
 
-        Optional<Set> authoritiesSet = redisService.get(RedisConstant.REDIS_KEY_ROLEIDS + ":" + adminUser.getUsername(), Set.class);
-        if (authoritiesSet.isPresent()) {
-            return unmodifiableSet(authoritiesSet.get());
+        Set<String> permissionsList = adminCacheService.getPermissionsList(adminUser.getUsername());
+        if (!BeanUtil.isEmpty(permissionsList)) {
+            return unmodifiableSet(permissionsList);
         }
+
         Optional<Set<String>> optionalSet = permissionService.queryByRoleIds(adminUser.getRoleIds());
         Set<String> permissions = optionalSet.get();
         if (!optionalSet.isPresent()) {
@@ -99,7 +104,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         //把权限id存入缓存，避免每次查询数据库缓慢
-        redisService.set(RedisConstant.REDIS_KEY_ROLEIDS + ":" + adminUser.getUsername(), permissions, RedisConstant.REDIS_EXPIRE);
+        adminCacheService.setResourceList(adminUser.getUsername(),permissions);
 
         Set<GrantedAuthority> authoritySet = unmodifiableSet(permissions);
 
