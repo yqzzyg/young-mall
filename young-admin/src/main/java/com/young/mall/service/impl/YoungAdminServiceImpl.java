@@ -8,9 +8,9 @@ import com.young.db.entity.YoungAdminExample;
 import com.young.mall.service.AdminService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +23,7 @@ import java.util.Optional;
 class YoungAdminServiceImpl implements AdminService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
+    @Resource
     private YoungAdminMapper adminMapper;
 
     @Override

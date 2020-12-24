@@ -65,7 +65,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         YoungAdmin youngAdmin = null;
 
         Optional<YoungAdmin> admin = redisService.get(RedisConstant.REDIS_KEY_ADMIN + ":" + username, YoungAdmin.class);
-        if (admin.isPresent()) {
+        if (admin.isPresent() && BeanUtil.isEmpty(admin)) {
             logger.info("缓存中获取用户信息：{}", JSONUtil.toJsonStr(admin.get()));
             return admin.get();
         }
