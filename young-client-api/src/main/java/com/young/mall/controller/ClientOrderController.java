@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.young.db.entity.YoungOrderGoods;
 import com.young.mall.common.ResBean;
 import com.young.mall.domain.ClientUserDetails;
+import com.young.mall.domain.vo.OrderCommentVo;
 import com.young.mall.service.ClientOrderService;
 import com.young.mall.service.ClientUserService;
 import io.swagger.annotations.Api;
@@ -12,10 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 import java.util.Map;
@@ -95,5 +93,13 @@ public class ClientOrderController {
         YoungOrderGoods orderGoods = clientOrderService.getGoodsByIds(userId, orderId, goodsId);
 
         return ResBean.success(orderGoods);
+    }
+
+
+    @ApiOperation("评价订单商品，在我的-待评价入口")
+    @PostMapping("/comment")
+    public ResBean comment(@RequestBody OrderCommentVo commentVo) {
+
+        return clientOrderService.comment(commentVo);
     }
 }

@@ -8,7 +8,7 @@ import com.young.db.entity.YoungUser;
 import com.young.mall.common.ResBean;
 import com.young.mall.constant.CommonConstants;
 import com.young.mall.domain.*;
-import com.young.mall.domain.enums.WxResponseCode;
+import com.young.mall.domain.enums.ClientResponseCode;
 import com.young.mall.enums.UserTypeEnum;
 import com.young.mall.exception.Asserts;
 import com.young.mall.service.ClientAuthService;
@@ -225,22 +225,22 @@ public class ClientAuthServiceImpl implements ClientAuthService {
 
         Object cacheCode = redisService.get(registerDto.getMobile());
         if (BeanUtil.isEmpty(cacheCode) || !cacheCode.equals(registerDto.getCode())) {
-            logger.error("请求账号注册出错:{}", WxResponseCode.AUTH_CAPTCHA_UNMATCH);
-            Asserts.fail(WxResponseCode.AUTH_CAPTCHA_UNMATCH);
+            logger.error("请求账号注册出错:{}", ClientResponseCode.AUTH_CAPTCHA_UNMATCH);
+            Asserts.fail(ClientResponseCode.AUTH_CAPTCHA_UNMATCH);
         }
         if (!RegexUtil.isMobileExact(registerDto.getMobile())) {
-            logger.info("{}，注册失败：{}", registerDto, WxResponseCode.AUTH_INVALID_MOBILE);
-            Asserts.fail(WxResponseCode.AUTH_INVALID_MOBILE);
+            logger.info("{}，注册失败：{}", registerDto, ClientResponseCode.AUTH_INVALID_MOBILE);
+            Asserts.fail(ClientResponseCode.AUTH_INVALID_MOBILE);
         }
         List<YoungUser> userList = clientUserService.getUserByName(registerDto.getUsername());
         if (userList.size() > 0) {
-            logger.info("{}，注册失败：{}", registerDto, WxResponseCode.AUTH_NAME_REGISTERED);
-            Asserts.fail(WxResponseCode.AUTH_NAME_REGISTERED);
+            logger.info("{}，注册失败：{}", registerDto, ClientResponseCode.AUTH_NAME_REGISTERED);
+            Asserts.fail(ClientResponseCode.AUTH_NAME_REGISTERED);
         }
         userList = clientUserService.getUserByMobile(registerDto.getMobile());
         if (userList.size() > 0) {
-            logger.info("{}，注册失败：{}", registerDto, WxResponseCode.AUTH_MOBILE_REGISTERED);
-            Asserts.fail(WxResponseCode.AUTH_MOBILE_REGISTERED);
+            logger.info("{}，注册失败：{}", registerDto, ClientResponseCode.AUTH_MOBILE_REGISTERED);
+            Asserts.fail(ClientResponseCode.AUTH_MOBILE_REGISTERED);
         }
         String openId = new String();
         try {
@@ -249,12 +249,12 @@ public class ClientAuthServiceImpl implements ClientAuthService {
         } catch (WxErrorException e) {
             logger.info("请求微信平台报错：{}", e.getError());
             e.printStackTrace();
-            Asserts.fail(WxResponseCode.AUTH_OPENID_UNACCESS);
+            Asserts.fail(ClientResponseCode.AUTH_OPENID_UNACCESS);
         }
         userList = clientUserService.getUserByOpenId(openId);
         if (userList.size() > 0) {
-            logger.info("{}，注册失败：{}", registerDto, WxResponseCode.AUTH_OPENID_BINDED);
-            Asserts.fail(WxResponseCode.AUTH_OPENID_BINDED);
+            logger.info("{}，注册失败：{}", registerDto, ClientResponseCode.AUTH_OPENID_BINDED);
+            Asserts.fail(ClientResponseCode.AUTH_OPENID_BINDED);
         }
         return openId;
     }

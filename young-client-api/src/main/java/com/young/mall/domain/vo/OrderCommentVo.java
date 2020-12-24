@@ -6,7 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @Description: 评论入参
@@ -17,29 +19,23 @@ import java.io.Serializable;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommentVo implements Serializable {
+public class OrderCommentVo implements Serializable {
 
-    @ApiModelProperty(value = "商品表的商品id")
-    private Integer valueId;
-
-    @ApiModelProperty(value = "评论类型，如果type=0，则是商品评论；如果是type=1，则是专题评论；如果type=3，则是订单商品评论。")
-    private Byte type;
+    @ApiModelProperty(value = "订单商品表的商品id")
+    @NotEmpty(message = "订单商品表的商品id不能为空")
+    private Integer orderGoodsId;
 
     @ApiModelProperty(value = "评论内容")
+    @NotEmpty(message = "评论内容不能为空")
     private String content;
 
-    @ApiModelProperty(value = "掌柜回复")
-    private String replyContent;
-
-    @ApiModelProperty(value = "用户表的用户ID")
-    private Integer userId;
+    @ApiModelProperty(value = "评分， 1-5")
+    @NotEmpty(message = "评分不能为空")
+    private Integer star;
 
     @ApiModelProperty(value = "是否含有图片")
     private Boolean hasPicture;
 
     @ApiModelProperty(value = "图片地址列表，采用JSON数组格式")
-    private String[] picUrls;
-
-    @ApiModelProperty(value = "评分， 1-5")
-    private Short star;
+    private List<String> picUrls;
 }

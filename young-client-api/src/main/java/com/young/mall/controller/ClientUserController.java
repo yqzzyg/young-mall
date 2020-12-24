@@ -6,7 +6,7 @@ import com.young.db.entity.YoungUser;
 import com.young.db.entity.YoungUserAccount;
 import com.young.mall.common.ResBean;
 import com.young.mall.domain.ClientUserDetails;
-import com.young.mall.domain.enums.WxResponseCode;
+import com.young.mall.domain.enums.ClientResponseCode;
 import com.young.mall.service.ClientAccountService;
 import com.young.mall.service.ClientCouponService;
 import com.young.mall.service.ClientOrderService;
@@ -16,7 +16,6 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -134,8 +133,8 @@ public class ClientUserController {
             user.setStatus((byte) 3);
             clientUserService.updateById(user);
         } else {
-            logger.info("用户个人页面代理申请出错:{}", WxResponseCode.INVALID_USER.getMsg());
-            return ResBean.failed(WxResponseCode.INVALID_USER);
+            logger.info("用户个人页面代理申请出错:{}", ClientResponseCode.INVALID_USER.getMsg());
+            return ResBean.failed(ClientResponseCode.INVALID_USER);
         }
 
         return ResBean.success("代理申请成功");

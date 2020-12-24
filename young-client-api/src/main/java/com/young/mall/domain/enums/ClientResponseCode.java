@@ -7,7 +7,7 @@ import com.young.mall.common.ResErrorCode;
  * @Author: yqz
  * @CreateDate: 2020/11/23 16:42
  */
-public enum WxResponseCode implements ResErrorCode {
+public enum ClientResponseCode implements ResErrorCode {
     AUTH_INVALID_ACCOUNT(700, "账号密码不对"),
 
     AUTH_CAPTCHA_UNSUPPORT(701, "小程序后台验证码服务不支持"),
@@ -65,7 +65,7 @@ public enum WxResponseCode implements ResErrorCode {
     private final Integer code;
     private final String desc;
 
-    WxResponseCode(Integer code, String desc) {
+    ClientResponseCode(Integer code, String desc) {
         this.code = code;
         this.desc = desc;
     }

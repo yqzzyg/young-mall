@@ -28,4 +28,20 @@ public interface ClientOrderGoodsService {
      * @return
      */
     List<YoungOrderGoods> findByOidAndGid(Integer orderId, Integer goodsId);
+
+    /**
+     * 通过主键id查询订单商品
+     *
+     * @param id
+     * @return
+     */
+    YoungOrderGoods findById(Integer id);
+
+    /**
+     * 根据订单id更新订单商品表
+     *
+     * @param orderGoods
+     * @return
+     */
+    Integer updateById(YoungOrderGoods orderGoods);
 }

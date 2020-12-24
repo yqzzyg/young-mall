@@ -4,10 +4,10 @@ import com.young.db.dao.YoungOrderGoodsMapper;
 import com.young.db.entity.YoungOrderGoods;
 import com.young.db.entity.YoungOrderGoodsExample;
 import com.young.mall.service.ClientOrderGoodsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -34,5 +34,17 @@ public class ClientOrderGoodsServiceImpl implements ClientOrderGoodsService {
         YoungOrderGoodsExample example = new YoungOrderGoodsExample();
         example.or().andOrderIdEqualTo(orderId).andGoodsIdEqualTo(goodsId).andDeletedEqualTo(false);
         return youngOrderGoodsMapper.selectByExample(example);
+    }
+
+
+    @Override
+    public YoungOrderGoods findById(Integer id) {
+        return youngOrderGoodsMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public Integer updateById(YoungOrderGoods orderGoods) {
+        orderGoods.setUpdateTime(LocalDateTime.now());
+        return youngOrderGoodsMapper.updateByPrimaryKeySelective(orderGoods);
     }
 }

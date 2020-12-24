@@ -2,6 +2,8 @@ package com.young.mall.service;
 
 import com.young.db.entity.YoungOrder;
 import com.young.db.entity.YoungOrderGoods;
+import com.young.mall.common.ResBean;
+import com.young.mall.domain.vo.OrderCommentVo;
 
 import java.util.List;
 import java.util.Map;
@@ -80,4 +82,19 @@ public interface ClientOrderService {
      * @return 待评价订单商品信息
      */
     YoungOrderGoods getGoodsByIds(Integer userId, Integer orderId, Integer goodsId);
+
+    /**
+     * 添加评论
+     *
+     * @param commentVo
+     * @return
+     */
+    ResBean comment(OrderCommentVo commentVo);
+
+    /**
+     * 更新订单中未评价的订单商品可评价数量
+     * @param order
+     * @return
+     */
+    Integer updateWithOptimisticLocker(YoungOrder order);
 }

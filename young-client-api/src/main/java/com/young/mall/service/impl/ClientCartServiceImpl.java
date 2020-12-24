@@ -6,7 +6,7 @@ import com.young.db.entity.*;
 import com.young.mall.common.ResBean;
 import com.young.mall.domain.BrandCartGoods;
 import com.young.mall.domain.CouponUserConstant;
-import com.young.mall.domain.enums.WxResponseCode;
+import com.young.mall.domain.enums.ClientResponseCode;
 import com.young.mall.service.*;
 import com.young.mall.system.SystemConfig;
 import org.slf4j.Logger;
@@ -363,8 +363,8 @@ public class ClientCartServiceImpl implements ClientCartService {
             YoungCoupon coupon = couponVerifyService.checkCoupon(userId, couponId, goodsTotalPrice);
             // 用户选择的优惠券有问题
             if (coupon == null) {
-                logger.error("用户购物车下单失败:{}", WxResponseCode.INVALID_COUPON.getMsg());
-                return ResBean.failed(WxResponseCode.INVALID_COUPON);
+                logger.error("用户购物车下单失败:{}", ClientResponseCode.INVALID_COUPON.getMsg());
+                return ResBean.failed(ClientResponseCode.INVALID_COUPON);
             }
             couponPrice = coupon.getDiscount();
         }

@@ -11,7 +11,7 @@ import com.young.mall.domain.ClientLoginDto;
 import com.young.mall.domain.ClientUserDetails;
 import com.young.mall.domain.ClientUserDto;
 import com.young.mall.domain.WxLoginInfo;
-import com.young.mall.domain.enums.WxResponseCode;
+import com.young.mall.domain.enums.ClientResponseCode;
 import com.young.mall.domain.vo.ResetVo;
 import com.young.mall.notify.NotifyService;
 import com.young.mall.notify.NotifyType;
@@ -93,7 +93,7 @@ public class ClientAuthController {
             return ResBean.validateFailed();
         }
         if (!notifyService.isSmsEnable()) {
-            logger.info("请求验证码出错:{}", WxResponseCode.AUTH_CAPTCHA_UNSUPPORT.getMsg());
+            logger.info("请求验证码出错:{}", ClientResponseCode.AUTH_CAPTCHA_UNSUPPORT.getMsg());
         }
         String code = CharUtil.getRandomNum(6);
 
@@ -109,8 +109,8 @@ public class ClientAuthController {
             notifyService.notifySmsTemplate(mobile, NotifyType.CAPTCHA, map);
             redisService.set(mobile, code, 60);
         } else {
-            logger.info("请求验证码出错:{}", WxResponseCode.AUTH_CAPTCHA_FREQUENCY.getMsg());
-            return ResBean.failed(WxResponseCode.AUTH_CAPTCHA_FREQUENCY.getMsg());
+            logger.info("请求验证码出错:{}", ClientResponseCode.AUTH_CAPTCHA_FREQUENCY.getMsg());
+            return ResBean.failed(ClientResponseCode.AUTH_CAPTCHA_FREQUENCY.getMsg());
         }
 
         return ResBean.success("成功");
@@ -147,8 +147,8 @@ public class ClientAuthController {
         Object cacheCode = redisService.get(reset.getMobile());
 
         if (BeanUtil.isEmpty(cacheCode) || !reset.getCode().equals(cacheCode)) {
-            logger.info("账号密码重置出错:{}", WxResponseCode.AUTH_CAPTCHA_UNMATCH.getMsg());
-            return ResBean.failed(WxResponseCode.AUTH_CAPTCHA_UNMATCH);
+            logger.info("账号密码重置出错:{}", ClientResponseCode.AUTH_CAPTCHA_UNMATCH.getMsg());
+            return ResBean.failed(ClientResponseCode.AUTH_CAPTCHA_UNMATCH);
         }
 
         List<YoungUser> userList = clientUserService.getUserByMobile(reset.getMobile());
@@ -157,8 +157,8 @@ public class ClientAuthController {
             logger.info("账号密码重置出错,账户不唯一,查询手机号:{}", reset.getMobile());
             return ResBean.failed("账号密码重置出错,账户不唯一");
         } else if (userList.size() == 0) {
-            logger.info("账号密码重置出错,账户不存在,查询手机号:{},{}", reset.getMobile(), WxResponseCode.AUTH_MOBILE_UNREGISTERED.getMsg());
-            return ResBean.failed(WxResponseCode.AUTH_MOBILE_UNREGISTERED);
+            logger.info("账号密码重置出错,账户不存在,查询手机号:{},{}", reset.getMobile(), ClientResponseCode.AUTH_MOBILE_UNREGISTERED.getMsg());
+            return ResBean.failed(ClientResponseCode.AUTH_MOBILE_UNREGISTERED);
         }
 
         YoungUser user = userList.get(0);
