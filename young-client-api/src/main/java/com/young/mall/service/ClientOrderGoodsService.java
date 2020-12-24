@@ -19,4 +19,13 @@ public interface ClientOrderGoodsService {
      * @return 订单商品list
      */
     List<YoungOrderGoods> queryByOid(Integer orderId);
+
+    /**
+     * 根据订单和商品id，获取订单商品列表
+     *
+     * @param orderId 订单id
+     * @param goodsId 商品id
+     * @return
+     */
+    List<YoungOrderGoods> findByOidAndGid(Integer orderId, Integer goodsId);
 }

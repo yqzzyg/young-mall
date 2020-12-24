@@ -16,4 +16,9 @@ public class Asserts {
         throw new WebApiException(resErrorCode);
     }
 
+    public static void state(boolean expression, String message) {
+        if (expression) {
+            throw new WebApiException(message);
+        }
+    }
 }

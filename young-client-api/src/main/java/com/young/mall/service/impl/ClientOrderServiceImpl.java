@@ -236,4 +236,18 @@ public class ClientOrderServiceImpl implements ClientOrderService {
         }
         return result;
     }
+
+    @Override
+    public YoungOrderGoods getGoodsByIds(Integer userId, Integer orderId, Integer goodsId) {
+
+        List<YoungOrderGoods> orderGoodsList = clientOrderGoodsService.findByOidAndGid(orderId, goodsId);
+
+        int size = orderGoodsList.size();
+        //断言处理，如果第一个条件为true，则抛出 “存在多个符合条件的订单商品” 异常
+        Asserts.state(size > 1, "存在多个符合条件的订单商品");
+
+        Asserts.state(size == 0, "未查询到订单");
+
+        return orderGoodsList.get(0);
+    }
 }

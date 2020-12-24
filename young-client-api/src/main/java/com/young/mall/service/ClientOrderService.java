@@ -1,6 +1,7 @@
 package com.young.mall.service;
 
 import com.young.db.entity.YoungOrder;
+import com.young.db.entity.YoungOrderGoods;
 
 import java.util.List;
 import java.util.Map;
@@ -69,4 +70,14 @@ public interface ClientOrderService {
      * @return
      */
     Map<String, Object> expressTrace(Integer userId, Integer orderId);
+
+    /**
+     * 待评价订单商品信息
+     *
+     * @param userId  用户ID
+     * @param orderId 订单ID
+     * @param goodsId 商品ID
+     * @return 待评价订单商品信息
+     */
+    YoungOrderGoods getGoodsByIds(Integer userId, Integer orderId, Integer goodsId);
 }

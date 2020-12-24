@@ -1,6 +1,7 @@
 package com.young.mall.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.young.db.entity.YoungOrderGoods;
 import com.young.mall.common.ResBean;
 import com.young.mall.domain.ClientUserDetails;
 import com.young.mall.service.ClientOrderService;
@@ -77,5 +78,22 @@ public class ClientOrderController {
 
         Map<String, Object> expressTrace = clientOrderService.expressTrace(userInfo.getYoungUser().getId(), orderId);
         return ResBean.success(expressTrace);
+    }
+
+    @ApiOperation("查询待评价订单商品信息")
+    @GetMapping("/goods")
+    public ResBean goods(@NotNull(message = "订单id不能为空") Integer orderId,
+                         @NotNull(message = "商品id不能为空") Integer goodsId) {
+
+        ClientUserDetails userInfo = clientUserService.getUserInfo();
+        if (BeanUtil.isEmpty(userInfo)) {
+            logger.info("查询待评价订单商品信息失败，未登录。");
+            return ResBean.unauthorized("请登录！");
+        }
+        Integer userId = userInfo.getYoungUser().getId();
+
+        YoungOrderGoods orderGoods = clientOrderService.getGoodsByIds(userId, orderId, goodsId);
+
+        return ResBean.success(orderGoods);
     }
 }

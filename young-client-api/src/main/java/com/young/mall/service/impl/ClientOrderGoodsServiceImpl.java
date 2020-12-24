@@ -7,6 +7,7 @@ import com.young.mall.service.ClientOrderGoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -18,13 +19,20 @@ import java.util.List;
 public class ClientOrderGoodsServiceImpl implements ClientOrderGoodsService {
 
 
-    @Autowired
+    @Resource
     private YoungOrderGoodsMapper youngOrderGoodsMapper;
 
     @Override
     public List<YoungOrderGoods> queryByOid(Integer orderId) {
         YoungOrderGoodsExample example = new YoungOrderGoodsExample();
         example.or().andOrderIdEqualTo(orderId).andDeletedEqualTo(false);
+        return youngOrderGoodsMapper.selectByExample(example);
+    }
+
+    @Override
+    public List<YoungOrderGoods> findByOidAndGid(Integer orderId, Integer goodsId) {
+        YoungOrderGoodsExample example = new YoungOrderGoodsExample();
+        example.or().andOrderIdEqualTo(orderId).andGoodsIdEqualTo(goodsId).andDeletedEqualTo(false);
         return youngOrderGoodsMapper.selectByExample(example);
     }
 }
