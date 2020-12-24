@@ -18,6 +18,7 @@ import com.young.mall.notify.NotifyType;
 import com.young.mall.service.ClientAuthService;
 import com.young.mall.service.ClientUserService;
 import com.young.mall.service.RedisService;
+import com.young.mall.service.VerificationCodeCacheService;
 import com.young.mall.utils.CharUtil;
 import com.young.mall.utils.RegexUtil;
 import io.swagger.annotations.Api;
@@ -64,6 +65,9 @@ public class ClientAuthController {
     private RedisService redisService;
 
     @Resource
+    private VerificationCodeCacheService verificationCodeCacheService;
+
+    @Resource
     private ClientUserService clientUserService;
 
     @Resource
@@ -103,11 +107,11 @@ public class ClientAuthController {
         jsonObject.put("code", code);
         map.put("params", jsonObject);
 
-        Object captcha = redisService.get(mobile);
+        Object captcha = verificationCodeCacheService.getVerificationCode(mobile);
         //如果缓存中没有验证码，则调用发送接口
         if (BeanUtil.isEmpty(captcha)) {
             notifyService.notifySmsTemplate(mobile, NotifyType.CAPTCHA, map);
-            redisService.set(mobile, code, 60);
+            verificationCodeCacheService.setVerificationCode(mobile, code, 60);
         } else {
             logger.info("请求验证码出错:{}", ClientResponseCode.AUTH_CAPTCHA_FREQUENCY.getMsg());
             return ResBean.failed(ClientResponseCode.AUTH_CAPTCHA_FREQUENCY.getMsg());
