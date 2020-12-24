@@ -1,6 +1,7 @@
 package com.young.mall.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.alibaba.fastjson.JSON;
 import com.young.db.entity.YoungOrderGoods;
 import com.young.mall.common.ResBean;
 import com.young.mall.domain.ClientUserDetails;
@@ -95,6 +96,14 @@ public class ClientOrderController {
         return ResBean.success(orderGoods);
     }
 
+
+    @ApiOperation("提交订单")
+    @PostMapping("/submit")
+    public ResBean submit(@RequestBody Map<String, Object> map) {
+
+        logger.info("submit:{}", JSON.toJSONString(map));
+        return null;
+    }
 
     @ApiOperation("评价订单商品，在我的-待评价入口")
     @PostMapping("/comment")
