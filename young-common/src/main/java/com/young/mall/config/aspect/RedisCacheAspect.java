@@ -44,12 +44,13 @@ public class RedisCacheAspect {
         Object result = Optional.ofNullable(null);
         try {
             result = joinPoint.proceed();
-        } catch (Throwable throwable) {
+        } catch (Throwable e) {
             //有CacheException注解的方法需要抛出异常
             if (method.isAnnotationPresent(CacheException.class)) {
+                LOGGER.info("redis异常信息：{}", e.getMessage());
                 Asserts.fail("redis缓存异常");
             } else {
-                LOGGER.error(throwable.getMessage());
+                LOGGER.error(e.getMessage());
             }
         }
         return result;
