@@ -1,8 +1,8 @@
 package com.young.mall.service.impl;
 
 import com.young.mall.annotation.CacheException;
+import com.young.mall.service.ClientCacheService;
 import com.young.mall.service.RedisService;
-import com.young.mall.service.VerificationCodeCacheService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -13,7 +13,7 @@ import javax.annotation.Resource;
  * @CreateDate: 2020/12/24 18:06
  */
 @Service
-public class VerificationCodeCacheServiceImpl implements VerificationCodeCacheService {
+public class ClientCacheServiceImpl implements ClientCacheService {
 
     @Resource
     private RedisService redisService;

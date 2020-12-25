@@ -219,7 +219,6 @@ public interface AdminCacheService {
 首先我们先定义一个切面，在相关缓存业务类上面应用，在它的环绕通知中直接处理掉异常，保障后续操作能执行。
 
 ```java
-
 package com.young.mall.config.aspect;
 
 import com.young.mall.annotation.CacheException;
@@ -249,7 +248,11 @@ public class RedisCacheAspect {
 
     private static Logger LOGGER = LoggerFactory.getLogger(RedisCacheAspect.class);
 
-    @Pointcut("execution(public * com.young.mall.service.AdminCacheService.*(..))")
+    /**
+     * 此处需要使用 *CacheService 匹配切点，不要使用具体类名，因为该Module为公共的，如果使用具体的类名匹配，有可能会导致单独启动一个Mudole会报
+     * "Caused by: java.lang.IllegalArgumentException: warning no match for this type name:" 异常，原因是切面表达式错误
+     */
+    @Pointcut("execution(public * com.young.mall.service.*CacheService.*(..)) || execution(public * com.young.mall.service.*CacheService.*(..))")
     public void cacheAspect() {
     }
 
@@ -314,7 +317,7 @@ package com.young.mall.service.impl;
 
 import com.young.mall.annotation.CacheException;
 import com.young.mall.service.RedisService;
-import com.young.mall.service.VerificationCodeCacheService;
+import com.young.mall.service.ClientCacheService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

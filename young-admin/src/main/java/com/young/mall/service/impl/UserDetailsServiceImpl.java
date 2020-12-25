@@ -7,7 +7,6 @@ import com.young.mall.domain.AdminUser;
 import com.young.mall.exception.Asserts;
 import com.young.mall.service.AdminCacheService;
 import com.young.mall.service.PermissionService;
-import com.young.mall.service.RedisService;
 import com.young.mall.service.AdminService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,11 +35,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     private AdminService adminService;
-    @Autowired
-    private PermissionService permissionService;
 
     @Autowired
-    private RedisService redisService;
+    private PermissionService permissionService;
 
     @Resource
     private AdminCacheService adminCacheService;
