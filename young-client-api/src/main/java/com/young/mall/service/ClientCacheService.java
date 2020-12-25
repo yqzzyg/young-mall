@@ -9,17 +9,35 @@ package com.young.mall.service;
 public interface ClientCacheService {
 
     /**
-     * 获取缓存
+     * 获取验证码缓存
      * @param key
      * @return
      */
     Object getVerificationCode(String key);
 
     /**
-     * 添加缓存
+     * 添加验证码缓存
      * @param key
      * @param value
      * @param time 秒
      */
     void setVerificationCode(String key, String value, long time);
+
+
+    /**
+     * 获取用户信息缓存
+     * @param key
+     * @return
+     */
+    Object getClientUser(String key);
+
+    /**
+     * 添加用户信息缓存
+     * @param key
+     * @param value
+     * @param time 秒
+     */
+    void setClientUser(String key, Object value, long time);
+
+
 }

@@ -17,6 +17,12 @@ public interface RedisConstant {
      * 后台用户信息缓存 key
      */
     String REDIS_KEY_ADMIN="young:admin";
+
+    /**
+     * client用户信息缓存 key
+     */
+    String REDIS_KEY_CLIENT="young:client";
+
     /**
      * 后台系统用户 角色 ID key
      */

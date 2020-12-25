@@ -29,4 +29,14 @@ public class ClientCacheServiceImpl implements ClientCacheService {
     public void setVerificationCode(String key, String value, long time) {
         redisService.set(key,value,time);
     }
+
+    @Override
+    public Object getClientUser(String key) {
+        return redisService.get(key);
+    }
+
+    @Override
+    public void setClientUser(String key, Object value, long time) {
+        redisService.set(key,value,time);
+    }
 }
