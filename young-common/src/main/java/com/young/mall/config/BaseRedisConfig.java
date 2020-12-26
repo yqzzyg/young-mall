@@ -18,11 +18,11 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import java.time.Duration;
 
 /**
- * @Description: redisson基础配置类
+ * @Description: redis基础配置类
  * @Author: yqz
  * @CreateDate: 2020/10/26 14:53
  */
-public class BaseRedissonConfig {
+public class BaseRedisConfig {
 
 /*        // 读取环境变量的实例env
         @Autowired

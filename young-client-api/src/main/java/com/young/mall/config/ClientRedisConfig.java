@@ -8,5 +8,5 @@ import org.springframework.context.annotation.Configuration;
  * @CreateDate: 2020/11/14 20:33
  */
 @Configuration
-public class RedisConfig extends BaseRedissonConfig {
+public class ClientRedisConfig extends BaseRedisConfig {
 }
