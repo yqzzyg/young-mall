@@ -9,7 +9,6 @@ import com.young.mall.service.RedisService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -36,8 +35,8 @@ public class AdminCacheServiceImpl implements AdminCacheService {
     }
 
     @Override
-    public YoungAdmin getAdmin(String username) {
-        return (YoungAdmin) redisService.get(RedisConstant.REDIS_KEY_ADMIN + ":" + username);
+    public Object getAdmin(String username) {
+        return redisService.get(RedisConstant.REDIS_KEY_ADMIN + ":" + username);
     }
 
     @Override
@@ -46,12 +45,10 @@ public class AdminCacheServiceImpl implements AdminCacheService {
     }
 
     @Override
-    public Set<String> getPermissionsList(String username) {
-        Optional<Set> authoritiesSet = redisService.get(RedisConstant.REDIS_KEY_ROLEIDS + ":" + username, Set.class);
-        if (authoritiesSet.isPresent()) {
-            return authoritiesSet.get();
-        }
-        return null;
+    public Object getPermissionsList(String username) {
+
+        return redisService.get(RedisConstant.REDIS_KEY_ROLEIDS + ":" + username);
+
     }
 
     @Override

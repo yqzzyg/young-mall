@@ -65,11 +65,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         YoungAdmin youngAdmin = null;
 
-        YoungAdmin admin = adminCacheService.getAdmin(username);
-        if (!BeanUtil.isEmpty(admin)) {
+        Object admin = adminCacheService.getAdmin(username);
+        //强转类型之前做判断，避免redis出现异常，导致强转失败，影响程序正常运行
+        if (admin instanceof YoungAdmin) {
+            youngAdmin = ((YoungAdmin) admin);
             logger.info("缓存中获取用户信息：{}", JSONUtil.toJsonStr(admin));
-            return admin;
+            return youngAdmin;
         }
+
         Optional<YoungAdmin> adminOptional = adminService.findAdminByName(username);
         if (!adminOptional.isPresent()) {
             Asserts.fail("无该用户");
@@ -77,7 +80,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         youngAdmin = adminOptional.get();
         logger.info("数据库中获取用户信息：{}", JSONUtil.toJsonStr(youngAdmin));
 
-        adminCacheService.setAdmin(admin);
+        adminCacheService.setAdmin(youngAdmin);
         return youngAdmin;
     }
 
@@ -89,9 +92,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      */
     public Set<GrantedAuthority> getAuthorities(AdminUser adminUser) {
 
-        Set<String> permissionsList = adminCacheService.getPermissionsList(adminUser.getUsername());
-        if (!BeanUtil.isEmpty(permissionsList)) {
-            return unmodifiableSet(permissionsList);
+        Object permissionsList = adminCacheService.getPermissionsList(adminUser.getUsername());
+
+        //强转类型之前做判断，避免redis出现异常，导致强转失败，影响程序正常运行
+        if (permissionsList instanceof Set) {
+            return unmodifiableSet((Set<String>) permissionsList);
         }
 
         Optional<Set<String>> optionalSet = permissionService.queryByRoleIds(adminUser.getRoleIds());

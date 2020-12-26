@@ -117,11 +117,11 @@
                 <version>${email.version}</version>
             </dependency>
             <!--redisson-->
-            <dependency>
+   <!--         <dependency>
                 <groupId>org.redisson</groupId>
                 <artifactId>redisson-spring-boot-starter</artifactId>
                 <version>${redisson.version}</version>
-            </dependency>
+            </dependency>-->
             <!--swagger-->
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>

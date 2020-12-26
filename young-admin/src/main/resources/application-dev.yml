@@ -19,7 +19,7 @@ spring:
     password: redis12358 # Redis服务器连接密码（默认为空）
     port: 6379 # Redis服务器连接端口
     database: 8 # Redis数据库索引（默认为0）
-    timeout: 5000 #连接超时时间（毫秒）
+    timeout: 300 #连接超时时间（毫秒）
 
       #在1.x.x的版本时默认使用的jedis客户端，现在是2.x.x版本默认使用的lettuce客户端
       # Jedis和Lettuce都是Redis Client
@@ -40,7 +40,7 @@ spring:
     # Lettuce 是基于 netty 的，netty 是一个多线程、事件驱动的 I/O 框架，
     # 所以 Lettuce 可以帮助我们充分利用异步的优势
     lettuce:
-      shutdown-timeout: 3ms #关闭超时
+      shutdown-timeout: 300ms #关闭超时
       pool:
         max-active: 20 #连接池最大连接数（使用负值表示没有限制）
         max-wait: 1000 #连接池最大阻塞等待时间（使用负值表示没有限制）

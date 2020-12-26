@@ -24,7 +24,7 @@ public interface AdminCacheService {
      *
      * @param username
      */
-    YoungAdmin getAdmin(String username);
+    Object getAdmin(String username);
 
     /**
      * 设置缓存后台用户信息
@@ -39,7 +39,7 @@ public interface AdminCacheService {
      * @param username
      * @return
      */
-    Set<String> getPermissionsList(String username);
+    Object getPermissionsList(String username);
 
     /**
      * 设置后台后台用户资源列表
