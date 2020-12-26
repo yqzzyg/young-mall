@@ -33,17 +33,17 @@ public class ClientUserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        YoungUser youngUser = (YoungUser) clientCacheService.getClientUser(RedisConstant.REDIS_KEY_CLIENT + ":" + username);
+        Object obj = clientCacheService.getClientUser(RedisConstant.REDIS_KEY_CLIENT + ":" + username);
 
-        if (!BeanUtil.isEmpty(youngUser)) {
-            return new ClientUserDetails(youngUser);
+        if (obj instanceof YoungUser) {
+            return new ClientUserDetails(((YoungUser) obj));
         }
 
         List<YoungUser> userList = clientUserService.getUserByName(username);
         if (CollectionUtil.isEmpty(userList)) {
             Asserts.fail("无该用户");
         }
-        youngUser = userList.get(0);
+        YoungUser youngUser = userList.get(0);
         clientCacheService.setClientUser(RedisConstant.REDIS_KEY_CLIENT + ":" + username, youngUser, RedisConstant.REDIS_EXPIRE);
         ClientUserDetails userDetails = new ClientUserDetails(youngUser);
         return userDetails;
