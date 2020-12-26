@@ -1,7 +1,6 @@
 package com.young.mall.controller;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.json.JSONUtil;
 import com.young.db.entity.YoungCart;
 import com.young.db.entity.YoungGoods;
 import com.young.db.entity.YoungGoodsProduct;
@@ -265,13 +264,17 @@ public class ClientCartController {
      * 立即购买
      * 和add方法的区别在于： 1. 如果购物车内已经存在购物车货品，前者的逻辑是数量添加，这里的逻辑是数量覆盖
      * 添加成功以后，前者的逻辑是返回当前购物车商品数量，这里的逻辑是返回对应购物车项的ID
+     *
      * @return
      */
     @ApiOperation("立即购买")
     @PostMapping("/fastAdd")
     public ResBean fastAdd(@Valid @RequestBody FastAddVo fastAddVo) {
-
-        logger.info(JSONUtil.toJsonStr(fastAddVo));
-        return null;
+        ClientUserDetails userInfo = clientUserService.getUserInfo();
+        if (BeanUtil.isEmpty(userInfo)) {
+            logger.info("立即购买失败，未登录。");
+            return ResBean.unauthorized("请登录！");
+        }
+        return clientCartService.fastAdd(userInfo.getYoungUser().getId(), fastAddVo);
     }
 }

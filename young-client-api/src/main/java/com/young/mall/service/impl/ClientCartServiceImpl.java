@@ -7,6 +7,7 @@ import com.young.mall.common.ResBean;
 import com.young.mall.domain.BrandCartGoods;
 import com.young.mall.domain.CouponUserConstant;
 import com.young.mall.domain.enums.ClientResponseCode;
+import com.young.mall.domain.vo.FastAddVo;
 import com.young.mall.service.*;
 import com.young.mall.system.SystemConfig;
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -46,6 +48,12 @@ public class ClientCartServiceImpl implements ClientCartService {
 
     @Autowired
     private CouponVerifyService couponVerifyService;
+
+    @Resource
+    private ClientGoodsService clientGoodsService;
+
+    @Resource
+    private ClientGoodsProductService clientGoodsProductService;
 
     @Override
     public ResBean<Map<String, Object>> index(Integer uid) {
@@ -398,5 +406,54 @@ public class ClientCartServiceImpl implements ClientCartService {
         data.put("actualPrice", actualPrice);
 
         return ResBean.success(data);
+    }
+
+    @Override
+    public ResBean fastAdd(Integer userId, FastAddVo fastAddVo) {
+
+        //判断商品是否可以购买
+        YoungGoods goods = clientGoodsService.findById(fastAddVo.getGoodsId());
+        if (BeanUtil.isEmpty(goods) || !goods.getIsOnSale()) {
+            logger.error("立即购买失败:{}", ClientResponseCode.GOODS_UNSHELVE.getMsg());
+            return ResBean.failed(ClientResponseCode.GOODS_UNSHELVE);
+        }
+
+        YoungGoodsProduct product = clientGoodsProductService.findById(fastAddVo.getProductId());
+        //判断购物车中是否存在此规格商品
+        YoungCart existCart = this.queryExist(fastAddVo.getGoodsId(), fastAddVo.getProductId(), userId);
+        YoungCart cart = new YoungCart();
+
+        if (BeanUtil.isEmpty(existCart)) {
+            // 取得规格的信息,判断规格库存
+            if (BeanUtil.isEmpty(product) || fastAddVo.getNumber() > product.getNumber()) {
+                logger.error("立即购买失败:{}", ClientResponseCode.GOODS_NO_STOCK.getMsg());
+                return ResBean.failed(ClientResponseCode.GOODS_NO_STOCK);
+            }
+            BeanUtil.copyProperties(fastAddVo,cart);
+            cart.setGoodsSn(goods.getGoodsSn());
+            // 新增入驻商户
+            cart.setBrandId(goods.getBrandId());
+            cart.setGoodsName(goods.getName());
+            cart.setPicUrl(goods.getPicUrl());
+            cart.setPrice(product.getPrice());
+            cart.setSpecifications(product.getSpecifications());
+            cart.setUserId(userId);
+            cart.setChecked(true);
+            this.add(cart);
+        } else {
+            // 取得规格的信息,判断规格库存
+            int num = fastAddVo.getNumber();
+            if (num > product.getNumber()) {
+                logger.error("立即购买失败:{}", ClientResponseCode.GOODS_NO_STOCK.getMsg());
+                return ResBean.failed(ClientResponseCode.GOODS_NO_STOCK);
+            }
+            existCart.setNumber(((short) num));
+            if (this.updateById(existCart) == 0) {
+                logger.error("立即购买失败:更新购物车信息失败!");
+                return ResBean.failed("更新数据失败");
+            }
+        }
+
+        return ResBean.success(!BeanUtil.isEmpty(existCart) ? existCart.getId() : cart.getId());
     }
 }

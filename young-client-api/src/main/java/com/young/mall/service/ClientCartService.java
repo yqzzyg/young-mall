@@ -2,6 +2,7 @@ package com.young.mall.service;
 
 import com.young.db.entity.YoungCart;
 import com.young.mall.common.ResBean;
+import com.young.mall.domain.vo.FastAddVo;
 
 import java.util.List;
 import java.util.Map;
@@ -103,4 +104,13 @@ public interface ClientCartService {
     ResBean checkOut(Integer userId, Integer cartId,
                      Integer addressId, Integer couponId,
                      Integer grouponRulesId);
+
+    /**
+     * 立即购买
+     *
+     * @param userId    用户id
+     * @param fastAddVo
+     * @return
+     */
+    ResBean fastAdd(Integer userId, FastAddVo fastAddVo);
 }
