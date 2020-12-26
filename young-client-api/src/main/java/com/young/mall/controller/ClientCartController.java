@@ -1,6 +1,7 @@
 package com.young.mall.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.json.JSONUtil;
 import com.young.db.entity.YoungCart;
 import com.young.db.entity.YoungGoods;
 import com.young.db.entity.YoungGoodsProduct;
@@ -8,6 +9,7 @@ import com.young.mall.common.ResBean;
 import com.young.mall.domain.CartCheckDto;
 import com.young.mall.domain.ClientUserDetails;
 import com.young.mall.domain.enums.ClientResponseCode;
+import com.young.mall.domain.vo.FastAddVo;
 import com.young.mall.service.ClientCartService;
 import com.young.mall.service.ClientGoodsProductService;
 import com.young.mall.service.ClientGoodsService;
@@ -257,5 +259,19 @@ public class ClientCartController {
 
         ResBean resBean = clientCartService.checkOut(userInfo.getYoungUser().getId(), cartId, addressId, couponId, grouponRulesId);
         return resBean;
+    }
+
+    /**
+     * 立即购买
+     * 和add方法的区别在于： 1. 如果购物车内已经存在购物车货品，前者的逻辑是数量添加，这里的逻辑是数量覆盖
+     * 添加成功以后，前者的逻辑是返回当前购物车商品数量，这里的逻辑是返回对应购物车项的ID
+     * @return
+     */
+    @ApiOperation("立即购买")
+    @PostMapping("/fastAdd")
+    public ResBean fastAdd(@Valid @RequestBody FastAddVo fastAddVo) {
+
+        logger.info(JSONUtil.toJsonStr(fastAddVo));
+        return null;
     }
 }
