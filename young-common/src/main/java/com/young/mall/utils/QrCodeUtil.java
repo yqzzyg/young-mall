@@ -96,7 +96,7 @@ public class QrCodeUtil {
             ByteArrayInputStream inputStream2 = new ByteArrayInputStream(imageData);
             // 存储分享图
             String url = storageService.store(inputStream2, imageData.length, "image/jpeg", getKeyName(goodId));
-            logger.info("创建商品分享图 URL:{}", url);
+            logger.error("创建商品分享图 URL:{}", url);
             return url;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -257,7 +257,7 @@ public class QrCodeUtil {
 
             fileStream = new FileInputStream(file);
             url = storageService.store(inputStream, fileStream.available(), "image/jpeg", getShareUserKey(userId));
-            logger.info("创建商品分享图 URL:{}", url);
+            logger.error("创建商品分享图 URL:{}", url);
 
         } catch (WxErrorException e) {
             logger.error("创建代理用户推荐共享二维码 错误:{}", e.getMessage());

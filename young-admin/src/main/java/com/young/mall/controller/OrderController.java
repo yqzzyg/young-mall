@@ -40,7 +40,7 @@ public class OrderController extends BaseController {
                         @RequestParam(defaultValue = "10") Integer size,
                         @RequestParam(defaultValue = "add_time") String sort,
                         @RequestParam(defaultValue = "desc") String order) {
-        logger.info("userId:{},orderSn:{},orderStatusArray:{},page:{},size:{},sort:{},order:{}", userId, orderSn, orderStatusArray, page, size, sort, order);
+        logger.error("userId:{},orderSn:{},orderStatusArray:{},page:{},size:{},sort:{},order:{}", userId, orderSn, orderStatusArray, page, size, sort, order);
 
         Optional<List<YoungOrder>> list = orderService.list(userId, orderSn, orderStatusArray, page, size, sort, order);
         if (!list.isPresent()) {
@@ -55,7 +55,7 @@ public class OrderController extends BaseController {
     @PreAuthorize("@pms.hasPermission('admin:order:detail')")
     @GetMapping("/detail")
     public ResBean detail(@NotNull @RequestParam("id") Integer id) {
-        logger.info("订单详情接口入参：{}", id);
+        logger.error("订单详情接口入参：{}", id);
 
         Optional<Map<String, Object>> detail = orderService.detail(id);
         if (!detail.isPresent()) {

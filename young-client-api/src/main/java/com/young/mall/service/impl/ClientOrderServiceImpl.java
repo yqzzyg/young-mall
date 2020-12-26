@@ -161,11 +161,11 @@ public class ClientOrderServiceImpl implements ClientOrderService {
         //订单信息
         YoungOrder order = this.findById(orderId);
         if (BeanUtil.isEmpty(order)) {
-            logger.info("{}:获取订单详情失败：{}", userId, ClientResponseCode.ORDER_UNKNOWN.getMsg());
+            logger.error("{}:获取订单详情失败：{}", userId, ClientResponseCode.ORDER_UNKNOWN.getMsg());
             Asserts.fail(ClientResponseCode.ORDER_UNKNOWN);
         }
         if (!order.getUserId().equals(userId)) {
-            logger.info("{}:获取订单详情失败：{}", userId, ClientResponseCode.ORDER_INVALID.getMsg());
+            logger.error("{}:获取订单详情失败：{}", userId, ClientResponseCode.ORDER_INVALID.getMsg());
             Asserts.fail(ClientResponseCode.ORDER_INVALID);
         }
 
@@ -206,11 +206,11 @@ public class ClientOrderServiceImpl implements ClientOrderService {
         // 订单信息
         YoungOrder order = this.findById(orderId);
         if (BeanUtil.isEmpty(order)) {
-            logger.info("{}:获取订单详情失败：{}", userId, ClientResponseCode.ORDER_UNKNOWN.getMsg());
+            logger.error("{}:获取订单详情失败：{}", userId, ClientResponseCode.ORDER_UNKNOWN.getMsg());
             Asserts.fail(ClientResponseCode.ORDER_UNKNOWN);
         }
         if (!order.getUserId().equals(userId)) {
-            logger.info("{}:获取订单详情失败：{}", userId, ClientResponseCode.ORDER_INVALID.getMsg());
+            logger.error("{}:获取订单详情失败：{}", userId, ClientResponseCode.ORDER_INVALID.getMsg());
             Asserts.fail(ClientResponseCode.ORDER_INVALID);
         }
         Map<String, Object> result = new HashMap<>();
@@ -262,7 +262,7 @@ public class ClientOrderServiceImpl implements ClientOrderService {
     public ResBean comment(OrderCommentVo commentVo) {
         ClientUserDetails userInfo = clientUserService.getUserInfo();
         if (BeanUtil.isEmpty(userInfo)) {
-            logger.info("查询待评价订单商品信息失败，未登录。");
+            logger.error("查询待评价订单商品信息失败，未登录。");
             return ResBean.unauthorized("请登录！");
         }
         Integer userId = userInfo.getYoungUser().getId();
@@ -281,25 +281,25 @@ public class ClientOrderServiceImpl implements ClientOrderService {
         //当401用户确认收货以后，可以评价
         //当402系统自动确认收货以后，可以评价
         if (!OrderUtil.isConfirmStatus(order) && !OrderUtil.isAutoConfirmStatus(order)) {
-            logger.info("评价订单商品失败:{}", ClientResponseCode.ORDER_NOT_COMMENT.getMsg());
+            logger.error("评价订单商品失败:{}", ClientResponseCode.ORDER_NOT_COMMENT.getMsg());
             return ResBean.failed(ClientResponseCode.ORDER_NOT_COMMENT);
         }
 
         //判断当前用户是否可以评论
         if (!userId.equals(order.getUserId())) {
-            logger.info("评价订单商品失败：{}", ClientResponseCode.ORDER_INVALID.getMsg());
+            logger.error("评价订单商品失败：{}", ClientResponseCode.ORDER_INVALID.getMsg());
             return ResBean.failed(ClientResponseCode.ORDER_INVALID);
         }
 
         //订单商品评论，如果是-1，则超期不能评价；如果是0，则可以评价；如果其他值，则是comment表里面的评论ID
         Integer commentId = orderGoods.getComment();
         if (commentId == -1) {
-            logger.info("评价订单商品失败：{}", ClientResponseCode.ORDER_COMMENT_EXPIRED.getMsg());
+            logger.error("评价订单商品失败：{}", ClientResponseCode.ORDER_COMMENT_EXPIRED.getMsg());
             return ResBean.failed(ClientResponseCode.ORDER_COMMENT_EXPIRED);
         }
 
         if (commentId != 0) {
-            logger.info("评价订单商品失败：{}", ClientResponseCode.ORDER_COMMENTED.getMsg());
+            logger.error("评价订单商品失败：{}", ClientResponseCode.ORDER_COMMENTED.getMsg());
             return ResBean.failed(ClientResponseCode.ORDER_COMMENTED);
         }
 

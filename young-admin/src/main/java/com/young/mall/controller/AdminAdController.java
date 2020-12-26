@@ -36,7 +36,7 @@ public class AdminAdController extends BaseController {
                         @RequestParam(defaultValue = "10") Integer size,
                         @RequestParam(defaultValue = "add_time") String sort,
                         @RequestParam(defaultValue = "desc") String order) {
-        logger.info("name:{},content:{},page:{},size:{},sort:{},order:{}", name, content, page, size, sort, order);
+        logger.error("name:{},content:{},page:{},size:{},sort:{},order:{}", name, content, page, size, sort, order);
 
         Optional<List<YoungAd>> optional = advertisingService.list(name, content, page, size, sort, order);
         if (!optional.isPresent()) {
@@ -50,7 +50,7 @@ public class AdminAdController extends BaseController {
     @PreAuthorize("@pms.hasPermission('admin:ad:create')")
     @PostMapping("/create")
     public ResBean create(@Valid @RequestBody YoungAd youngAd) {
-        logger.info("创建广告入参：{}", youngAd);
+        logger.error("创建广告入参：{}", youngAd);
         Optional<Integer> optional = advertisingService.create(youngAd);
         if (!optional.isPresent()) {
             return ResBean.failed("创建失败");
@@ -62,7 +62,7 @@ public class AdminAdController extends BaseController {
     @PreAuthorize("@pms.hasPermission('admin:ad:read')")
     @GetMapping("/read")
     public ResBean read(@NotNull Integer id) {
-        logger.info("广告详情入参：{}", id);
+        logger.error("广告详情入参：{}", id);
         Optional<YoungAd> optional = advertisingService.findById(id);
         if (!optional.isPresent()) {
             return ResBean.failed("读取失败");
@@ -74,7 +74,7 @@ public class AdminAdController extends BaseController {
     @PreAuthorize("@pms.hasPermission('admin:ad:update')")
     @PostMapping("/update")
     public ResBean update(@Valid @RequestBody YoungAd youngAd) {
-        logger.info("更新广告入参:{}", youngAd);
+        logger.error("更新广告入参:{}", youngAd);
         Optional<Integer> optional = advertisingService.update(youngAd);
         if (!optional.isPresent()) {
             return ResBean.failed("更新失败");
@@ -86,7 +86,7 @@ public class AdminAdController extends BaseController {
     @PreAuthorize("@pms.hasPermission('admin:ad:delete')")
     @PostMapping("/delete")
     public ResBean delete(@RequestBody YoungAd youngAd) {
-        logger.info("删除广告入参：{}", youngAd);
+        logger.error("删除广告入参：{}", youngAd);
         Integer id = youngAd.getId();
         if (id == null) {
             return ResBean.validateFailed("参数错误");

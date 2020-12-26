@@ -42,7 +42,7 @@ public class AdminCouponController extends BaseController {
                         @RequestParam(defaultValue = "10") Integer size,
                         @RequestParam(defaultValue = "add_time") String sort,
                         @RequestParam(defaultValue = "desc") String order) {
-        logger.info("name:{},type:{},status:{},page:{},size:{},sort:{},order:{}",
+        logger.error("name:{},type:{},status:{},page:{},size:{},sort:{},order:{}",
                 name, type, status, page, size, sort, order);
         Optional<List<YoungCoupon>> optional = mallCouponService.list(name, type, status, page, size, sort, order);
         if (!optional.isPresent()) {

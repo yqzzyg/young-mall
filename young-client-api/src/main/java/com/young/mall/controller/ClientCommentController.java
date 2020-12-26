@@ -36,7 +36,7 @@ public class ClientCommentController {
     public ResBean PostComment(@RequestBody YoungComment comment) {
         ClientUserDetails userInfo = clientUserService.getUserInfo();
         if (BeanUtil.isEmpty(userInfo)) {
-            logger.info("发表评判失败：用户未登录");
+            logger.error("发表评判失败：用户未登录");
             return ResBean.validateFailed("用户未登录");
         }
 

@@ -38,7 +38,7 @@ public class KeyWordController extends BaseController {
                         @RequestParam(defaultValue = "10") Integer size,
                         @RequestParam(defaultValue = "add_time") String sort,
                         @RequestParam(defaultValue = "desc") String order) {
-        logger.info("keyword:{},url:{},page:{},size:{},sort:{},order:{}", keyword, url, page, size, sort, order);
+        logger.error("keyword:{},url:{},page:{},size:{},sort:{},order:{}", keyword, url, page, size, sort, order);
 
         Optional<List<YoungKeyword>> youngKeywords = keyWordService.querySelective(keyword, url, page, size, sort, order);
 
@@ -53,7 +53,7 @@ public class KeyWordController extends BaseController {
     @PreAuthorize("@pms.hasPermission('admin:keyword:create')")
     @PostMapping("/create")
     public ResBean create(@Valid @RequestBody YoungKeyword keyword) {
-        logger.info("创建关键词 入参：{}", JSONUtil.toJsonStr(keyword));
+        logger.error("创建关键词 入参：{}", JSONUtil.toJsonStr(keyword));
 
         Optional<Integer> optional = keyWordService.create(keyword);
         if (!optional.isPresent()) {
@@ -67,7 +67,7 @@ public class KeyWordController extends BaseController {
     @PreAuthorize("@pms.hasPermission('admin:keyword:read')")
     @GetMapping("/read")
     public ResBean read(@NotNull Integer id) {
-        logger.info("读取关键词接口入参：{}", id);
+        logger.error("读取关键词接口入参：{}", id);
         Optional<YoungKeyword> optional = keyWordService.findById(id);
         if (!optional.isPresent()) {
             return ResBean.failed("读取关键词详情失败");
@@ -80,7 +80,7 @@ public class KeyWordController extends BaseController {
     @PostMapping("/update")
     public ResBean update(@Valid @RequestBody YoungKeyword keyword) {
 
-        logger.info("关键词更新入参：{}", JSONUtil.toJsonStr(keyword));
+        logger.error("关键词更新入参：{}", JSONUtil.toJsonStr(keyword));
 
         Optional<Integer> optional = keyWordService.updateById(keyword);
         if (!optional.isPresent()) {
@@ -95,7 +95,7 @@ public class KeyWordController extends BaseController {
     @PostMapping("/delete")
     public ResBean delete(@RequestBody YoungKeyword keyword) {
 
-        logger.info("删除关键词对象入参：{}", JSONUtil.toJsonStr(keyword));
+        logger.error("删除关键词对象入参：{}", JSONUtil.toJsonStr(keyword));
         Integer id = keyword.getId();
         if (id == null) {
             return ResBean.failed("参数错误");

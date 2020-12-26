@@ -37,7 +37,7 @@ public class AdminCommentController extends BaseController {
                         @RequestParam(defaultValue = "10") Integer size,
                         @RequestParam(defaultValue = "add_time") String sort,
                         @RequestParam(defaultValue = "desc") String order) {
-        logger.info("userId:{},valueId:{},page:{},size:{},sort:{},order:{}", userId, valueId, page, size, sort, order);
+        logger.error("userId:{},valueId:{},page:{},size:{},sort:{},order:{}", userId, valueId, page, size, sort, order);
 
         Optional<List<YoungComment>> optionalList = youngCommentService.querySelective(userId, valueId, page, size, sort, order);
         if (!optionalList.isPresent()) {
@@ -52,9 +52,9 @@ public class AdminCommentController extends BaseController {
     @PreAuthorize("@pms.hasPermission('admin:comment:reply')")
     @PostMapping("/reply")
     public ResBean reply(@Valid @RequestBody CommentDto commentDto) {
-        logger.info("回复评论入参：{}", JSONUtil.toJsonStr(commentDto));
+        logger.error("回复评论入参：{}", JSONUtil.toJsonStr(commentDto));
         ResBean reply = youngCommentService.reply(commentDto);
-        logger.info("回复评论出参：{}", JSONUtil.toJsonStr(reply));
+        logger.error("回复评论出参：{}", JSONUtil.toJsonStr(reply));
         return reply;
     }
 
@@ -62,7 +62,7 @@ public class AdminCommentController extends BaseController {
     @PreAuthorize("@pms.hasPermission('admin:comment:delete')")
     @PostMapping("/delete")
     public ResBean delete(@RequestBody YoungComment youngComment) {
-        logger.info("删除评论入参：{}", JSONUtil.toJsonStr(youngComment));
+        logger.error("删除评论入参：{}", JSONUtil.toJsonStr(youngComment));
         Integer id = youngComment.getId();
         if (id == null) {
             return ResBean.failed("删除失败，参数错误");

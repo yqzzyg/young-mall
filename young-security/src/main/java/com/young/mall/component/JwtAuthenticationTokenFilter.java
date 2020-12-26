@@ -26,7 +26,7 @@ import java.io.IOException;
  */
 @Component
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
-    private static final Logger LOGGER = LoggerFactory.getLogger(JwtAuthenticationTokenFilter.class);
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationTokenFilter.class);
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -46,13 +46,13 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         if (header != null && header.startsWith(this.tokenHead)) {
             String token = header.substring(this.tokenHead.length());
             String username = jwtTokenUtil.getUserNameFromToken(token);
-            LOGGER.info("filter中解析的用户名:{}", username);
+            logger.error("filter中解析的用户名:{}", username);
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
                 if (jwtTokenUtil.validateToken(token, userDetails)) {
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    LOGGER.info("已认证的用户：{}", username);
+                    logger.error("已认证的用户：{}", username);
                     //重新把认证添加到上下文中，即使部署集群，由于采用的是jwt，所有不管每次用户请求到哪个应用，都会有认证
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }

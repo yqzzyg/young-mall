@@ -88,7 +88,7 @@ public class ClientCartController {
 
         ClientUserDetails userInfo = clientUserService.getUserInfo();
         if (BeanUtil.isEmpty(userInfo)) {
-            logger.info("用户添加购物车失败，未登录。");
+            logger.error("用户添加购物车失败，未登录。");
             return ResBean.unauthorized("请登录！");
         }
         Integer productId = cart.getProductId();
@@ -102,7 +102,7 @@ public class ClientCartController {
         // 判断商品是否可以购买
         YoungGoods goods = clientGoodsService.findById(goodsId);
         if (BeanUtil.isEmpty(goods) || !goods.getIsOnSale()) {
-            logger.info("添加商品到购物车失败：{}", ClientResponseCode.GOODS_UNSHELVE);
+            logger.error("添加商品到购物车失败：{}", ClientResponseCode.GOODS_UNSHELVE);
             return ResBean.failed(ClientResponseCode.GOODS_UNSHELVE);
         }
 
@@ -110,7 +110,7 @@ public class ClientCartController {
         YoungGoodsProduct goodsProduct = clientGoodsProductService.findById(productId);
         // 取得规格的信息,判断规格库存
         if (BeanUtil.isEmpty(goodsProduct) || number > goodsProduct.getNumber()) {
-            logger.info("{}->库存不足", cart.getGoodsName());
+            logger.error("{}->库存不足", cart.getGoodsName());
             return ResBean.failed("该商品目前库存不足");
         }
         // 判断购物车中是否存在此规格商品
@@ -129,12 +129,12 @@ public class ClientCartController {
             int num = existCart.getNumber() + number;
             //判断购物车中累计的数量是否大于总库存
             if (num > goodsProduct.getNumber()) {
-                logger.info("加入商品到购物车失败:{}", ClientResponseCode.GOODS_NO_STOCK);
+                logger.error("加入商品到购物车失败:{}", ClientResponseCode.GOODS_NO_STOCK);
                 return ResBean.failed(ClientResponseCode.GOODS_NO_STOCK);
             }
             existCart.setNumber(((short) number));
             if (clientCartService.updateById(existCart) == 0) {
-                logger.info("加入商品到购物车失败:更新购物车信息失败!");
+                logger.error("加入商品到购物车失败:更新购物车信息失败!");
                 return ResBean.failed(505, "更新数据失败");
             }
         }
@@ -146,7 +146,7 @@ public class ClientCartController {
     public ResBean checked(@Valid @RequestBody CartCheckDto cartCheckDto) {
         ClientUserDetails userInfo = clientUserService.getUserInfo();
         if (BeanUtil.isEmpty(userInfo)) {
-            logger.info("用户添加购物车失败，未登录。");
+            logger.error("用户添加购物车失败，未登录。");
             return ResBean.unauthorized("请登录！");
         }
 
@@ -165,7 +165,7 @@ public class ClientCartController {
     public ResBean update(@RequestBody YoungCart cart) {
         ClientUserDetails userInfo = clientUserService.getUserInfo();
         if (BeanUtil.isEmpty(userInfo)) {
-            logger.info("用户添加购物车失败，未登录。");
+            logger.error("用户添加购物车失败，未登录。");
             return ResBean.unauthorized("请登录！");
         }
         Integer productId = cart.getProductId();
@@ -185,30 +185,30 @@ public class ClientCartController {
 
         // 判断goodsId和productId是否与当前cart里的值一致
         if (!existCart.getGoodsId().equals(goodsId)) {
-            logger.info("当前修改商品信息与购物车中不一致");
+            logger.error("当前修改商品信息与购物车中不一致");
             return ResBean.failed("当前修改商品信息与购物车中不一致");
         }
         if (!existCart.getProductId().equals(productId)) {
-            logger.info("当前修改商品信息与购物车中不一致");
+            logger.error("当前修改商品信息与购物车中不一致");
 
             return ResBean.failed("当前修改商品信息与购物车中不一致");
         }
         // 判断商品是否可以购买
         YoungGoods goods = clientGoodsService.findById(goodsId);
         if (BeanUtil.isEmpty(goods) || !goods.getIsOnSale()) {
-            logger.info("修改购物车商品失败：{}", ClientResponseCode.GOODS_UNSHELVE);
+            logger.error("修改购物车商品失败：{}", ClientResponseCode.GOODS_UNSHELVE);
             return ResBean.failed(ClientResponseCode.GOODS_UNSHELVE);
         }
         // 取得规格的信息,判断规格库存
         YoungGoodsProduct product = clientGoodsProductService.findById(productId);
         if (BeanUtil.isEmpty(product) || product.getNumber() < number) {
-            logger.info("{}->修改购物车失败：{}", userInfo.getYoungUser().getNickname(), ClientResponseCode.GOODS_NO_STOCK);
+            logger.error("{}->修改购物车失败：{}", userInfo.getYoungUser().getNickname(), ClientResponseCode.GOODS_NO_STOCK);
         }
         existCart.setNumber(number.shortValue());
 
         Integer count = clientCartService.updateById(existCart);
         if (count == 0) {
-            logger.info("{}->修改购物车失败:更新购物车信息失败!", userInfo.getYoungUser().getNickname());
+            logger.error("{}->修改购物车失败:更新购物车信息失败!", userInfo.getYoungUser().getNickname());
         }
 
         return ResBean.success("修改购物车成功");
@@ -223,7 +223,7 @@ public class ClientCartController {
     public ResBean delete(@RequestBody Map<String, List<Integer>> body) {
         ClientUserDetails userInfo = clientUserService.getUserInfo();
         if (BeanUtil.isEmpty(userInfo)) {
-            logger.info("用户添加购物车失败，未登录。");
+            logger.error("用户添加购物车失败，未登录。");
             return ResBean.unauthorized("请登录！");
         }
 
@@ -233,7 +233,7 @@ public class ClientCartController {
         }
 
         Integer count = clientCartService.delete(productIds, userInfo.getYoungUser().getId());
-        logger.info(userInfo.getYoungUser().getUsername(), "{}:删除购物车数量：{}", count);
+        logger.error(userInfo.getYoungUser().getUsername(), "{}:删除购物车数量：{}", count);
         return this.index();
     }
 
@@ -251,7 +251,7 @@ public class ClientCartController {
 
         ClientUserDetails userInfo = clientUserService.getUserInfo();
         if (BeanUtil.isEmpty(userInfo)) {
-            logger.info("用户添加购物车失败，未登录。");
+            logger.error("用户添加购物车失败，未登录。");
             return ResBean.unauthorized("请登录！");
         }
         //收货地址
@@ -272,7 +272,7 @@ public class ClientCartController {
     public ResBean fastAdd(@Valid @RequestBody FastAddVo fastAddVo) {
         ClientUserDetails userInfo = clientUserService.getUserInfo();
         if (BeanUtil.isEmpty(userInfo)) {
-            logger.info("立即购买失败，未登录。");
+            logger.error("立即购买失败，未登录。");
             return ResBean.unauthorized("请登录！");
         }
         return clientCartService.fastAdd(userInfo.getYoungUser().getId(), fastAddVo);

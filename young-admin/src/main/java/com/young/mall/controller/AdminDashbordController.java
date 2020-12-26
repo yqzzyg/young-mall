@@ -51,7 +51,7 @@ public class AdminDashbordController extends BaseController {
         map.put("goodsTotal", goodsTotal);
         map.put("productTotal", productTotal);
         map.put("orderTotal", orderTotal);
-        logger.info("获取主页数据出参：{}", JSONUtil.toJsonStr(map));
+        logger.error("获取主页数据出参：{}", JSONUtil.toJsonStr(map));
         return ResBean.success(map);
     }
 }

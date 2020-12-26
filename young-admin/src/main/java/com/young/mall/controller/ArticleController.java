@@ -37,7 +37,7 @@ public class ArticleController extends BaseController {
                         @RequestParam(defaultValue = "10") Integer size,
                         @RequestParam(defaultValue = "add_time") String sort,
                         @RequestParam(defaultValue = "desc") String order) {
-        logger.info("title:{},page:{},size:{},sort:{},order:{}", title, page, size, sort, order);
+        logger.error("title:{},page:{},size:{},sort:{},order:{}", title, page, size, sort, order);
 
         Optional<List<YoungArticle>> listOptional = youngArticleService.querySelective(title, page, size, sort, order);
         if (!listOptional.isPresent()) {
@@ -50,27 +50,27 @@ public class ArticleController extends BaseController {
     @ApiOperation("公告详情")
     @GetMapping("/detail")
     public ResBean detail(@NotNull @RequestParam("id") Integer id) {
-        logger.info("查看公告详情入参：{}", id);
+        logger.error("查看公告详情入参：{}", id);
         Optional<YoungArticle> articleOptional = youngArticleService.details(id);
         if (!articleOptional.isPresent()) {
             return ResBean.failed("查看公告详情失败");
         }
         YoungArticle article = articleOptional.get();
-        logger.info("查看公告详情出参：{}", article);
+        logger.error("查看公告详情出参：{}", article);
         return ResBean.success(article);
     }
 
     @ApiOperation("更新公告")
     @PostMapping("/update")
     public ResBean update(@Valid @RequestBody YoungArticle youngArticle) {
-        logger.info("更新公告入参：{}", JSONUtil.toJsonStr(youngArticle));
+        logger.error("更新公告入参：{}", JSONUtil.toJsonStr(youngArticle));
         if (StrUtil.isEmpty(youngArticle.getType())) {
             //如果没有传入类型，默认为信息公告
             youngArticle.setType(ArticleType.ANNOUNCE.type());
         }
         Optional<Integer> optional = youngArticleService.update(youngArticle);
         if (!optional.isPresent() || optional.get() <= 0) {
-            logger.info("更新公告失败");
+            logger.error("更新公告失败");
             return ResBean.failed("更新公告失败");
         }
         return ResBean.success(optional.get());
@@ -79,7 +79,7 @@ public class ArticleController extends BaseController {
     @ApiOperation("删除公告")
     @PostMapping("/delete")
     public ResBean delete(@RequestBody YoungArticle youngArticle) {
-        logger.info("删除公告入参：{}", youngArticle);
+        logger.error("删除公告入参：{}", youngArticle);
 
         Integer id = youngArticle.getId();
         if (id == null) {
@@ -95,7 +95,7 @@ public class ArticleController extends BaseController {
     @ApiOperation("添加公告")
     @PostMapping("/create")
     public ResBean create(@Valid @RequestBody YoungArticle youngArticle) {
-        logger.info("添加公告入参：{}", youngArticle);
+        logger.error("添加公告入参：{}", youngArticle);
 
         String title = youngArticle.getTitle();
         if (youngArticleService.checkExist(title)) {

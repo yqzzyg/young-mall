@@ -97,7 +97,7 @@ public class LocalStorage implements Storage {
             //3、此方法代码量小，也为NIO
             Files.copy(inputStream, rootLocation.resolve(keyName), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            logger.info("本地存储文件失败：{}", e.getMessage());
+            logger.error("本地存储文件失败：{}", e.getMessage());
             throw new WebApiException("本地存储文件失败" + e.getMessage());
         }
     }
@@ -140,7 +140,7 @@ public class LocalStorage implements Storage {
         try {
             Files.delete(file);
         } catch (IOException e) {
-            logger.info("本地存储删除失败：{}", e.getMessage());
+            logger.error("本地存储删除失败：{}", e.getMessage());
             throw new WebApiException("本地存储删除失败:" + e.getMessage());
         }
     }

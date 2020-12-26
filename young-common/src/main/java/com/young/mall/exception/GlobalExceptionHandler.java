@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(value = WebApiException.class)
     public ResBean handle(WebApiException e) {
-        logger.info("异常信息：{}", e.getMessage());
+        logger.error("异常信息：{}", e.getMessage());
         if (e.getErrorCode() != null) {
             return ResBean.failed(e.getErrorCode());
         }
@@ -35,7 +35,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResBean handleValidException(MethodArgumentNotValidException e) {
-        logger.info("异常信息：{}", e.getMessage());
+        logger.error("异常信息：{}", e.getMessage());
         BindingResult bindingResult = e.getBindingResult();
         String message = null;
         if (bindingResult.hasErrors()) {

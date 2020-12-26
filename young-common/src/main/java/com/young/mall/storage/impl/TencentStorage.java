@@ -64,7 +64,7 @@ public class TencentStorage implements Storage {
             // [对象键](https://cloud.tencent.com/document/product/436/13324)
             PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, keyName, inputStream, objectMetadata);
             PutObjectResult putObjectResult = getCosClient().putObject(putObjectRequest);
-            logger.info("腾讯云存储结果：{}", putObjectResult.getRequestId());
+            logger.error("腾讯云存储结果：{}", putObjectResult.getRequestId());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -91,7 +91,7 @@ public class TencentStorage implements Storage {
                 return null;
             }
         } catch (MalformedURLException e) {
-            logger.info("loadAsResource失败：{}", e.getMessage());
+            logger.error("loadAsResource失败：{}", e.getMessage());
             e.printStackTrace();
         }
         return null;

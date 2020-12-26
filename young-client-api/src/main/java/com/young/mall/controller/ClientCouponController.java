@@ -80,7 +80,7 @@ public class ClientCouponController {
                           @RequestParam(defaultValue = "add_time") String sort,
                           @RequestParam(defaultValue = "desc") String order) {
 
-        logger.info("个人优惠券列表接口入参：status:{},page:{},size:{},sort:{},order:{}", status, page, size, sort, order);
+        logger.error("个人优惠券列表接口入参：status:{},page:{},size:{},sort:{},order:{}", status, page, size, sort, order);
         ClientUserDetails userDetails = clientUserService.getUserInfo();
         if (BeanUtil.isEmpty(userDetails)) {
             Asserts.fail("用户未登录");

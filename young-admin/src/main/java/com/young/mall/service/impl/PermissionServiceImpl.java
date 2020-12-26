@@ -36,7 +36,7 @@ public class PermissionServiceImpl implements PermissionService {
         YoungPermissionExample example = new YoungPermissionExample();
         example.or().andRoleIdIn(Arrays.asList(roleIds)).andDeletedEqualTo(false);
         List<YoungPermission> permissionList = permissionMapper.selectByExample(example);
-        logger.info("从数据库查出的permissions：{}", JSONUtil.toJsonStr(permissionList));
+        logger.error("从数据库查出的permissions：{}", JSONUtil.toJsonStr(permissionList));
         if (CollectionUtil.isNotEmpty(permissionList)) {
             for (YoungPermission permission : permissionList) {
                 permissions.add(permission.getPermission());

@@ -56,7 +56,7 @@ public class StorageService {
         youngStorage.setUrl(url);
 
         Optional<Integer> add = youngStorageService.add(youngStorage);
-        logger.info("存储数据插入数据库：{}", add.get());
+        logger.error("存储数据插入数据库：{}", add.get());
         return url;
     }
 

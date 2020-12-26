@@ -37,7 +37,7 @@ public class BrandController extends BaseController {
                                   @RequestParam(defaultValue = "10") Integer size,
                                   @RequestParam(defaultValue = "add_time") String sort,
                                   @RequestParam(defaultValue = "desc") String order) {
-        logger.info("id:{},name:{},page:{},size:{},sort:{},order:{}", id, name, page, size, sort, order);
+        logger.error("id:{},name:{},page:{},size:{},sort:{},order:{}", id, name, page, size, sort, order);
 
         Optional<List<YoungBrand>> listOptional = brandService.queryBrandList(id, name, page, size, sort, order);
         if (!listOptional.isPresent()) {

@@ -26,7 +26,7 @@ import java.util.Optional;
 @Order(2)
 public class RedisCacheAspect {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(RedisCacheAspect.class);
+    private static Logger logger = LoggerFactory.getLogger(RedisCacheAspect.class);
 
     /**
      * 此处需要使用 *CacheService 匹配切点，不要使用具体类名，因为该Module为公共的，如果使用具体的类名匹配，有可能会导致单独启动一个Mudole会报
@@ -47,10 +47,10 @@ public class RedisCacheAspect {
         } catch (Throwable e) {
             //有CacheException注解的方法需要抛出异常
             if (method.isAnnotationPresent(CacheException.class)) {
-                LOGGER.info("redis异常信息：{}", e.getMessage());
+                logger.error("redis异常信息：{}", e.getMessage());
                 Asserts.fail("redis缓存异常");
             } else {
-                LOGGER.error(e.getMessage());
+                logger.error(e.getMessage());
             }
         }
         return result;

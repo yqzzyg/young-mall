@@ -43,14 +43,14 @@ public class AdminStorageController extends BaseController {
                         @RequestParam(defaultValue = "10") Integer size,
                         @RequestParam(defaultValue = "add_time") String sort,
                         @RequestParam(defaultValue = "desc") String order) {
-        logger.info("key:{},name:{},page:{},size:{},sort:{},order:{}", key, name, page, size, sort, order);
+        logger.error("key:{},name:{},page:{},size:{},sort:{},order:{}", key, name, page, size, sort, order);
         Optional<List<YoungStorage>> youngStorages = youngStorageService.querySelective(key, name, page, size, sort, order);
         if (!youngStorages.isPresent()) {
             ResBean.failed("查询失败");
         }
 
         CommonPage<YoungStorage> storagePage = CommonPage.restPage(youngStorages.get());
-        logger.info("分页查询所有对象存储出参：{}", JSONUtil.toJsonStr(storagePage));
+        logger.error("分页查询所有对象存储出参：{}", JSONUtil.toJsonStr(storagePage));
         return ResBean.success(storagePage);
     }
 

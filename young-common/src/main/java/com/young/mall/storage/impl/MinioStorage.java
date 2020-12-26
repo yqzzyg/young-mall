@@ -45,7 +45,7 @@ public class MinioStorage implements Storage {
             }
             boolean isExist = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
             if (isExist) {
-                logger.info("存储桶已经存在！");
+                logger.error("存储桶已经存在！");
             } else {
                 //创建存储桶并设置只读权限
                 minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
@@ -57,7 +57,7 @@ public class MinioStorage implements Storage {
                 minioClient.setBucketPolicy(setBucketPolicyArgs);
             }
         } catch (Exception e) {
-            logger.info("创建MinIO客户端失败");
+            logger.error("创建MinIO客户端失败");
         }
         return minioClient;
     }
@@ -90,11 +90,11 @@ public class MinioStorage implements Storage {
         try {
             ObjectWriteResponse response = getMinio().putObject(putObjectArgs);
             String jsonStr = JSONUtil.toJsonStr(response);
-            logger.info("MinIO上传结果：{}", jsonStr);
+            logger.error("MinIO上传结果：{}", jsonStr);
         } catch (Exception e) {
             Asserts.fail("上传发生错误");
             e.printStackTrace();
-            logger.info("上传发生错误：{}", e.getMessage());
+            logger.error("上传发生错误：{}", e.getMessage());
         }
     }
 
@@ -119,7 +119,7 @@ public class MinioStorage implements Storage {
                 return null;
             }
         } catch (MalformedURLException e) {
-            logger.info("loadAsResource失败：{}", e.getMessage());
+            logger.error("loadAsResource失败：{}", e.getMessage());
             e.printStackTrace();
             Asserts.fail("加载发生错误");
 
@@ -138,7 +138,7 @@ public class MinioStorage implements Storage {
             getMinio().removeObject(build);
         } catch (Exception e) {
             e.printStackTrace();
-            logger.info("MinIO删除失败：{}", e.getMessage());
+            logger.error("MinIO删除失败：{}", e.getMessage());
             Asserts.fail("删除发生错误");
         }
     }

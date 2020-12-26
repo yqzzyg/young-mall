@@ -82,7 +82,7 @@ public class MallCommentServiceImpl implements MallCommentService {
         Integer replySts = comment.getReplySts();
 
         if (replySts == 1) {
-            logger.info("该评论已回复");
+            logger.error("该评论已回复");
             return ResBean.failed(AdminResponseCode.ORDER_REPLY_EXIST);
         }
         YoungComment youngComment = new YoungComment();

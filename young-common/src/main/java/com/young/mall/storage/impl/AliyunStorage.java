@@ -47,7 +47,7 @@ public class AliyunStorage implements Storage {
     @Override
     public void store(InputStream inputStream, long contentLength, String contentType, String keyName) {
 
-        logger.info("阿里云存储OSS对象 内容长度：{},文件类型：{},KeyName:{}", contentLength, contentType, keyName);
+        logger.error("阿里云存储OSS对象 内容长度：{},文件类型：{},KeyName:{}", contentLength, contentType, keyName);
         // 简单文件上传, 最大支持 5 GB, 适用于小文件上传, 建议 20M以下的文件使用该接口
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentLength(contentLength);
@@ -57,7 +57,7 @@ public class AliyunStorage implements Storage {
         PutObjectResult result = getOSSClient().putObject(putObjectRequest);
         ResponseMessage response = result.getResponse();
         if (!BeanUtil.isEmpty(result) && !BeanUtil.isEmpty(response)) {
-            logger.info("阿里云OSS存储成功，URI:{}", response.getUri());
+            logger.error("阿里云OSS存储成功，URI:{}", response.getUri());
         }
     }
 

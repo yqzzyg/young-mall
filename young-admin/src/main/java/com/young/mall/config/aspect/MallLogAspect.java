@@ -99,7 +99,7 @@ public class MallLogAspect {
         logMap.put("parameter", mallLog.getParameter());
         logMap.put("spendTime", mallLog.getSpendTime());
         logMap.put("description", mallLog.getDescription());
-        logger.info("后台系统接口切面日志：{}", JSONUtil.toJsonStr(mallLog));
+        logger.error("后台系统接口切面日志：{}", JSONUtil.toJsonStr(mallLog));
         return result;
     }
 

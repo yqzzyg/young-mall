@@ -45,7 +45,7 @@ public class ClientAddressController {
     public ResBean list() {
         ClientUserDetails userInfo = clientUserService.getUserInfo();
         if (BeanUtil.isEmpty(userInfo)) {
-            logger.info("获取用户收货地址列表失败，未登录。");
+            logger.error("获取用户收货地址列表失败，未登录。");
             return ResBean.unauthorized("请登录！");
         }
         return clientAddressService.list(userInfo.getYoungUser().getId());
@@ -56,7 +56,7 @@ public class ClientAddressController {
     public ResBean save(@RequestBody YoungAddress address) {
         ClientUserDetails userInfo = clientUserService.getUserInfo();
         if (BeanUtil.isEmpty(userInfo)) {
-            logger.info("添加或更新收货地址失败，未登录。");
+            logger.error("添加或更新收货地址失败，未登录。");
             return ResBean.unauthorized("请登录！");
         }
         Integer userId = userInfo.getYoungUser().getId();
@@ -96,7 +96,7 @@ public class ClientAddressController {
     public ResBean detail(@NotNull Integer id) {
         ClientUserDetails userInfo = clientUserService.getUserInfo();
         if (BeanUtil.isEmpty(userInfo)) {
-            logger.info("添加或更新收货地址失败，未登录。");
+            logger.error("添加或更新收货地址失败，未登录。");
             return ResBean.unauthorized("请登录！");
         }
 
@@ -130,7 +130,7 @@ public class ClientAddressController {
     public ResBean delete(@RequestBody YoungAddress address) {
         ClientUserDetails userInfo = clientUserService.getUserInfo();
         if (BeanUtil.isEmpty(userInfo)) {
-            logger.info("删除收货地址失败，未登录。");
+            logger.error("删除收货地址失败，未登录。");
             return ResBean.unauthorized("请登录！");
         }
 
@@ -139,7 +139,7 @@ public class ClientAddressController {
             return ResBean.validateFailed();
         }
         Integer count = clientAddressService.delete(id);
-        logger.info("收货地址删除个数：{}", count);
+        logger.error("收货地址删除个数：{}", count);
         return ResBean.success("删除成功");
     }
 

@@ -35,7 +35,7 @@ public class CategoryController extends BaseController {
                                      @RequestParam(defaultValue = "add_time") String sort,
                                      @RequestParam(defaultValue = "desc") String order) {
 
-        logger.info("id:{},name:{},page:{},size:{},sort:{},order:{}", id, name, page, size, sort, order);
+        logger.error("id:{},name:{},page:{},size:{},sort:{},order:{}", id, name, page, size, sort, order);
 
         Optional<List<YoungCategory>> listOptional = categoryService.queryCateGoryList(id, name, page, size, sort, order);
 
@@ -74,7 +74,7 @@ public class CategoryController extends BaseController {
     @DeleteMapping("/{infoIds}")
     public ResBean delete(@PathVariable("infoIds") Integer infoIds) {
 
-        logger.info("删除商品分类，入参：{}", JSONUtil.toJsonStr(infoIds));
+        logger.error("删除商品分类，入参：{}", JSONUtil.toJsonStr(infoIds));
         if (infoIds == null) {
             return ResBean.validateFailed();
         }
@@ -90,7 +90,7 @@ public class CategoryController extends BaseController {
     @PostMapping("/create")
     public ResBean creat(@RequestBody YoungCategory category) {
 
-        logger.info("创建商品分类,入参：{}", JSONUtil.toJsonStr(category));
+        logger.error("创建商品分类,入参：{}", JSONUtil.toJsonStr(category));
         Optional<Integer> integerOptional = categoryService.creat(category);
         if (!integerOptional.isPresent()) {
 

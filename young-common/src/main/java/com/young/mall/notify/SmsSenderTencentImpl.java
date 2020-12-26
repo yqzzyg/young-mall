@@ -34,7 +34,7 @@ public class SmsSenderTencentImpl implements SmsSender {
         SmsSingleSenderResult result = null;
         try {
             result = sender.send(0, "86", phone, content, "", "");
-            logger.info("发送短信成功：{}", JSONUtil.toJsonStr(result));
+            logger.error("发送短信成功：{}", JSONUtil.toJsonStr(result));
 
             SmsResult smsResult = new SmsResult();
             smsResult.setResult(result);
@@ -42,7 +42,7 @@ public class SmsSenderTencentImpl implements SmsSender {
             return smsResult;
 
         } catch (HTTPException | IOException e) {
-            logger.info("发送短信失败：{}", e.getMessage());
+            logger.error("发送短信失败：{}", e.getMessage());
             e.printStackTrace();
         }
         return null;
@@ -54,14 +54,14 @@ public class SmsSenderTencentImpl implements SmsSender {
             Object params = map.get("params");
             String[] arrayParam = (String[]) params;
             SmsSingleSenderResult result = sender.sendWithParam("86", phone, Integer.valueOf(templateId), arrayParam, "", "", "");
-            logger.info("短信模版消息通知 发送成功：{}", JSONUtil.toJsonStr(result));
+            logger.error("短信模版消息通知 发送成功：{}", JSONUtil.toJsonStr(result));
 
             SmsResult smsResult = new SmsResult();
             smsResult.setSuccessful(true);
             smsResult.setResult(result);
             return smsResult;
         } catch (HTTPException | IOException e) {
-            logger.info("短信模版消息通知 发送失败：{}", e.getMessage());
+            logger.error("短信模版消息通知 发送失败：{}", e.getMessage());
             e.printStackTrace();
         }
         return null;

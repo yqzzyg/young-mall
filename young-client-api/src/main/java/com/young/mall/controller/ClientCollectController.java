@@ -107,7 +107,7 @@ public class ClientCollectController {
         if (!BeanUtil.isEmpty(collect)) {
             handleType = "delete";
             Integer count = clientCollectService.deleteById(collect.getId());
-            logger.info("删除收藏结果(数量)：{}", count);
+            logger.error("删除收藏结果(数量)：{}", count);
         } else {
             handleType = "add";
             collect = new YoungCollect();
@@ -115,7 +115,7 @@ public class ClientCollectController {
             collect.setValueId(addOrDeleteVo.getValueId());
             collect.setType(addOrDeleteVo.getType());
             Integer count = clientCollectService.add(collect);
-            logger.info("添加收藏结果(数量)：{}", count);
+            logger.error("添加收藏结果(数量)：{}", count);
         }
 
         Map<String, Object> data = new HashMap<>(2);

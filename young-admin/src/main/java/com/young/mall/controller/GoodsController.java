@@ -40,7 +40,7 @@ public class GoodsController extends BaseController {
                         @RequestParam(defaultValue = "10") Integer size,
                         @RequestParam(defaultValue = "add_time") String sort,
                         @RequestParam(defaultValue = "desc") String order) {
-        logger.info("goodsSn:{},name:{},page:{},size:{},sort:{},order:{}", goodsSn, name, page, size, sort, order);
+        logger.error("goodsSn:{},name:{},page:{},size:{},sort:{},order:{}", goodsSn, name, page, size, sort, order);
 
         Optional<List<YoungGoods>> youngGoods = goodsService.querySelective(goodsSn, name, page, size, sort, order);
         if (!youngGoods.isPresent()) {
@@ -95,7 +95,7 @@ public class GoodsController extends BaseController {
     @PostMapping("/create")
     public ResBean create(@RequestBody GoodsArguments goodsArguments) {
         goodsService.create(goodsArguments);
-        logger.info("创建商品入参：{}", JSONUtil.toJsonStr(goodsArguments));
+        logger.error("创建商品入参：{}", JSONUtil.toJsonStr(goodsArguments));
         return ResBean.success("创建商品成功");
     }
 }

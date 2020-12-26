@@ -39,10 +39,10 @@ public class AdminAddressController extends BaseController {
                                 @RequestParam(defaultValue = "10") Integer size,
                                 @RequestParam(defaultValue = "add_time") String sort,
                                 @RequestParam(defaultValue = "desc") String order) {
-        logger.info("userId:{},name:{},page:{},size:{},sort:{},order:{}", userId, name, page, size, sort, order);
+        logger.error("userId:{},name:{},page:{},size:{},sort:{},order:{}", userId, name, page, size, sort, order);
         Optional<List<YoungAddress>> listOptional = addressService.queryAddressList(userId, name, page, size, sort, order);
 
-        logger.info("service查询数据库用户收获地址出参：{}", JSONUtil.toJsonStr(listOptional.get()));
+        logger.error("service查询数据库用户收获地址出参：{}", JSONUtil.toJsonStr(listOptional.get()));
         if (!listOptional.isPresent()) {
             return ResBean.failed("查询失败");
         }

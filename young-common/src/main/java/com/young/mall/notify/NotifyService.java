@@ -60,7 +60,7 @@ public class NotifyService {
             return;
         }
         SmsResult smsResult = smsSender.send(phoneNumber, message);
-        logger.info("异步短信消息通知 结果:{}", JSONUtil.toJsonStr(smsResult));
+        logger.error("异步短信消息通知 结果:{}", JSONUtil.toJsonStr(smsResult));
 
     }
 
@@ -85,7 +85,7 @@ public class NotifyService {
             return;
         }
         SmsResult smsResult = smsSender.sendWithTemplate(phoneNumber, templateId, map);
-        logger.info("短信模版消息通知结果:{}", JSONUtil.toJsonStr(smsResult));
+        logger.error("短信模版消息通知结果:{}", JSONUtil.toJsonStr(smsResult));
     }
 
     /**
@@ -101,7 +101,7 @@ public class NotifyService {
         }
         String templateId = getTemplateId(notifyType, smsTemplate);
         SmsResult smsResult = smsSender.sendWithTemplate(phoneNumber, templateId, map);
-        logger.info("以同步的方式发送短信模版消息通知 结果:{}", JSONUtil.toJsonStr(smsResult));
+        logger.error("以同步的方式发送短信模版消息通知 结果:{}", JSONUtil.toJsonStr(smsResult));
 
         return smsResult;
     }
@@ -187,7 +187,7 @@ public class NotifyService {
         }
         sslMailSender.setToAddress(mailDto.getTo());
         boolean status = sslMailSender.sendMails(mailDto.getTitle(), mailDto.getContent());
-        logger.info("根据收件人邮箱发送邮件，发送状态：{}", status);
+        logger.error("根据收件人邮箱发送邮件，发送状态：{}", status);
     }
 
     private String getTemplateId(NotifyType notifyType, List<Map<String, String>> values) {

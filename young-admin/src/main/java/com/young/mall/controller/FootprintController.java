@@ -42,7 +42,7 @@ public class FootprintController extends BaseController {
                         @RequestParam(defaultValue = "10") Integer size,
                         @RequestParam(defaultValue = "add_time") String sort,
                         @RequestParam(defaultValue = "desc") String order) {
-        logger.info("userId:{},goodsId:{},page:{},size:{},sort:{},order:{}", userId, goodsId, page, size, sort, order);
+        logger.error("userId:{},goodsId:{},page:{},size:{},sort:{},order:{}", userId, goodsId, page, size, sort, order);
 
         Optional<List<YoungFootprint>> optionalList = footprintService.queryFootPrint(userId, goodsId, page, size, sort, order);
         if (!optionalList.isPresent()) {

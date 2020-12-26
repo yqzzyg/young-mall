@@ -44,7 +44,7 @@
 
         YoungAdmin admin = adminCacheService.getAdmin(username);
         if (!BeanUtil.isEmpty(admin)) {
-            logger.info("缓存中获取用户信息：{}", JSONUtil.toJsonStr(admin));
+            logger.error("缓存中获取用户信息：{}", JSONUtil.toJsonStr(admin));
             return admin;
         }
         Optional<YoungAdmin> adminOptional = adminService.findAdminByName(username);
@@ -52,7 +52,7 @@
             Asserts.fail("无该用户");
         }
         youngAdmin = adminOptional.get();
-        logger.info("数据库中获取用户信息：{}", JSONUtil.toJsonStr(youngAdmin));
+        logger.error("数据库中获取用户信息：{}", JSONUtil.toJsonStr(youngAdmin));
 
         adminCacheService.setAdmin(admin);
         return youngAdmin;
@@ -250,7 +250,7 @@ import java.util.Optional;
 @Order(2)
 public class RedisCacheAspect {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(RedisCacheAspect.class);
+    private static Logger logger = LoggerFactory.getLogger(RedisCacheAspect.class);
 
     /**
      * 此处需要使用 *CacheService 匹配切点，不要使用具体类名，因为该Module为公共的，如果使用具体的类名匹配，有可能会导致单独启动一个Mudole会报
@@ -273,7 +273,7 @@ public class RedisCacheAspect {
             if (method.isAnnotationPresent(CacheException.class)) {
                 throw throwable;
             } else {
-                LOGGER.error(throwable.getMessage());
+                logger.error(throwable.getMessage());
             }
         }
         return result;

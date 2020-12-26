@@ -82,7 +82,7 @@ public class QiniuStorage implements Storage {
         try {
             String upToken = auth.uploadToken(bucketName);
             Response response = uploadManager.put(inputStream, keyName, upToken, null, contentType);
-            logger.info("七牛存储结果：" + response.statusCode);
+            logger.error("七牛存储结果：" + response.statusCode);
         } catch (QiniuException ex) {
             ex.printStackTrace();
         }

@@ -35,7 +35,7 @@ public class RegionController extends BaseController {
                                    @RequestParam(defaultValue = "id") String sort,
                                    @RequestParam(defaultValue = "desc") String order) {
 
-        logger.info("name:{},code:{},page:{},size:{},sort:{},order:{}", name, code, page, size, sort, order);
+        logger.error("name:{},code:{},page:{},size:{},sort:{},order:{}", name, code, page, size, sort, order);
 
         Optional<List<YoungRegion>> optionalList = regionService.queryRegionList(name, code, page, size, sort, order);
 

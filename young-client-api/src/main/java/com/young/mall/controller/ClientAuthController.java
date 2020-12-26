@@ -79,7 +79,7 @@ public class ClientAuthController {
     @ApiOperation("注册")
     @PostMapping("register")
     public ResBean<Map<String, Object>> register(@Valid @RequestBody ClientUserDto clientUserDto, HttpServletRequest request) {
-        logger.info("客户端注册入参：{}", clientUserDto);
+        logger.error("客户端注册入参：{}", clientUserDto);
 
         return clientAuthService.register(clientUserDto, request);
     }
@@ -97,7 +97,7 @@ public class ClientAuthController {
             return ResBean.validateFailed();
         }
         if (!notifyService.isSmsEnable()) {
-            logger.info("请求验证码出错:{}", ClientResponseCode.AUTH_CAPTCHA_UNSUPPORT.getMsg());
+            logger.error("请求验证码出错:{}", ClientResponseCode.AUTH_CAPTCHA_UNSUPPORT.getMsg());
         }
         String code = CharUtil.getRandomNum(6);
 
@@ -113,7 +113,7 @@ public class ClientAuthController {
 //            notifyService.notifySmsTemplate(mobile, NotifyType.CAPTCHA, map);
             clientCacheService.setVerificationCode(mobile, code, 60);
         } else {
-            logger.info("请求验证码出错:{}", ClientResponseCode.AUTH_CAPTCHA_FREQUENCY.getMsg());
+            logger.error("请求验证码出错:{}", ClientResponseCode.AUTH_CAPTCHA_FREQUENCY.getMsg());
             return ResBean.failed(ClientResponseCode.AUTH_CAPTCHA_FREQUENCY.getMsg());
         }
 
@@ -124,7 +124,7 @@ public class ClientAuthController {
     @ApiOperation("账户密码方式登录")
     @PostMapping("/login")
     public ResBean<Map<String, Object>> login(@Valid @RequestBody ClientLoginDto clientLoginDto, HttpServletRequest request) {
-        logger.info("客户端登录入参：{}", clientLoginDto);
+        logger.error("客户端登录入参：{}", clientLoginDto);
 
         return clientAuthService.login(clientLoginDto, request);
     }
@@ -136,7 +136,7 @@ public class ClientAuthController {
         try {
             resBean = clientAuthService.loginByWeixin(wxLoginInfo, request);
         } catch (WxErrorException e) {
-            logger.info("微信登录失败：{}", e.getError());
+            logger.error("微信登录失败：{}", e.getError());
             e.printStackTrace();
         }
         return resBean;
@@ -151,17 +151,17 @@ public class ClientAuthController {
         Object cacheCode = redisService.get(reset.getMobile());
 
         if (BeanUtil.isEmpty(cacheCode) || !reset.getCode().equals(cacheCode)) {
-            logger.info("账号密码重置出错:{}", ClientResponseCode.AUTH_CAPTCHA_UNMATCH.getMsg());
+            logger.error("账号密码重置出错:{}", ClientResponseCode.AUTH_CAPTCHA_UNMATCH.getMsg());
             return ResBean.failed(ClientResponseCode.AUTH_CAPTCHA_UNMATCH);
         }
 
         List<YoungUser> userList = clientUserService.getUserByMobile(reset.getMobile());
 
         if (userList.size() > 1) {
-            logger.info("账号密码重置出错,账户不唯一,查询手机号:{}", reset.getMobile());
+            logger.error("账号密码重置出错,账户不唯一,查询手机号:{}", reset.getMobile());
             return ResBean.failed("账号密码重置出错,账户不唯一");
         } else if (userList.size() == 0) {
-            logger.info("账号密码重置出错,账户不存在,查询手机号:{},{}", reset.getMobile(), ClientResponseCode.AUTH_MOBILE_UNREGISTERED.getMsg());
+            logger.error("账号密码重置出错,账户不存在,查询手机号:{},{}", reset.getMobile(), ClientResponseCode.AUTH_MOBILE_UNREGISTERED.getMsg());
             return ResBean.failed(ClientResponseCode.AUTH_MOBILE_UNREGISTERED);
         }
 
@@ -169,7 +169,7 @@ public class ClientAuthController {
         String encode = passwordEncoder.encode(reset.getPassword());
         user.setPassword(encode);
         if (clientUserService.updateById(user) == 0) {
-            logger.info("账号密码重置更新用户信息出错:{}", user);
+            logger.error("账号密码重置更新用户信息出错:{}", user);
             return ResBean.failed("更新数据失败");
         }
         return ResBean.success("更新成功");
@@ -181,7 +181,7 @@ public class ClientAuthController {
 
         ClientUserDetails userInfo = clientUserService.getUserInfo();
         if (BeanUtil.isEmpty(userInfo)) {
-            logger.info("绑定手机号码失败，未登录。");
+            logger.error("绑定手机号码失败，未登录。");
             return ResBean.unauthorized("请登录！");
         }
         String header = request.getHeader(this.tokenHeader);
@@ -198,7 +198,7 @@ public class ClientAuthController {
         YoungUser user = clientUserService.findById(userInfo.getYoungUser().getId());
         user.setMobile(phone);
         if (clientUserService.updateById(user) == 0) {
-            logger.info("绑定手机号码,更新用户信息出错,name：{}", userInfo.getUsername());
+            logger.error("绑定手机号码,更新用户信息出错,name：{}", userInfo.getUsername());
             return ResBean.failed("更新数据失败");
         }
         Map<Object, Object> data = new HashMap<>(4);

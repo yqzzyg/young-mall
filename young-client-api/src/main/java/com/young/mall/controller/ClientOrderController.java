@@ -45,7 +45,7 @@ public class ClientOrderController {
 
         ClientUserDetails userInfo = clientUserService.getUserInfo();
         if (BeanUtil.isEmpty(userInfo)) {
-            logger.info("用户个人页面数据查询失败，未登录。");
+            logger.error("用户个人页面数据查询失败，未登录。");
             return ResBean.unauthorized("请登录！");
         }
         Map<String, Object> result = clientOrderService.list(userInfo.getYoungUser().getId(), showType, page, size);
@@ -59,7 +59,7 @@ public class ClientOrderController {
     public ResBean detail(@NotNull(message = "订单id不能为空") @RequestParam("orderId") Integer orderId) {
         ClientUserDetails userInfo = clientUserService.getUserInfo();
         if (BeanUtil.isEmpty(userInfo)) {
-            logger.info("订单详情失败，未登录。");
+            logger.error("订单详情失败，未登录。");
             return ResBean.unauthorized("请登录！");
         }
         Map<String, Object> detail = clientOrderService.detail(userInfo.getYoungUser().getId(), orderId);
@@ -71,7 +71,7 @@ public class ClientOrderController {
     public ResBean expressTrace(@NotNull(message = "订单id不能为空") Integer orderId) {
         ClientUserDetails userInfo = clientUserService.getUserInfo();
         if (BeanUtil.isEmpty(userInfo)) {
-            logger.info("物流跟踪失败，未登录。");
+            logger.error("物流跟踪失败，未登录。");
             return ResBean.unauthorized("请登录！");
         }
 
@@ -86,7 +86,7 @@ public class ClientOrderController {
 
         ClientUserDetails userInfo = clientUserService.getUserInfo();
         if (BeanUtil.isEmpty(userInfo)) {
-            logger.info("查询待评价订单商品信息失败，未登录。");
+            logger.error("查询待评价订单商品信息失败，未登录。");
             return ResBean.unauthorized("请登录！");
         }
         Integer userId = userInfo.getYoungUser().getId();
@@ -101,7 +101,7 @@ public class ClientOrderController {
     @PostMapping("/submit")
     public ResBean submit(@RequestBody Map<String, Object> map) {
 
-        logger.info("submit:{}", JSON.toJSONString(map));
+        logger.error("submit:{}", JSON.toJSONString(map));
         return null;
     }
 

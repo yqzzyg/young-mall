@@ -69,7 +69,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         //强转类型之前做判断，避免redis出现异常，导致强转失败，影响程序正常运行
         if (admin instanceof YoungAdmin) {
             youngAdmin = ((YoungAdmin) admin);
-            logger.info("缓存中获取用户信息：{}", JSONUtil.toJsonStr(admin));
+            logger.error("缓存中获取用户信息：{}", JSONUtil.toJsonStr(admin));
             return youngAdmin;
         }
 
@@ -78,7 +78,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             Asserts.fail("无该用户");
         }
         youngAdmin = adminOptional.get();
-        logger.info("数据库中获取用户信息：{}", JSONUtil.toJsonStr(youngAdmin));
+        logger.error("数据库中获取用户信息：{}", JSONUtil.toJsonStr(youngAdmin));
 
         adminCacheService.setAdmin(youngAdmin);
         return youngAdmin;

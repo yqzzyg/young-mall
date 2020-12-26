@@ -31,7 +31,7 @@ public class SslMailSender {
 
         String messageId = EmailHelper.sendHtml(host, Integer.valueOf(port), userName, password,
                 "true".equals(sslEnabled), fromAddress, fromName, toAddressList, subject, content);
-        logger.info("邮件发送完成，messageId: {" + messageId + "}");
+        logger.error("邮件发送完成，messageId: {" + messageId + "}");
         if (StringUtils.isNotBlank(messageId)) {
             return true;
         } else {

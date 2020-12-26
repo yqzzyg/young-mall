@@ -143,17 +143,17 @@ public class OrderServiceImpl implements OrderService {
 
         YoungOrder youngOrder = youngOrderMapper.selectByPrimaryKey(refundVo.getOrderId());
         if (BeanUtil.isEmpty(youngOrder)) {
-            logger.info("退款查无此订单：{}", refundVo.getOrderId());
+            logger.error("退款查无此订单：{}", refundVo.getOrderId());
             return ResBean.validateFailed("查无此订单");
         }
 
         if (youngOrder.getActualPrice().compareTo(new BigDecimal(refundVo.getRefundMoney())) != 0) {
-            logger.info("退款金额与订单金额不一致：{}", youngOrder.getActualPrice());
+            logger.error("退款金额与订单金额不一致：{}", youngOrder.getActualPrice());
             return ResBean.validateFailed("退款金额与订单金额不一致");
         }
         //判断订单状态
         if (!youngOrder.getOrderStatus().equals(OrderUtil.STATUS_REFUND)) {
-            logger.info("商场管理->订单管理->订单退款失败:{}", AdminResponseCode.ORDER_REFUND_FAILED.desc());
+            logger.error("商场管理->订单管理->订单退款失败:{}", AdminResponseCode.ORDER_REFUND_FAILED.desc());
             return ResBean.failed(AdminResponseCode.ORDER_REFUND_FAILED.code(), AdminResponseCode.ORDER_REFUND_FAILED.desc());
         }
         //微信退款
@@ -185,7 +185,7 @@ public class OrderServiceImpl implements OrderService {
         //设置订单取消状态
         youngOrder.setOrderStatus(OrderUtil.STATUS_REFUND_CONFIRM);
         if (!commonOrderService.updateWithOptimisticLocker(youngOrder).isPresent()) {
-            logger.info("商场管理->订单管理->订单退款失败:{}", "更新数据已失效");
+            logger.error("商场管理->订单管理->订单退款失败:{}", "更新数据已失效");
             Asserts.fail("更新数据失败");
         }
         //商品货品数量增加
@@ -195,7 +195,7 @@ public class OrderServiceImpl implements OrderService {
             Short number = orderGoods.getNumber();
             Optional<Integer> optional = goodsProductService.addStock(productId, number);
             if (!optional.isPresent()) {
-                logger.info("商场管理->订单管理->订单退款失败:{}", "商品货品库存增加失败");
+                logger.error("商场管理->订单管理->订单退款失败:{}", "商品货品库存增加失败");
                 Asserts.fail("商品库存增加失败");
             }
         }
@@ -222,7 +222,7 @@ public class OrderServiceImpl implements OrderService {
                 .to(youngOrder.getMessage())
                 .build();
         notifyService.notifySslMailWithTo(mailDto);
-        logger.info("订单管理，订单退款成功：{}", JSONUtil.toJsonStr(youngOrder));
+        logger.error("订单管理，订单退款成功：{}", JSONUtil.toJsonStr(youngOrder));
 
         return ResBean.success(youngOrder);
     }

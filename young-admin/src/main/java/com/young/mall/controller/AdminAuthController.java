@@ -47,7 +47,7 @@ public class AdminAuthController {
     @ApiOperation("用户登录")
     @PostMapping("/login")
     public ResBean login(@Valid @RequestBody AdminLoginParam loginParam) {
-        logger.info("用户登录入参：{}", loginParam);
+        logger.error("用户登录入参：{}", loginParam);
         String token = authService.login(loginParam.getUsername(), loginParam.getPassword());
         Map<String, String> map = new HashMap<>();
 
@@ -87,7 +87,7 @@ public class AdminAuthController {
 
         data.put("roles", optionalSet.get());
         data.put("perms", list);
-        logger.info("【请求结束】系统管理->用户信息获取,响应结果:{}", JSONUtil.toJsonStr(data));
+        logger.error("【请求结束】系统管理->用户信息获取,响应结果:{}", JSONUtil.toJsonStr(data));
 
         return ResBean.success(data);
     }

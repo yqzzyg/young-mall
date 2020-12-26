@@ -36,7 +36,7 @@ public class IssueController extends BaseController {
                         @RequestParam(defaultValue = "10") Integer size,
                         @RequestParam(defaultValue = "add_time") String sort,
                         @RequestParam(defaultValue = "desc") String order) {
-        logger.info("question:{},page:{},size:{},sort:{},order:{}", question, page, size, sort, order);
+        logger.error("question:{},page:{},size:{},sort:{},order:{}", question, page, size, sort, order);
 
         Optional<List<YoungIssue>> youngIssues = issueService.querySelective(question, page, size, sort, order);
         if (!youngIssues.isPresent()) {
@@ -52,7 +52,7 @@ public class IssueController extends BaseController {
     @PreAuthorize("@pms.hasPermission('admin:issue:create')")
     @PostMapping("/create")
     public ResBean create(@Valid @RequestBody YoungIssue issue) {
-        logger.info("添加通用问题入参：{}", JSONUtil.toJsonStr(issue));
+        logger.error("添加通用问题入参：{}", JSONUtil.toJsonStr(issue));
 
         Optional<Integer> optional = issueService.add(issue);
         if (!optional.isPresent()) {
@@ -78,7 +78,7 @@ public class IssueController extends BaseController {
     @PreAuthorize("@pms.hasPermission('admin:issue:update')")
     @PostMapping("/update")
     public ResBean update(@Valid @RequestBody YoungIssue issue) {
-        logger.info("更新通用问题入参：{}", JSONUtil.toJsonStr(issue));
+        logger.error("更新通用问题入参：{}", JSONUtil.toJsonStr(issue));
 
         Optional<Integer> optional = issueService.update(issue);
         if (!optional.isPresent()) {
@@ -92,7 +92,7 @@ public class IssueController extends BaseController {
     @PostMapping("/delete")
     public ResBean delete(@RequestBody YoungIssue issue) {
 
-        logger.info("根据id删除问题入参：{}", JSONUtil.toJsonStr(issue));
+        logger.error("根据id删除问题入参：{}", JSONUtil.toJsonStr(issue));
         Integer id = issue.getId();
         if (id == null) {
             return ResBean.validateFailed("参数校验错误");

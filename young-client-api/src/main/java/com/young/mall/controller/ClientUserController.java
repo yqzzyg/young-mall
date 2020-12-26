@@ -54,7 +54,7 @@ public class ClientUserController {
     public ResBean index() {
         ClientUserDetails userInfo = clientUserService.getUserInfo();
         if (BeanUtil.isEmpty(userInfo)) {
-            logger.info("用户个人页面数据查询失败，未登录。");
+            logger.error("用户个人页面数据查询失败，未登录。");
             return ResBean.unauthorized("请登录！");
         }
         Map<String, Object> data = new HashMap<>(6);
@@ -84,7 +84,7 @@ public class ClientUserController {
 
         ClientUserDetails userInfo = clientUserService.getUserInfo();
         if (BeanUtil.isEmpty(userInfo)) {
-            logger.info("获取用户推广二维码图片URL失败，未登录。");
+            logger.error("获取用户推广二维码图片URL失败，未登录。");
             return ResBean.unauthorized("请登录！");
         }
         YoungUserAccount userAccount = clientAccountService.findShareUserAccountByUserId(userInfo.getYoungUser().getId());
@@ -105,7 +105,7 @@ public class ClientUserController {
     public ResBean applyAgency() {
         ClientUserDetails userInfo = clientUserService.getUserInfo();
         if (BeanUtil.isEmpty(userInfo)) {
-            logger.info("申请代理用户失败，未登录。");
+            logger.error("申请代理用户失败，未登录。");
             return ResBean.unauthorized("请登录！");
         }
 
@@ -133,7 +133,7 @@ public class ClientUserController {
             user.setStatus((byte) 3);
             clientUserService.updateById(user);
         } else {
-            logger.info("用户个人页面代理申请出错:{}", ClientResponseCode.INVALID_USER.getMsg());
+            logger.error("用户个人页面代理申请出错:{}", ClientResponseCode.INVALID_USER.getMsg());
             return ResBean.failed(ClientResponseCode.INVALID_USER);
         }
 

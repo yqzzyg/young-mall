@@ -39,7 +39,7 @@ public class HistoryController extends BaseController {
                                           @RequestParam(defaultValue = "add_time") String sort,
                                           @RequestParam(defaultValue = "desc") String order) {
 
-        logger.info("userId:{},keyword:{},page:{},size:{},sort:{},order:{}", userId, keyword, page, size, sort, order);
+        logger.error("userId:{},keyword:{},page:{},size:{},sort:{},order:{}", userId, keyword, page, size, sort, order);
 
         Optional<List<YoungSearchHistory>> optionalList = historyService.querySearchHistory(userId, keyword, page, size, sort, order);
 

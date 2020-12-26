@@ -40,7 +40,7 @@ public class RoleServiceImpl implements RoleService {
                 .andEnabledEqualTo(true);
 
         List<YoungRole> roleList = roleMapper.selectByExample(example);
-        logger.info("数据库中查询出roles:{}", JSONUtil.toJsonStr(roleList));
+        logger.error("数据库中查询出roles:{}", JSONUtil.toJsonStr(roleList));
         for (YoungRole youngRole : roleList) {
             roles.add(youngRole.getName());
         }

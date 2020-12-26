@@ -32,7 +32,7 @@ class YoungAdminServiceImpl implements AdminService {
         YoungAdminExample example = new YoungAdminExample();
         example.or().andUsernameEqualTo(username).andDeletedEqualTo(false);
         List<YoungAdmin> youngAdmins = adminMapper.selectByExample(example);
-        logger.info("根据用户名，从数据库中查出的用户：{}", JSONUtil.toJsonStr(youngAdmins));
+        logger.error("根据用户名，从数据库中查出的用户：{}", JSONUtil.toJsonStr(youngAdmins));
         if (CollectionUtil.isNotEmpty(youngAdmins)) {
             YoungAdmin admin = youngAdmins.get(0);
             return Optional.ofNullable(admin);

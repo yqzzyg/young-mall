@@ -116,7 +116,7 @@ public class ClientAuthServiceImpl implements ClientAuthService {
     @Override
     public ResBean<Map<String, Object>> login(ClientLoginDto clientLoginDto, HttpServletRequest request) {
 
-        logger.info("进入AuthServiceImpl login方法,入参：username：{}，password：{}", clientLoginDto.getUsername(), clientLoginDto.getPassword());
+        logger.error("进入AuthServiceImpl login方法,入参：username：{}，password：{}", clientLoginDto.getUsername(), clientLoginDto.getPassword());
         // 1 创建UsernamePasswordAuthenticationToken
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(clientLoginDto.getUsername(), clientLoginDto.getPassword());
         // 2 认证。调用UserDetailsServiceImpl.loadUserByUsername
@@ -229,17 +229,17 @@ public class ClientAuthServiceImpl implements ClientAuthService {
             Asserts.fail(ClientResponseCode.AUTH_CAPTCHA_UNMATCH);
         }
         if (!RegexUtil.isMobileExact(registerDto.getMobile())) {
-            logger.info("{}，注册失败：{}", registerDto, ClientResponseCode.AUTH_INVALID_MOBILE);
+            logger.error("{}，注册失败：{}", registerDto, ClientResponseCode.AUTH_INVALID_MOBILE);
             Asserts.fail(ClientResponseCode.AUTH_INVALID_MOBILE);
         }
         List<YoungUser> userList = clientUserService.getUserByName(registerDto.getUsername());
         if (userList.size() > 0) {
-            logger.info("{}，注册失败：{}", registerDto, ClientResponseCode.AUTH_NAME_REGISTERED);
+            logger.error("{}，注册失败：{}", registerDto, ClientResponseCode.AUTH_NAME_REGISTERED);
             Asserts.fail(ClientResponseCode.AUTH_NAME_REGISTERED);
         }
         userList = clientUserService.getUserByMobile(registerDto.getMobile());
         if (userList.size() > 0) {
-            logger.info("{}，注册失败：{}", registerDto, ClientResponseCode.AUTH_MOBILE_REGISTERED);
+            logger.error("{}，注册失败：{}", registerDto, ClientResponseCode.AUTH_MOBILE_REGISTERED);
             Asserts.fail(ClientResponseCode.AUTH_MOBILE_REGISTERED);
         }
         String openId = new String();
@@ -247,13 +247,13 @@ public class ClientAuthServiceImpl implements ClientAuthService {
             WxMaJscode2SessionResult wxUserInfo = wxService.getUserService().getSessionInfo(registerDto.getWxCode());
             openId = wxUserInfo.getOpenid();
         } catch (WxErrorException e) {
-            logger.info("请求微信平台报错：{}", e.getError());
+            logger.error("请求微信平台报错：{}", e.getError());
             e.printStackTrace();
             Asserts.fail(ClientResponseCode.AUTH_OPENID_UNACCESS);
         }
         userList = clientUserService.getUserByOpenId(openId);
         if (userList.size() > 0) {
-            logger.info("{}，注册失败：{}", registerDto, ClientResponseCode.AUTH_OPENID_BINDED);
+            logger.error("{}，注册失败：{}", registerDto, ClientResponseCode.AUTH_OPENID_BINDED);
             Asserts.fail(ClientResponseCode.AUTH_OPENID_BINDED);
         }
         return openId;

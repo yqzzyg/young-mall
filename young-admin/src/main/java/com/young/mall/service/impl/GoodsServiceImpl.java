@@ -208,7 +208,7 @@ public class GoodsServiceImpl implements GoodsService {
 
         String name = goods.getName();
         if (youngGoodsService.checkExistByName(name)) {
-            logger.info("商品名称重复：{}", AdminResponseCode.GOODS_NAME_EXIST.desc());
+            logger.error("商品名称重复：{}", AdminResponseCode.GOODS_NAME_EXIST.desc());
             Asserts.fail(AdminResponseCode.GOODS_NAME_EXIST);
         }
         //商品基本信息表young_goods
@@ -221,7 +221,7 @@ public class GoodsServiceImpl implements GoodsService {
         if (StrUtil.isNotEmpty(url)) {
             goods.setShareUrl(url);
             if (youngGoodsService.updateById(goods) == 0) {
-                logger.info("商品上架，更新数据失败");
+                logger.error("商品上架，更新数据失败");
                 Asserts.fail("商品上架，更新数据失败");
             }
         }

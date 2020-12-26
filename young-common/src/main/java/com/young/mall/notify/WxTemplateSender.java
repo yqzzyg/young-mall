@@ -83,7 +83,7 @@ public class WxTemplateSender {
                 logger.warn("更新数据已失效");
             }
         } catch (Exception e) {
-            logger.info("发送消息，更新数据失败:{}", e.getMessage());
+            logger.error("发送消息，更新数据失败:{}", e.getMessage());
         }
     }
 

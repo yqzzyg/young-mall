@@ -37,7 +37,7 @@ public class FeedBackController extends BaseController {
                                      @RequestParam(defaultValue = "10") Integer size,
                                      @RequestParam(defaultValue = "add_time") String sort,
                                      @RequestParam(defaultValue = "desc") String order) {
-        logger.info("userId:{},username:{},page:{},size:{},sort:{},order:{}", userId, username, page, size, sort, order);
+        logger.error("userId:{},username:{},page:{},size:{},sort:{},order:{}", userId, username, page, size, sort, order);
 
         Optional<List<YoungFeedback>> optionalList = feedBackService.queryFeedBackList(userId, username, page, size, sort, order);
 

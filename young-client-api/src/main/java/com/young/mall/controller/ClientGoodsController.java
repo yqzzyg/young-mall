@@ -87,7 +87,7 @@ public class ClientGoodsController {
             history.setUserId(userId);
             history.setFrom("wx");
             Integer count = clientSearchHistoryService.save(history);
-            logger.info("{}:新增搜索历史成功：{}", userInfo, count);
+            logger.error("{}:新增搜索历史成功：{}", userInfo, count);
         }
 
         // 查询列表数据
