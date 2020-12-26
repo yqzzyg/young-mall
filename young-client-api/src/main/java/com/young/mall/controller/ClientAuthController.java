@@ -110,7 +110,7 @@ public class ClientAuthController {
         Object captcha = clientCacheService.getVerificationCode(mobile);
         //如果缓存中没有验证码，则调用发送接口
         if (BeanUtil.isEmpty(captcha)) {
-            notifyService.notifySmsTemplate(mobile, NotifyType.CAPTCHA, map);
+//            notifyService.notifySmsTemplate(mobile, NotifyType.CAPTCHA, map);
             clientCacheService.setVerificationCode(mobile, code, 60);
         } else {
             logger.info("请求验证码出错:{}", ClientResponseCode.AUTH_CAPTCHA_FREQUENCY.getMsg());
