@@ -42,9 +42,11 @@ public class RedisCacheAspect {
         MethodSignature methodSignature = (MethodSignature) signature;
         Method method = methodSignature.getMethod();
         Object result = Optional.ofNullable(null);
+        long start = System.currentTimeMillis();
         try {
             result = joinPoint.proceed();
         } catch (Throwable e) {
+            logger.error("redis异常时间：{}", System.currentTimeMillis() - start);
             //有CacheException注解的方法需要抛出异常
             if (method.isAnnotationPresent(CacheException.class)) {
                 logger.error("redis异常信息：{}", e.getMessage());
