@@ -9,6 +9,7 @@ import com.young.mall.service.ClientGrouponRulesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -78,5 +79,10 @@ public class ClientGrouponRulesServiceImpl implements ClientGrouponRulesService 
         YoungGrouponRulesExample example = new YoungGrouponRulesExample();
         example.or().andIdEqualTo(id).andDeletedEqualTo(false);
         return grouponRulesMapper.selectOneByExample(example);
+    }
+
+    @Override
+    public boolean isExpired(YoungGrouponRules rules) {
+        return (rules == null || rules.getExpireTime().isBefore(LocalDateTime.now()));
     }
 }

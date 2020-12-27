@@ -13,6 +13,7 @@ import java.util.List;
 public interface GoodsProductMapper {
     /**
      * 更改数据库库存
+     *
      * @param id
      * @param num
      * @return
@@ -21,8 +22,19 @@ public interface GoodsProductMapper {
 
     /**
      * 批量插入商品价格、库存相关信息
+     *
      * @param list
      * @return
      */
-    Integer insertList(@Param("list")List<YoungGoodsProduct> list);
+    Integer insertList(@Param("list") List<YoungGoodsProduct> list);
+
+    /**
+     * 减库存
+     *
+     * @param id
+     * @param num
+     * @return
+     */
+    int reduceStock(@Param("id") Integer id, @Param("num") Short num);
+
 }

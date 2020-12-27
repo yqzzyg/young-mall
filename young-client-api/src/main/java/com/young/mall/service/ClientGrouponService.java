@@ -42,4 +42,18 @@ public interface ClientGrouponService {
      * @return
      */
     Integer countGroupon(Integer grouponId);
+
+    /**
+     * 根据ID查询记录
+     * @param id
+     * @return
+     */
+    YoungGroupon queryById(Integer id);
+
+    /**
+     * 创建或参与一个团购
+     * @param groupon
+     * @return
+     */
+    Integer createGroupon(YoungGroupon groupon);
 }

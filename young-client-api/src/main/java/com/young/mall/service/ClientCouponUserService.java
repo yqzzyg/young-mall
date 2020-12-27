@@ -53,4 +53,11 @@ public interface ClientCouponUserService {
      * @return
      */
     YoungCouponUser queryOne(Integer userId, Integer couponId);
+
+    /**
+     * 更新优惠券用户使用
+     * @param couponUser
+     * @return
+     */
+    Integer update(YoungCouponUser couponUser);
 }

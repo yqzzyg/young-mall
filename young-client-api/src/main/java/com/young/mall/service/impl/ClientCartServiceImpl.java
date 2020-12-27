@@ -429,7 +429,7 @@ public class ClientCartServiceImpl implements ClientCartService {
                 logger.error("立即购买失败:{}", ClientResponseCode.GOODS_NO_STOCK.getMsg());
                 return ResBean.failed(ClientResponseCode.GOODS_NO_STOCK);
             }
-            BeanUtil.copyProperties(fastAddVo,cart);
+            BeanUtil.copyProperties(fastAddVo, cart);
             cart.setGoodsSn(goods.getGoodsSn());
             // 新增入驻商户
             cart.setBrandId(goods.getBrandId());
@@ -455,5 +455,14 @@ public class ClientCartServiceImpl implements ClientCartService {
         }
 
         return ResBean.success(!BeanUtil.isEmpty(existCart) ? existCart.getId() : cart.getId());
+    }
+
+    @Override
+    public Integer clearGoods(Integer userId) {
+        YoungCartExample example = new YoungCartExample();
+        example.or().andUserIdEqualTo(userId).andCheckedEqualTo(true);
+        YoungCart cart = new YoungCart();
+        cart.setDeleted(true);
+        return youngCartMapper.updateByExampleSelective(cart, example);
     }
 }

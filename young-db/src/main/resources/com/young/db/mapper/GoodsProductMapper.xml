@@ -22,4 +22,10 @@
             #{item.updateTime,jdbcType=TIMESTAMP})
         </foreach>
     </insert>
+
+    <update id="reduceStock" parameterType="map">
+        update young_goods_product
+        set number = number - #{num,jdbcType=INTEGER}, update_time = now()
+        where id = #{id,jdbcType=INTEGER} and number >= #{num,jdbcType=INTEGER}
+    </update>
 </mapper>

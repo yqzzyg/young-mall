@@ -4,6 +4,7 @@ import com.young.db.entity.YoungOrder;
 import com.young.db.entity.YoungOrderGoods;
 import com.young.mall.common.ResBean;
 import com.young.mall.domain.vo.OrderCommentVo;
+import com.young.mall.domain.vo.SubmitOrderVo;
 
 import java.util.List;
 import java.util.Map;
@@ -93,8 +94,31 @@ public interface ClientOrderService {
 
     /**
      * 更新订单中未评价的订单商品可评价数量
+     *
      * @param order
      * @return
      */
     Integer updateWithOptimisticLocker(YoungOrder order);
+
+    /**
+     * 提交订单
+     * 1. 创建订单表项和订单商品表项;
+     * 2. 购物车清空;
+     * 3. 优惠券设置已用;
+     * 4. 商品货品库存减少;
+     * 5. 如果是团购商品，则创建团购活动表项。
+     *
+     * @param userId      用户id
+     * @param submitOrder 提交订单的数据
+     * @return
+     */
+    ResBean submit(Integer userId, SubmitOrderVo submitOrder);
+
+    /**
+     * 添加订单
+     *
+     * @param order
+     * @return
+     */
+    Integer add(YoungOrder order);
 }

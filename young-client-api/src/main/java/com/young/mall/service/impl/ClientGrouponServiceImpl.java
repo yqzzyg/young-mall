@@ -7,6 +7,7 @@ import com.young.mall.service.ClientGrouponService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -56,5 +57,19 @@ public class ClientGrouponServiceImpl implements ClientGrouponService {
                 .andPayedEqualTo(true);
         long count = youngGrouponMapper.countByExample(example);
         return (int) count;
+    }
+
+    @Override
+    public YoungGroupon queryById(Integer id) {
+        YoungGrouponExample example = new YoungGrouponExample();
+        example.or().andIdEqualTo(id).andDeletedEqualTo(false).andPayedEqualTo(true);
+        return youngGrouponMapper.selectOneByExample(example);
+    }
+
+    @Override
+    public Integer createGroupon(YoungGroupon groupon) {
+        groupon.setAddTime(LocalDateTime.now());
+        groupon.setUpdateTime(LocalDateTime.now());
+        return youngGrouponMapper.insertSelective(groupon);
     }
 }

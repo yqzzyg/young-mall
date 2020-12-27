@@ -113,4 +113,12 @@ public interface ClientCartService {
      * @return
      */
     ResBean fastAdd(Integer userId, FastAddVo fastAddVo);
+
+    /**
+     * 删除购物车里面的商品信息
+     *
+     * @param userId 用户id
+     * @return
+     */
+    Integer clearGoods(Integer userId);
 }

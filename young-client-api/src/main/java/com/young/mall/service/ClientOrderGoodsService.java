@@ -44,4 +44,11 @@ public interface ClientOrderGoodsService {
      * @return
      */
     Integer updateById(YoungOrderGoods orderGoods);
+
+    /**
+     * 添加订单商品
+     * @param orderGoods
+     * @return
+     */
+    Integer add(YoungOrderGoods orderGoods);
 }

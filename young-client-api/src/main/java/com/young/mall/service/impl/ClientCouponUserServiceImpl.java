@@ -76,4 +76,10 @@ public class ClientCouponUserServiceImpl implements ClientCouponUserService {
         }
         return couponUserList.get(0);
     }
+
+    @Override
+    public Integer update(YoungCouponUser couponUser) {
+        couponUser.setUpdateTime(LocalDateTime.now());
+        return couponUserMapper.updateByPrimaryKeySelective(couponUser);
+    }
 }

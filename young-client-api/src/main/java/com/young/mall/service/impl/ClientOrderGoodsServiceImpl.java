@@ -47,4 +47,11 @@ public class ClientOrderGoodsServiceImpl implements ClientOrderGoodsService {
         orderGoods.setUpdateTime(LocalDateTime.now());
         return youngOrderGoodsMapper.updateByPrimaryKeySelective(orderGoods);
     }
+
+    @Override
+    public Integer add(YoungOrderGoods orderGoods) {
+        orderGoods.setAddTime(LocalDateTime.now());
+        orderGoods.setUpdateTime(LocalDateTime.now());
+        return youngOrderGoodsMapper.insertSelective(orderGoods);
+    }
 }

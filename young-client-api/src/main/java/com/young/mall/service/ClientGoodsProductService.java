@@ -16,4 +16,14 @@ public interface ClientGoodsProductService {
      * @return
      */
     YoungGoodsProduct findById(Integer productId);
+
+    /**
+     * 减库存
+     *
+     * @param id
+     * @param goodsId
+     * @param num
+     * @return
+     */
+    Integer reduceStock(Integer id, Integer goodsId, Short num);
 }

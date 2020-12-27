@@ -6,6 +6,7 @@ import com.young.db.entity.YoungOrderGoods;
 import com.young.mall.common.ResBean;
 import com.young.mall.domain.ClientUserDetails;
 import com.young.mall.domain.vo.OrderCommentVo;
+import com.young.mall.domain.vo.SubmitOrderVo;
 import com.young.mall.service.ClientOrderService;
 import com.young.mall.service.ClientUserService;
 import io.swagger.annotations.Api;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Map;
 
@@ -97,18 +99,26 @@ public class ClientOrderController {
     }
 
 
-    @ApiOperation("提交订单")
-    @PostMapping("/submit")
-    public ResBean submit(@RequestBody Map<String, Object> map) {
-
-        logger.error("submit:{}", JSON.toJSONString(map));
-        return null;
-    }
-
     @ApiOperation("评价订单商品，在我的-待评价入口")
     @PostMapping("/comment")
     public ResBean comment(@RequestBody OrderCommentVo commentVo) {
 
         return clientOrderService.comment(commentVo);
+    }
+
+    @ApiOperation("提交订单")
+    @PostMapping("/submit")
+    public ResBean submit(@Valid @RequestBody SubmitOrderVo submitOrder) {
+
+        logger.info("提交订单入参submit:{}", JSON.toJSONString(submitOrder));
+
+        ClientUserDetails userInfo = clientUserService.getUserInfo();
+        if (BeanUtil.isEmpty(userInfo)) {
+            logger.error("提交订单失败，未登录。");
+            return ResBean.unauthorized("请登录！");
+        }
+
+        ResBean submit = clientOrderService.submit(userInfo.getYoungUser().getId(), submitOrder);
+        return submit;
     }
 }

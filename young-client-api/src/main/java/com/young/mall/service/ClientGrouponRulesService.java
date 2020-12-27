@@ -32,8 +32,17 @@ public interface ClientGrouponRulesService {
 
     /**
      * 根据ID查找对应团购项
+     *
      * @param id
      * @return
      */
     YoungGrouponRules queryById(Integer id);
+
+    /**
+     * 判断某个团购活动是否已经过期
+     *
+     * @param rules
+     * @return
+     */
+    boolean isExpired(YoungGrouponRules rules);
 }
