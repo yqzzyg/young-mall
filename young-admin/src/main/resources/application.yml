@@ -5,7 +5,7 @@ server:
 
 spring:
   application:
-    name: young-mall
+    name: young-mall-admin
   profiles:
     active: dev,common #默认为开发环境
   servlet:
