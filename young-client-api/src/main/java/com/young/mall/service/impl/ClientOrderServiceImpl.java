@@ -1,7 +1,6 @@
 package com.young.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.json.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.young.db.dao.YoungOrderMapper;
@@ -23,7 +22,6 @@ import com.young.mall.system.SystemConfig;
 import com.young.mall.utils.OrderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -132,7 +130,7 @@ public class ClientOrderServiceImpl implements ClientOrderService {
         List<Map<String, Object>> orderVoList = new ArrayList<>(orderList.size());
 
         for (YoungOrder order : orderList) {
-            Map<String, Object> orderVo = new HashMap<>();
+            Map<String, Object> orderVo = new HashMap<>(20);
             orderVo.put("id", order.getId());
             orderVo.put("orderSn", order.getOrderSn());
             orderVo.put("addTime", order.getAddTime());
@@ -386,11 +384,19 @@ public class ClientOrderServiceImpl implements ClientOrderService {
     @Override
     public ResBean submit(Integer userId, SubmitOrderVo submitOrder) {
 
-        YoungGrouponRules rules = clientGrouponRulesService.queryById(submitOrder.getGrouponRulesId());
+        Integer cartId = submitOrder.getCartId();
+        Integer grouponLinkId = submitOrder.getGrouponLinkId();
+        Integer grouponRulesId = submitOrder.getGrouponRulesId();
+        Integer couponId = submitOrder.getCouponId();
+        Integer addressId = submitOrder.getAddressId();
+        String message = submitOrder.getMessage();
+
+        //查询团购规则
+        YoungGrouponRules rules = clientGrouponRulesService.queryById(grouponRulesId);
 
         //如果是团购项目，验证码活动是否有效
         //grouponRulesId  为整型，默认为0
-        if (submitOrder.getGrouponRulesId() > 0) {
+        if (grouponRulesId > 0) {
 
             //找不到记录
             if (BeanUtil.isEmpty(rules)) {
@@ -405,7 +411,7 @@ public class ClientOrderServiceImpl implements ClientOrderService {
             }
         }
         // 收货地址
-        YoungAddress checkedAddress = clientAddressService.findById(submitOrder.getAddressId());
+        YoungAddress checkedAddress = clientAddressService.findById(addressId);
         if (BeanUtil.isEmpty(checkedAddress)) {
             return ResBean.failed("目前无收货地址");
         }
@@ -417,10 +423,10 @@ public class ClientOrderServiceImpl implements ClientOrderService {
         }
         // 货品价格
         List<YoungCart> checkedGoodsList = null;
-        if (submitOrder.getCartId().equals(0)) {
+        if (cartId.equals(0)) {
             checkedGoodsList = clientCartService.queryByUidAndChecked(userId);
         } else {
-            YoungCart cart = clientCartService.findById(submitOrder.getCartId());
+            YoungCart cart = clientCartService.findById(cartId);
             checkedGoodsList = new ArrayList<>(2);
             checkedGoodsList.add(cart);
         }
@@ -506,8 +512,8 @@ public class ClientOrderServiceImpl implements ClientOrderService {
         // 获取可用的优惠券信息 使用优惠券减免的金额
         BigDecimal couponPrice = new BigDecimal("0.00");
         // 如果couponId=0则没有优惠券，couponId=-1则不使用优惠券
-        if (submitOrder.getCouponId() != 0 && submitOrder.getCouponId() != -1) {
-            YoungCoupon coupon = couponVerifyService.checkCoupon(userId, submitOrder.getCouponId(), goodsTotalPrice);
+        if (couponId != 0 && couponId != -1) {
+            YoungCoupon coupon = couponVerifyService.checkCoupon(userId, couponId, goodsTotalPrice);
             if (BeanUtil.isEmpty(coupon)) {
                 logger.error("用户id：{}，无该用户券：{}", userId, submitOrder);
                 return ResBean.failed("无该优惠券");
@@ -530,7 +536,7 @@ public class ClientOrderServiceImpl implements ClientOrderService {
         order.setOrderStatus(OrderUtil.STATUS_CREATE);
         order.setConsignee(checkedAddress.getName());
         order.setMobile(checkedAddress.getMobile());
-        order.setMessage(submitOrder.getMessage());
+        order.setMessage(message);
         String detailedAddress = detailedAddress(checkedAddress);
         order.setAddress(detailedAddress);
         order.setGoodsPrice(goodsTotalPrice);
@@ -610,8 +616,8 @@ public class ClientOrderServiceImpl implements ClientOrderService {
             }
         }
         // 如果使用了优惠券，设置优惠券使用状态
-        if (submitOrder.getCouponId() != 0 && submitOrder.getCouponId() != -1) {
-            YoungCouponUser couponUser = clientCouponUserService.queryOne(userId, submitOrder.getCouponId());
+        if (couponId != 0 && couponId != -1) {
+            YoungCouponUser couponUser = clientCouponUserService.queryOne(userId, couponId);
             couponUser.setStatus(CouponUserConstant.STATUS_USED);
             couponUser.setUsedTime(LocalDateTime.now());
             couponUser.setOrderSn(order.getOrderSn());
@@ -619,19 +625,19 @@ public class ClientOrderServiceImpl implements ClientOrderService {
         }
 
         // 如果是团购项目，添加团购信息
-        if (submitOrder.getGrouponRulesId() != null && submitOrder.getGrouponRulesId() > 0) {
+        if (grouponRulesId != null && grouponRulesId > 0) {
             YoungGroupon groupon = new YoungGroupon();
             groupon.setOrderId(orderId);
             groupon.setPayed(false);
             groupon.setUserId(userId);
-            groupon.setRulesId(submitOrder.getGrouponRulesId());
+            groupon.setRulesId(grouponRulesId);
 
             // 参与者
-            if (submitOrder.getGrouponLinkId() != null && submitOrder.getGrouponLinkId() > 0) {
+            if (grouponLinkId != null && grouponLinkId > 0) {
                 // 参与的团购记录
-                YoungGroupon baseGroupon = clientGrouponService.queryById(submitOrder.getGrouponLinkId());
+                YoungGroupon baseGroupon = clientGrouponService.queryById(grouponLinkId);
                 groupon.setCreatorUserId(baseGroupon.getCreatorUserId());
-                groupon.setGrouponId(submitOrder.getGrouponLinkId());
+                groupon.setGrouponId(grouponLinkId);
                 groupon.setShareUrl(baseGroupon.getShareUrl());
             } else {
                 groupon.setCreatorUserId(userId);
