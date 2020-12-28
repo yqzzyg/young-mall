@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -722,5 +723,19 @@ public class ClientOrderServiceImpl implements ClientOrderService {
             clientOrderGoodsService.add(orderGoods);
         }
 
+    }
+
+    @Transactional
+    @Override
+    public ResBean prepay(Integer userId, Integer orderId, HttpServletRequest request) {
+
+        YoungOrder order = this.findById(orderId);
+        if (BeanUtil.isEmpty(order) || !userId.equals(order.getUserId())) {
+            logger.error("用户：{}，无此订单:{}", userId, orderId);
+            return ResBean.failed("无此订单");
+        }
+
+
+        return null;
     }
 }

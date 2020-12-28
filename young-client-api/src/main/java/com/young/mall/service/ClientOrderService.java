@@ -6,6 +6,7 @@ import com.young.mall.common.ResBean;
 import com.young.mall.domain.vo.OrderCommentVo;
 import com.young.mall.domain.vo.SubmitOrderVo;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -121,4 +122,18 @@ public interface ClientOrderService {
      * @return
      */
     Integer add(YoungOrder order);
+
+    /**
+     * 付款订单的预支付会话标识
+     * <p>
+     * 1. 检测当前订单是否能够付款
+     * 2. 微信商户平台返回支付订单ID
+     * 3. 设置订单付款状态
+     *
+     * @param userId  用户ID
+     * @param orderId
+     * @param request
+     * @return
+     */
+    ResBean prepay(Integer userId, Integer orderId, HttpServletRequest request);
 }

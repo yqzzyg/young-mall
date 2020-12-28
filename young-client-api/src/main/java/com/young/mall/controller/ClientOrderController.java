@@ -1,6 +1,7 @@
 package com.young.mall.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSON;
 import com.young.db.entity.YoungOrderGoods;
 import com.young.mall.common.ResBean;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Map;
@@ -120,5 +122,30 @@ public class ClientOrderController {
 
         ResBean submit = clientOrderService.submit(userInfo.getYoungUser().getId(), submitOrder);
         return submit;
+    }
+
+    /**
+     * 付款订单的预支付会话标识
+     *
+     * @param map
+     * @return
+     */
+    @PostMapping("/prepay")
+    public ResBean prepay(@RequestBody Map<String, Integer> map, HttpServletRequest request) {
+        logger.info("prepay入参：{}", JSONUtil.toJsonStr(map));
+        ClientUserDetails userInfo = clientUserService.getUserInfo();
+        if (BeanUtil.isEmpty(userInfo)) {
+            logger.error("付款订单的预支付失败，未登录。");
+            return ResBean.unauthorized("请登录！");
+        }
+        Integer userId = userInfo.getYoungUser().getId();
+
+        Integer orderId = map.get("orderId");
+        //整型默认为 0
+        if (orderId == null || orderId == 0) {
+            logger.error("用户：{},订单id不能为空", userId);
+            return ResBean.failed("订单id不能为空");
+        }
+        return clientOrderService.prepay(userId, orderId, request);
     }
 }
