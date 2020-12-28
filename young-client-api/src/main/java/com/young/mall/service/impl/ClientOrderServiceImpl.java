@@ -258,9 +258,9 @@ public class ClientOrderServiceImpl implements ClientOrderService {
                 result.put("state", ei.getState());
                 result.put("shipperName", ei.getShipperName());
                 List<Traces> eiTrace = ei.getTraces();
-                List<Map<String, Object>> traces = new ArrayList<Map<String, Object>>();
+                List<Map<String, Object>> traces = new ArrayList<>();
                 for (Traces trace : eiTrace) {
-                    Map<String, Object> traceMap = new HashMap<String, Object>();
+                    Map<String, Object> traceMap = new HashMap<>();
                     traceMap.put("date", trace.getAcceptTime().substring(0, 10));
                     traceMap.put("time", trace.getAcceptTime().substring(11, 16));
                     traceMap.put("acceptTime", trace.getAcceptTime());
@@ -341,7 +341,7 @@ public class ClientOrderServiceImpl implements ClientOrderService {
         //判断是否存在图片，不存在的话new一个空集合
         Boolean hasPicture = commentVo.getHasPicture();
         List<String> picUrls = commentVo.getPicUrls();
-        if (!hasPicture || hasPicture == null) {
+        if (!hasPicture) {
             picUrls = new ArrayList<>(0);
         }
 
@@ -389,11 +389,8 @@ public class ClientOrderServiceImpl implements ClientOrderService {
         Integer grouponRulesId = submitOrder.getGrouponRulesId();
         Integer couponId = submitOrder.getCouponId();
         Integer addressId = submitOrder.getAddressId();
-        String message = submitOrder.getMessage();
-
         //查询团购规则
         YoungGrouponRules rules = clientGrouponRulesService.queryById(grouponRulesId);
-
         //如果是团购项目，验证码活动是否有效
         //grouponRulesId  为整型，默认为0
         if (grouponRulesId > 0) {
@@ -405,7 +402,6 @@ public class ClientOrderServiceImpl implements ClientOrderService {
             }
             //如果团购活动已经过期
             if (clientGrouponRulesService.isExpired(rules)) {
-
                 logger.error("提交订单详情失败:{}", ClientResponseCode.GROUPON_EXPIRED.getMsg());
                 return ResBean.failed(ClientResponseCode.GROUPON_EXPIRED);
             }
@@ -416,191 +412,27 @@ public class ClientOrderServiceImpl implements ClientOrderService {
             return ResBean.failed("目前无收货地址");
         }
 
-        // 团购优惠
+        // 团购优惠,如果是团购下单，只能单次购买一个商品
         BigDecimal grouponPrice = new BigDecimal("0.00");
         if (!BeanUtil.isEmpty(rules)) {
             grouponPrice = rules.getDiscount();
         }
-        // 货品价格
-        List<YoungCart> checkedGoodsList = null;
-        if (cartId.equals(0)) {
-            checkedGoodsList = clientCartService.queryByUidAndChecked(userId);
-        } else {
-            YoungCart cart = clientCartService.findById(cartId);
-            checkedGoodsList = new ArrayList<>(2);
-            checkedGoodsList.add(cart);
-        }
-        //判断购物车中是否有该订单
-        if (checkedGoodsList.size() == 0) {
-            logger.error("无该订单:userId:{},submitOrder:{}", userId, submitOrder);
-            return ResBean.failed("无该订单");
-        }
 
+        //计算运费和商品总价
+        Map<String, Object> goodsPrice = this.getAllGoodsPrice(userId, cartId, rules, grouponPrice);
+        List<YoungCart> checkedGoodsList = (List<YoungCart>) goodsPrice.get("checkedGoodsList");
 
-        // 商品总价 （包含团购减免，即减免团购后的商品总价，多店铺需将所有商品相加）
-        BigDecimal goodsTotalPrice = new BigDecimal("0.00");
-        // 总配送费 （单店铺模式一个，多店铺模式多个配送费的总和）
-        BigDecimal totalFreightPrice = new BigDecimal("0.00");
+        //把订单信息落库  young_order表
+        YoungOrder order = this.addOrderData(userId, submitOrder, checkedAddress, goodsPrice, grouponPrice, rules);
+        Integer orderId = order.getId();
 
-        // 如果需要拆订单，则按店铺进行归类，再计算邮费
-        if (SystemConfig.isMultiOrderModel()) {
-            // a.按入驻店铺归类checkout商品
-            List<BrandCartGoods> brandCartGoodsList = new ArrayList<>();
+        //添加订单商品表项
+        this.addOrderGoods(order, checkedGoodsList);
 
-            //遍历购物商品
-            for (YoungCart cart : checkedGoodsList) {
-                Integer brandId = cart.getBrandId();
-                boolean hasExist = false;
-                for (int i = 0; i < brandCartGoodsList.size(); i++) {
-                    //判断结账的商品是否属于同一个店铺
-                    if (brandCartGoodsList.get(i).getBrandId().intValue() == brandId.intValue()) {
-                        brandCartGoodsList.get(i).getCartList().add(cart);
-                        hasExist = true;
-                        break;
-                    }
-                }
-                // 还尚未加入，则新增一类
-                if (!hasExist) {
-                    BrandCartGoods bandCartGoods = new BrandCartGoods();
-                    bandCartGoods.setBrandId(brandId);
-                    List<YoungCart> cartList = new ArrayList<>();
-                    cartList.add(cart);
-                    bandCartGoods.setCartList(cartList);
-                    brandCartGoodsList.add(bandCartGoods);
-                }
-            }
-            // b.核算每个店铺的商品总价，用于计算邮费
-            for (BrandCartGoods brandCartGoods : brandCartGoodsList) {
-                List<YoungCart> brandCart = brandCartGoods.getCartList();
-                BigDecimal bandGoodsTotalPrice = new BigDecimal("0.00");
-                BigDecimal bandFreightPrice = new BigDecimal("0.00");
-                // 循环店铺各自的购物商品
-                for (YoungCart cart : brandCart) {
-                    // 只有当团购规格商品ID符合才进行团购优惠
-                    if (rules != null && rules.getGoodsSn().equals(cart.getGoodsSn())) {
-                        bandGoodsTotalPrice = bandGoodsTotalPrice
-                                .add(cart.getPrice().subtract(grouponPrice).multiply(new BigDecimal(cart.getNumber())));
-                    } else {
-                        bandGoodsTotalPrice = bandGoodsTotalPrice
-                                .add(cart.getPrice().multiply(new BigDecimal(cart.getNumber())));
-                    }
-                }
-                // 每个店铺都单独计算运费，满66则免运费，否则6元；
-                if (bandGoodsTotalPrice.compareTo(SystemConfig.getFreightLimit()) < 0) {
-                    bandFreightPrice = SystemConfig.getFreight();
-                }
-                goodsTotalPrice = goodsTotalPrice.add(bandGoodsTotalPrice);
-                totalFreightPrice = totalFreightPrice.add(bandFreightPrice);
-            }
-            // 单个店铺模式
-        } else {
-            for (YoungCart checkGoods : checkedGoodsList) {
-                // 只有当团购规格商品ID符合才进行团购优惠
-                if (rules != null && rules.getGoodsSn().equals(checkGoods.getGoodsSn())) {
-                    goodsTotalPrice = goodsTotalPrice.add(checkGoods.getPrice().subtract(grouponPrice)
-                            .multiply(new BigDecimal(checkGoods.getNumber())));
-                } else {
-                    goodsTotalPrice = goodsTotalPrice
-                            .add(checkGoods.getPrice().multiply(new BigDecimal(checkGoods.getNumber())));
-                }
-            }
-            // 根据订单商品总价计算运费，满足条件（例如66元）则免运费，否则需要支付运费（例如6元）；
-            if (goodsTotalPrice.compareTo(SystemConfig.getFreightLimit()) < 0) {
-                totalFreightPrice = SystemConfig.getFreight();
-            }
-        }
-        // 获取可用的优惠券信息 使用优惠券减免的金额
-        BigDecimal couponPrice = new BigDecimal("0.00");
-        // 如果couponId=0则没有优惠券，couponId=-1则不使用优惠券
-        if (couponId != 0 && couponId != -1) {
-            YoungCoupon coupon = couponVerifyService.checkCoupon(userId, couponId, goodsTotalPrice);
-            if (BeanUtil.isEmpty(coupon)) {
-                logger.error("用户id：{}，无该用户券：{}", userId, submitOrder);
-                return ResBean.failed("无该优惠券");
-            }
-            couponPrice = coupon.getDiscount();
-        }
-        // 可以使用的其他钱，例如用户积分
-        BigDecimal integralPrice = new BigDecimal("0.00");
-        // 订单费用
-        BigDecimal orderTotalPrice = goodsTotalPrice.add(totalFreightPrice).subtract(couponPrice);
-        // 最终支付费用
-        BigDecimal actualPrice = orderTotalPrice.subtract(integralPrice);
-
-        Integer orderId = null;
-        YoungOrder order = null;
-        // 订单
-        order = new YoungOrder();
-        order.setUserId(userId);
-        order.setOrderSn(generateOrderSn(userId));
-        order.setOrderStatus(OrderUtil.STATUS_CREATE);
-        order.setConsignee(checkedAddress.getName());
-        order.setMobile(checkedAddress.getMobile());
-        order.setMessage(message);
-        String detailedAddress = detailedAddress(checkedAddress);
-        order.setAddress(detailedAddress);
-        order.setGoodsPrice(goodsTotalPrice);
-        order.setFreightPrice(totalFreightPrice);
-        order.setCouponPrice(couponPrice);
-        order.setIntegralPrice(integralPrice);
-        order.setOrderPrice(orderTotalPrice);
-        order.setActualPrice(actualPrice);
-
-        // 有团购活动
-        if (!BeanUtil.isEmpty(rules)) {
-            // 团购价格
-            order.setGrouponPrice(grouponPrice);
-        } else {
-            // 团购价格
-            order.setGrouponPrice(new BigDecimal("0.00"));
-        }
-
-        // 新增代理的结算金额计算
-        YoungUser user = clientUserService.findById(userId);
-
-        Integer shareUserId = 1;
-        if (!BeanUtil.isEmpty(user) && user.getShareUserId() != null) {
-            shareUserId = user.getShareUserId();
-        }
-        // 默认百分之3
-        Integer settlementRate = 3;
-
-        YoungUserAccount userAccount = clientAccountService.findShareUserAccountByUserId(shareUserId);
-
-        if (userAccount != null && userAccount.getSettlementRate() > 0 && userAccount.getSettlementRate() < 15) {
-            settlementRate = userAccount.getSettlementRate();
-        }
-        BigDecimal rate = new BigDecimal(settlementRate * 0.01);
-        BigDecimal settlementMoney = (actualPrice.subtract(totalFreightPrice)).multiply(rate);
-        order.setSettlementMoney(settlementMoney.setScale(2, BigDecimal.ROUND_DOWN));
-
-        // 添加订单表项
-        this.add(order);
-        orderId = order.getId();
-
-        // 添加订单商品表项
-        for (YoungCart cartGoods : checkedGoodsList) {
-            // 订单商品
-            YoungOrderGoods orderGoods = new YoungOrderGoods();
-            orderGoods.setOrderId(order.getId());
-            orderGoods.setGoodsId(cartGoods.getGoodsId());
-            orderGoods.setGoodsSn(cartGoods.getGoodsSn());
-            orderGoods.setProductId(cartGoods.getProductId());
-            orderGoods.setGoodsName(cartGoods.getGoodsName());
-            orderGoods.setPicUrl(cartGoods.getPicUrl());
-            orderGoods.setPrice(cartGoods.getPrice());
-            orderGoods.setNumber(cartGoods.getNumber());
-            orderGoods.setSpecifications(cartGoods.getSpecifications());
-            orderGoods.setAddTime(LocalDateTime.now());
-            // 订单商品需加上入驻店铺标志
-            orderGoods.setBrandId(cartGoods.getBrandId());
-
-            clientOrderGoodsService.add(orderGoods);
-        }
+        // 删除购物车里面的商品信息
         Integer count = clientCartService.clearGoods(userId);
 
         // 商品货品数量减少
-
         for (YoungCart checkGoods : checkedGoodsList) {
 
             Integer productId = checkGoods.getProductId();
@@ -609,7 +441,7 @@ public class ClientOrderServiceImpl implements ClientOrderService {
 
             Integer remainNumber = product.getNumber() - checkGoods.getNumber();
             if (remainNumber < 0) {
-                throw new RuntimeException("下单的商品货品数量大于库存量");
+                Asserts.fail("下单的商品货品数量大于库存量");
             }
             if (clientGoodsProductService.reduceStock(productId, checkGoods.getGoodsId(), checkGoods.getNumber()) == 0) {
                 Asserts.fail("商品货品库存减少失败");
@@ -643,7 +475,6 @@ public class ClientOrderServiceImpl implements ClientOrderService {
                 groupon.setCreatorUserId(userId);
                 groupon.setGrouponId(0);
             }
-
             clientGrouponService.createGroupon(groupon);
         }
         Map<String, Object> data = new HashMap<>();
@@ -695,5 +526,201 @@ public class ClientOrderServiceImpl implements ClientOrderService {
         String areaName = clientRegionService.findById(areaId).getName();
         String fullRegion = provinceName + " " + cityName + " " + areaName;
         return fullRegion + " " + address.getAddress();
+    }
+
+    //计算运费和商品总价
+    private Map<String, Object> getAllGoodsPrice(Integer userId, Integer cartId, YoungGrouponRules rules, BigDecimal grouponPrice) {
+
+        // 商品价格
+        List<YoungCart> checkedGoodsList = null;
+        // 如果未从购物车发起的下单，则获取用户选好的商品
+        if (cartId == null || cartId.equals(0)) {
+            checkedGoodsList = clientCartService.queryByUidAndChecked(userId);
+        } else {
+            YoungCart cart = clientCartService.findById(cartId);
+            checkedGoodsList = new ArrayList<>(2);
+            checkedGoodsList.add(cart);
+        }
+
+        // 商品总价 （包含团购减免，即减免团购后的商品总价，多店铺需将所有商品相加）
+        BigDecimal goodsTotalPrice = new BigDecimal("0.00");
+        // 总配送费 （单店铺模式一个，多店铺模式多个配送费的总和）
+        BigDecimal totalFreightPrice = new BigDecimal("0.00");
+
+        // 如果需要拆订单，则按店铺进行拆分,如果不拆订单，则统一呈现
+        // 需要拆订单，则需要按店铺显示购物车商品
+        if (SystemConfig.isMultiOrderModel()) {
+            // a.按入驻店铺归类checkout商品
+            List<BrandCartGoods> brandCartGoodsList = new ArrayList<>();
+            for (YoungCart cart : checkedGoodsList) {
+                Integer brandId = cart.getBrandId();
+                boolean hasExist = false;
+                for (int i = 0; i < brandCartGoodsList.size(); i++) {
+                    //判断结账的商品是否属于同一个店铺
+                    if (brandCartGoodsList.get(i).getBrandId().intValue() == brandId.intValue()) {
+                        brandCartGoodsList.get(i).getCartList().add(cart);
+                        hasExist = true;
+                        //结束当前循环
+                        break;
+                    }
+                }
+                // 还尚未加入，则需要查询品牌入驻商铺
+                if (!hasExist) {
+                    BrandCartGoods bandCartGoods = new BrandCartGoods();
+                    bandCartGoods.setBrandId(brandId);
+                    List<YoungCart> cartList = new ArrayList<>();
+                    cartList.add(cart);
+                    bandCartGoods.setCartList(cartList);
+                    brandCartGoodsList.add(bandCartGoods);
+                }
+            }
+            // b.核算每个店铺的各项价格指标
+            for (BrandCartGoods bcg : brandCartGoodsList) {
+                List<YoungCart> bandCarts = bcg.getCartList();
+                BigDecimal bandGoodsTotalPrice = new BigDecimal("0.00");
+                BigDecimal bandFreightPrice = new BigDecimal("0.00");
+
+                // 循环店铺各自的购物商品
+                for (YoungCart cart : bandCarts) {
+                    // 只有当团购规格商品ID符合才进行团购优惠
+                    if (rules != null && rules.getGoodsSn().equals(cart.getGoodsSn())) {
+                        bandGoodsTotalPrice = bandGoodsTotalPrice
+                                .add(cart.getPrice().subtract(grouponPrice).multiply(new BigDecimal(cart.getNumber())));
+                    } else {
+                        bandGoodsTotalPrice = bandGoodsTotalPrice
+                                .add(cart.getPrice().multiply(new BigDecimal(cart.getNumber())));
+                    }
+                }
+
+                // 每个店铺都单独计算运费，满66则免运费，否则6元；
+                if (bandGoodsTotalPrice.compareTo(SystemConfig.getFreightLimit()) < 0) {
+                    bandFreightPrice = SystemConfig.getFreight();
+                }
+
+                goodsTotalPrice = goodsTotalPrice.add(bandGoodsTotalPrice);
+                totalFreightPrice = totalFreightPrice.add(bandFreightPrice);
+            }
+
+            // 不拆订单，则统一呈现
+        } else {
+            for (YoungCart cart : checkedGoodsList) {
+                // 只有当团购规格商品ID符合才进行团购优惠
+                if (rules != null && rules.getGoodsSn().equals(cart.getGoodsSn())) {
+                    goodsTotalPrice = goodsTotalPrice
+                            .add(cart.getPrice().subtract(grouponPrice).multiply(new BigDecimal(cart.getNumber())));
+                } else {
+                    goodsTotalPrice = goodsTotalPrice
+                            .add(cart.getPrice().multiply(new BigDecimal(cart.getNumber())));
+                }
+            }
+            // 根据订单商品总价计算运费，满66则免运费，否则6元；
+            if (goodsTotalPrice.compareTo(SystemConfig.getFreightLimit()) < 0) {
+                totalFreightPrice = SystemConfig.getFreight();
+            }
+        }
+
+        Map<String, Object> result = new HashMap<>();
+
+        result.put("goodsTotalPrice", goodsTotalPrice);
+        result.put("totalFreightPrice", totalFreightPrice);
+        result.put("checkedGoodsList", checkedGoodsList);
+        return result;
+    }
+
+
+    //把订单信息落库
+    private YoungOrder addOrderData(Integer userId, SubmitOrderVo orderVo, YoungAddress checkedAddress,
+                                    Map<String, Object> goodsPrice, BigDecimal grouponPrice, YoungGrouponRules rules) {
+        BigDecimal goodsTotalPrice = (BigDecimal) goodsPrice.get("goodsTotalPrice");
+        BigDecimal totalFreightPrice = (BigDecimal) goodsPrice.get("totalFreightPrice");
+        // 获取可用的优惠券信息 使用优惠券减免的金额
+        BigDecimal couponPrice = new BigDecimal("0.00");
+        // 如果couponId=0则没有优惠券，couponId=-1则不使用优惠券
+        if (orderVo.getCouponId() != 0 && orderVo.getCouponId() != -1) {
+            YoungCoupon coupon = couponVerifyService.checkCoupon(userId, orderVo.getCouponId(), goodsTotalPrice);
+            if (BeanUtil.isEmpty(coupon)) {
+                logger.error("用户id：{}，无该用户券：{}", userId, orderVo);
+                Asserts.fail("无该优惠券");
+            }
+            couponPrice = coupon.getDiscount();
+        }
+        // 可以使用的其他钱，例如用户积分
+        BigDecimal integralPrice = new BigDecimal("0.00");
+        // 订单费用
+        BigDecimal orderTotalPrice = goodsTotalPrice.add(totalFreightPrice).subtract(couponPrice);
+        // 最终支付费用
+        BigDecimal actualPrice = orderTotalPrice.subtract(integralPrice);
+        // 订单
+        YoungOrder order = new YoungOrder();
+        order.setUserId(userId);
+        order.setOrderSn(generateOrderSn(userId));
+        order.setOrderStatus(OrderUtil.STATUS_CREATE);
+        order.setConsignee(checkedAddress.getName());
+        order.setMobile(checkedAddress.getMobile());
+        order.setMessage(orderVo.getMessage());
+        String detailedAddress = detailedAddress(checkedAddress);
+        order.setAddress(detailedAddress);
+        order.setGoodsPrice(goodsTotalPrice);
+        order.setFreightPrice(totalFreightPrice);
+        order.setCouponPrice(couponPrice);
+        order.setIntegralPrice(integralPrice);
+        order.setOrderPrice(orderTotalPrice);
+        order.setActualPrice(actualPrice);
+
+        // 有团购活动
+        if (!BeanUtil.isEmpty(rules)) {
+            // 团购价格
+            order.setGrouponPrice(grouponPrice);
+        } else {
+            // 团购价格
+            order.setGrouponPrice(new BigDecimal("0.00"));
+        }
+
+        // 新增代理的结算金额计算
+        YoungUser user = clientUserService.findById(userId);
+
+        Integer shareUserId = 1;
+        if (!BeanUtil.isEmpty(user) && user.getShareUserId() != null) {
+            shareUserId = user.getShareUserId();
+        }
+        // 默认百分之3
+        Integer settlementRate = 3;
+
+        YoungUserAccount userAccount = clientAccountService.findShareUserAccountByUserId(shareUserId);
+
+        if (userAccount != null && userAccount.getSettlementRate() > 0 && userAccount.getSettlementRate() < 15) {
+            settlementRate = userAccount.getSettlementRate();
+        }
+        BigDecimal rate = new BigDecimal(settlementRate * 0.01);
+        BigDecimal settlementMoney = (actualPrice.subtract(totalFreightPrice)).multiply(rate);
+        order.setSettlementMoney(settlementMoney.setScale(2, BigDecimal.ROUND_DOWN));
+
+        // 添加订单表项
+        this.add(order);
+        return order;
+    }
+
+    //添加OrderGoods表
+    private void addOrderGoods(YoungOrder order, List<YoungCart> checkedGoodsList) {
+        // 添加订单商品表项
+        for (YoungCart cartGoods : checkedGoodsList) {
+            // 订单商品
+            YoungOrderGoods orderGoods = new YoungOrderGoods();
+            orderGoods.setOrderId(order.getId());
+            orderGoods.setGoodsId(cartGoods.getGoodsId());
+            orderGoods.setGoodsSn(cartGoods.getGoodsSn());
+            orderGoods.setProductId(cartGoods.getProductId());
+            orderGoods.setGoodsName(cartGoods.getGoodsName());
+            orderGoods.setPicUrl(cartGoods.getPicUrl());
+            orderGoods.setPrice(cartGoods.getPrice());
+            orderGoods.setNumber(cartGoods.getNumber());
+            orderGoods.setSpecifications(cartGoods.getSpecifications());
+            orderGoods.setAddTime(LocalDateTime.now());
+            // 订单商品需加上入驻店铺标志
+            orderGoods.setBrandId(cartGoods.getBrandId());
+
+            clientOrderGoodsService.add(orderGoods);
+        }
+
     }
 }
