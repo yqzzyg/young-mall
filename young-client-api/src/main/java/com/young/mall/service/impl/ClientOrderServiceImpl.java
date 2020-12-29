@@ -766,15 +766,22 @@ public class ClientOrderServiceImpl implements ClientOrderService {
 
         //TODO 目前没有微信商户信息，暂时没有自测
         //微信支付
-        WxPayMpOrderResult result = null;
-/*        try {
+        WxPayMpOrderResult result = WxPayMpOrderResult.builder()
+                .appId("wx2421b1c4370ec43b")
+                .timeStamp(String.valueOf(System.currentTimeMillis() / 1000L))
+                .nonceStr("1add1a30ac87aa2db72f57a2375d8fec")
+                .packageValue("Sign=WXPay")
+                .signType("MD5")
+                .paySign("0CB01533B8C1EF103065174F50BCA001")
+                .build();
+ /*       try {
             result = this.wxPay(order, openid, request);
 
         } catch (Exception e) {
             logger.error("用户id：{}，付款订单的预支付会话标识失败：{},异常信息：{}", userId, ClientResponseCode.ORDER_PAY_FAIL.getMsg(), e.getMessage());
             return ResBean.failed(ClientResponseCode.ORDER_PAY_FAIL);
-        }*/
-
+        }
+*/
         // 缓存prepayID用于后续模版通知
         String prepayId = result.getPackageValue();
         prepayId = prepayId.replace("prepay_id=", "");
@@ -785,7 +792,6 @@ public class ClientOrderServiceImpl implements ClientOrderService {
         userFormId.setUseamount(3);
         userFormId.setExpireTime(LocalDateTime.now().plusDays(7));
         clientUserFormIdService.addUserFormId(userFormId);
-
         if (this.updateWithOptimisticLocker(order) == 0) {
             logger.error("付款订单的预支付失败：{}", "更新订单信息失败");
             return ResBean.failed("更新订单信息失败");
