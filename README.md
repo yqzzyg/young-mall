@@ -1,10 +1,14 @@
 # young-mall
 
 #### 介绍
-此项目采用SpringBoot、Spring Security、Mybatis等建立起来的一整套商城，后端管理系统采用Vue，用户端采用微信小程序。用于把最近学习的东西融合到一块，未来将持续更新，后续补全文档。
+此项目采用`SpringBoot`、`Spring Security`、`Mybatis`、`Redis`等建立起来的一整套商城，后端管理系统采用Vue，用户端采用微信小程序。用于把最近学习的东西融合到一块，未来将持续更新，后续补全文档。
 
-#### 软件架构
-软件架构说明
+#### 项目文档
+后台系统Swagger-ui文档：https://youngqz.cn/mall-admin/doc.html
+
+前台系统Swagger-ui文档：https://youngqz.cn/mall-client/doc.html
+
+
 
 
 #### 安装教程
