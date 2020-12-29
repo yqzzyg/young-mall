@@ -59,4 +59,4 @@ spring:
 # 项目正式发布后，一般会把日志级别设置为fatal或者error
 logging:
   level:
-    root: info
+    root: error

@@ -21,17 +21,17 @@ spring:
     database: 8 # Redis数据库索引（默认为0）
     timeout: 300 #连接超时时间（毫秒）
 
-    #在1.x.x的版本时默认使用的jedis客户端，现在是2.x.x版本默认使用的lettuce客户端
-    # Jedis和Lettuce都是Redis Client
-    # Jedis 是直连模式，在多个线程间共享一个 Jedis 实例时是线程不安全的，
-    # 如果想要在多线程环境下使用 Jedis，需要使用连接池，
-    # 每个线程都去拿自己的 Jedis 实例，当连接数量增多时，物理连接成本就较高了。
-#    jedis:
-#      shutdown-timeout: 300ms #关闭超时
-#      pool:
-#        max-active: 600 #连接池最大连接数（使用负值表示没有限制）
-#        max-wait: 1000 #连接池最大阻塞等待时间（使用负值表示没有限制）
-#        max-idle: 300 #连接池中的最大空闲连接
+      #在1.x.x的版本时默认使用的jedis客户端，现在是2.x.x版本默认使用的lettuce客户端
+      # Jedis和Lettuce都是Redis Client
+      # Jedis 是直连模式，在多个线程间共享一个 Jedis 实例时是线程不安全的，
+      # 如果想要在多线程环境下使用 Jedis，需要使用连接池，
+      # 每个线程都去拿自己的 Jedis 实例，当连接数量增多时，物理连接成本就较高了。
+      #    jedis:
+      #      shutdown-timeout: 300ms #关闭超时
+      #      pool:
+      #        max-active: 600 #连接池最大连接数（使用负值表示没有限制）
+      #        max-wait: 1000 #连接池最大阻塞等待时间（使用负值表示没有限制）
+      #        max-idle: 300 #连接池中的最大空闲连接
 
     # Lettuce的连接是基于Netty的，连接实例可以在多个线程间共享，
     # 所以，一个多线程的应用可以使用同一个连接实例，而不用担心并发线程的数量。
@@ -59,4 +59,4 @@ spring:
 # 项目正式发布后，一般会把日志级别设置为fatal或者error
 logging:
   level:
-    root: info
+    root: error

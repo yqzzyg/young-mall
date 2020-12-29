@@ -51,3 +51,12 @@ spring:
 #    redisson:
 #      config: classpath:redisson.yml
 
+# logger.debug,logger.error,logger.warn,logger.error,logger.fatal的作用都是把错误信息写到文本日志里
+# 不同的是它们表示的日志级别不同：
+# 日志级别由高到底是：fatal,error,warn,info,debug,低级别的会输出高级别的信息，高级别的不会输出低级别的
+# 信息，如等级设为Error的话，warn,info,debug的信息不会输出
+# 修改日志输出的级别要在log4j文件中进行配置
+# 项目正式发布后，一般会把日志级别设置为fatal或者error
+logging:
+  level:
+    root: info

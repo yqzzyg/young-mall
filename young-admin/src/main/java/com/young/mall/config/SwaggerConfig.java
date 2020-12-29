@@ -3,6 +3,7 @@ package com.young.mall.config;
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import com.young.mall.domain.SwaggerApiInfo;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
@@ -10,6 +11,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @Author: yqz
  * @CreateDate: 2020/10/25 16:57
  */
+@Profile("dev")
 @Configuration
 @EnableSwagger2
 @EnableKnife4j
