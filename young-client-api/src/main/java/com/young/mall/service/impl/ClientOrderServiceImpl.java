@@ -1,11 +1,17 @@
 package com.young.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
+import com.github.binarywang.wxpay.bean.order.WxPayMpOrderResult;
+import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
+import com.github.binarywang.wxpay.exception.WxPayException;
+import com.github.binarywang.wxpay.service.WxPayService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.young.db.dao.YoungOrderMapper;
 import com.young.db.entity.*;
 import com.young.mall.common.ResBean;
+import com.young.mall.constant.CommonConstants;
 import com.young.mall.domain.BrandCartGoods;
 import com.young.mall.domain.ClientUserDetails;
 import com.young.mall.domain.CouponUserConstant;
@@ -19,6 +25,8 @@ import com.young.mall.express.entity.ExpressInfo;
 import com.young.mall.express.entity.Traces;
 import com.young.mall.service.*;
 import com.young.mall.system.SystemConfig;
+import com.young.mall.utils.IpUtil;
+import com.young.mall.utils.OrderHandleOption;
 import com.young.mall.utils.OrderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,6 +95,13 @@ public class ClientOrderServiceImpl implements ClientOrderService {
 
     @Resource
     private ClientGrouponService clientGrouponService;
+
+    @Resource
+    private WxPayService wxPayService;
+
+    @Resource
+    private ClientUserFormIdService clientUserFormIdService;
+
 
     @Override
     public Map<String, Object> orderInfo(Integer userId) {
@@ -734,8 +749,72 @@ public class ClientOrderServiceImpl implements ClientOrderService {
             logger.error("用户：{}，无此订单:{}", userId, orderId);
             return ResBean.failed("无此订单");
         }
+        // 检测是否能够取消
+        OrderHandleOption handleOption = OrderUtil.build(order);
 
+        if (!handleOption.isPay()) {
+            logger.error("订单预付款失败：{}", ClientResponseCode.ORDER_REPAY_OPERATION.getMsg());
+            return ResBean.failed(ClientResponseCode.ORDER_REPAY_OPERATION);
+        }
 
-        return null;
+        YoungUser user = clientUserService.findById(userId);
+        String openid = user.getWeixinOpenid();
+        if (StrUtil.isEmpty(openid)) {
+            logger.error("订单预付款失败:{}", ClientResponseCode.AUTH_OPENID_UNACCESS.getMsg());
+            return ResBean.failed(ClientResponseCode.AUTH_OPENID_UNACCESS);
+        }
+
+        //TODO 目前没有微信商户信息，暂时没有自测
+        //微信支付
+        WxPayMpOrderResult result = null;
+/*        try {
+            result = this.wxPay(order, openid, request);
+
+        } catch (Exception e) {
+            logger.error("用户id：{}，付款订单的预支付会话标识失败：{},异常信息：{}", userId, ClientResponseCode.ORDER_PAY_FAIL.getMsg(), e.getMessage());
+            return ResBean.failed(ClientResponseCode.ORDER_PAY_FAIL);
+        }*/
+
+        // 缓存prepayID用于后续模版通知
+        String prepayId = result.getPackageValue();
+        prepayId = prepayId.replace("prepay_id=", "");
+        YoungUserFormid userFormId = new YoungUserFormid();
+        userFormId.setOpenid(openid);
+        userFormId.setFormid(prepayId);
+        userFormId.setIsprepay(true);
+        userFormId.setUseamount(3);
+        userFormId.setExpireTime(LocalDateTime.now().plusDays(7));
+        clientUserFormIdService.addUserFormId(userFormId);
+
+        if (this.updateWithOptimisticLocker(order) == 0) {
+            logger.error("付款订单的预支付失败：{}", "更新订单信息失败");
+            return ResBean.failed("更新订单信息失败");
+        }
+
+        return ResBean.success(result);
+    }
+
+    //调用微信支付
+    private WxPayMpOrderResult wxPay(YoungOrder order, String openid, HttpServletRequest request) throws WxPayException {
+        //预付款API文档
+        //https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_1
+        //商户订单类
+        WxPayUnifiedOrderRequest orderRequest = new WxPayUnifiedOrderRequest();
+        //商户订单号
+        orderRequest.setOutTradeNo(order.getOrderSn());
+        //trade_type=JSAPI时（即JSAPI支付），此参数必传，此参数为微信用户在商户对应appid下的唯一标识
+        orderRequest.setOpenid(openid);
+        //商品描述
+        orderRequest.setBody(CommonConstants.DEFAULT_ORDER_FIX + order.getOrderSn());
+        // 元转成分
+        BigDecimal actualPrice = order.getActualPrice();
+        int fee = actualPrice.multiply(new BigDecimal(100)).intValue();
+        //订单总金额，单位为分
+        orderRequest.setTotalFee(fee);
+        //支持IPV4和IPV6两种格式的IP地址。用户的客户端IP
+        orderRequest.setSpbillCreateIp(IpUtil.getIpAddr(request));
+
+        WxPayMpOrderResult result = wxPayService.createOrder(orderRequest);
+        return result;
     }
 }

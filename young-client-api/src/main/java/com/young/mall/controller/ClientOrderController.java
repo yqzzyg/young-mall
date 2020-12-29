@@ -126,6 +126,8 @@ public class ClientOrderController {
 
     /**
      * 付款订单的预支付会话标识
+     * //预付款API文档
+     * https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_1
      *
      * @param map
      * @return

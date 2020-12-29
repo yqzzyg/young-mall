@@ -33,7 +33,7 @@ public enum ClientResponseCode implements ResErrorCode {
     ORDER_INVALID(721, "不是当前用户的订单"),
 
     // ORDER_CHECKOUT_FAIL(722, ""),
-    ORDER_REPAY_OPERATION(722, ""),
+    ORDER_REPAY_OPERATION(722, "此订单不可支付"),
     ORDER_NOT_COMMENT(723, "订单不能评价"),
 
     ORDER_PAY_FAIL(724, "订单支付失败"),

@@ -9,7 +9,7 @@ public class CommonConstants {
 
     public static final String DEFAULT_AVATAR = "https://young-mall-1300446798.cos.ap-nanjing.myqcloud.com/2020/11/06/rim8a3xeft9qswtmoooi.jpg";
 
-    public static final String DEFAULT_ORDER_FIX = "聚惠星小程序订单：";
+    public static final String DEFAULT_ORDER_FIX = "小程序订单：";
 
     public static final String MISS_PARAMS = "缺少必要参数";
 
