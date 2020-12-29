@@ -116,7 +116,7 @@ public class ClientOrderServiceImpl implements ClientOrderService {
         int uncomment = 0;
 
         for (YoungOrder order : orders) {
-            if (OrderUtil.isCancelStatus(order)) {
+            if (OrderUtil.isCreateStatus(order)) {
                 unpaid++;
             } else if (OrderUtil.isPayStatus(order)) {
                 unship++;
