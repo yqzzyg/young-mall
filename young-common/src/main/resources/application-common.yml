@@ -1,0 +1,186 @@
+spring:
+  jackson:
+    default-property-inclusion: non_null # 过滤springmvc 响应体 json 中的null
+  # redisTemplate使用，可用于普通缓存
+  redis:
+    host: localhost  # Redis服务器地址
+    password: redis12358 # Redis服务器连接密码（默认为空）
+    port: 6379 # Redis服务器连接端口
+    database: 8 # Redis数据库索引（默认为0）
+    timeout: 300 #连接超时时间（毫秒）
+
+    #在1.x.x的版本时默认使用的jedis客户端，现在是2.x.x版本默认使用的lettuce客户端
+    # Jedis和Lettuce都是Redis Client
+    # Jedis 是直连模式，在多个线程间共享一个 Jedis 实例时是线程不安全的，
+    # 如果想要在多线程环境下使用 Jedis，需要使用连接池，
+    # 每个线程都去拿自己的 Jedis 实例，当连接数量增多时，物理连接成本就较高了。
+    #    jedis:
+    #      shutdown-timeout: 300ms #关闭超时
+    #      pool:
+    #        max-active: 600 #连接池最大连接数（使用负值表示没有限制）
+    #        max-wait: 1000 #连接池最大阻塞等待时间（使用负值表示没有限制）
+    #        max-idle: 300 #连接池中的最大空闲连接
+
+    # Lettuce的连接是基于Netty的，连接实例可以在多个线程间共享，
+    # 所以，一个多线程的应用可以使用同一个连接实例，而不用担心并发线程的数量。
+    # 当然这个也是可伸缩的设计，一个连接实例不够的情况也可以按需增加连接实例。
+    # 通过异步的方式可以让我们更好的利用系统资源，而不用浪费线程等待网络或磁盘I/O。
+    # Lettuce 是基于 netty 的，netty 是一个多线程、事件驱动的 I/O 框架，
+    # 所以 Lettuce 可以帮助我们充分利用异步的优势
+    lettuce:
+      shutdown-timeout: 300ms #关闭超时
+      pool:
+        max-active: 20 #连接池最大连接数（使用负值表示没有限制）
+        max-wait: 1000 #连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-idle: 300  #连接池中的最大空闲连接
+        min-idle: 0   #连接池中的最小空闲连接
+
+#  redisson使用，redisson分布式锁
+#    redisson:
+#      config: classpath:redisson.yml
+young:
+  # 开发者应该设置成自己的wx相关信息
+  wx:
+    app-id: wxcdxxxxxxxxxxxxxxx
+    app-secret: 23c4dxxxxxxxxxxxxxxxx
+    mch-id: 1538666666
+    mch-key: 1538xxxxxx-1538xxxxxx-1538xxxxxx
+    notify-url: https://test.youngshop.com/demo/order/youngNotify
+    # 商户证书文件路径
+    # 请参考“商户证书”一节 https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=4_3
+    key-path: xxxxx
+
+  #通知相关配置
+  notify:
+    mail:
+      # 邮件通知配置,邮箱一般用于接收业务通知例如收到新的订单，sendto 定义邮件接收者，通常为商城运营人员
+      enable: true
+      host: smtp.163.com
+      username: xxxx@163.com
+      password: xxxx
+      sendfrom: xxx@163.com
+      sendto: xxx@qq.com
+
+    # 短消息模版通知配置
+    # 短信息用于通知客户，例如发货短信通知，注意配置格式；template-name，template-templateId 请参考 NotifyType 枚举值
+    sms:
+      enable: false
+      appid: 1400000
+      appkey: 00000
+      template:
+        - name: paySucceed
+          templateId: 112233
+        - name: captcha
+          templateId: 112233
+        - name: ship
+          templateId: 112233
+        - name: refund
+          templateId: 112233
+    AliyunSms:
+      enable: true
+      accessKeyId: LTAI4Gxxxxxxxxxx
+      accessSecret: ECur4Jxxxxxxxxxxxxxxxx
+      domain: dysmsapi.aliyuncs.com
+      version: 2017-05-25
+      action: SendSms
+      regionId: cn-hangzhou
+      SignName: mall商城
+      template:
+        - name: young-mall
+          templateId: SMS_1xxxx
+    # 微信模版通知配置
+    # 微信模版用于通知客户或者运营者，注意配置格式；template-name，template-templateId 请参考 NotifyType 枚举值
+    wx:
+      enable: true
+      template:
+        - name: paySucceed
+          templateId: sirUcgTAIQfoIxxxxxx
+        - name: captcha
+          templateId: OfBkXh7UILpsDkcxxxxxx
+        - name: ship
+          templateId: dqTuWzrmL_wwK-SJsxxxxxx
+        - name: applyRefund
+          templateId: lzPHltMpUOiBol7i2Yxxxxxx
+        - name: refund
+          templateId: NDy6EpPuu2C9NMUxxxxxx
+
+  # 快鸟物流查询配置
+  # 快递鸟即时查询API http://www.kdniao.com/api-track
+  # 用户名：young-mall，密码：young-mall
+  express:
+    enable: true
+    appId: "169xxxxxxxxxx"
+    appKey: "xxxxxxxxxx-412a-4990-xxxxxxx-xxxxxxxxx"
+    vendors:
+      - code: "HTKY"
+        name: "百世快递"
+      - code: "YZBK"
+        name: "邮政国内标快"
+      - code: "ZTO"
+        name: "中通快递"
+      - code: "YTO"
+        name: "圆通速递"
+      - code: "YD"
+        name: "韵达速递"
+      - code: "YZPY"
+        name: "邮政快递包裹"
+      - code: "EMS"
+        name: "EMS"
+      - code: "DBL"
+        name: "德邦快递"
+      - code: "FAST"
+        name: "快捷快递"
+      - code: "ZJS"
+        name: "宅急送"
+      - code: "TNT"
+        name: "TNT快递"
+      - code: "UPS"
+        name: "UPS"
+      - code: "DHL"
+        name: "DHL"
+      - code: "FEDEX"
+        name: "FEDEX联邦(国内件)"
+      - code: "FEDEX_GJ"
+        name: "FEDEX联邦(国际件)"
+
+  # 对象存储配置
+  storage:
+    # 当前工作的对象存储模式，分别是local、aliyun、tencent、qiniu、MinIO
+    active: minIO
+    # 本地对象存储配置信息
+    local:
+      storagePath: ./mall/storage/
+      # 这个地方应该是wx模块的WxStorageController的fetch方法对应的地址
+      address: /mall/image/
+    # 阿里云对象存储配置信息
+    aliyun:
+      endpoint: oss-cn-beijing.aliyuncs.com
+      accessKeyId: LTAxxxxxxxxxxxx
+      accessKeySecret: ECur4Jrxxxxxxxxxxxxxxxxx
+      bucketName: young-mall
+    # 腾讯对象存储配置信息
+    # 请参考 https://cloud.tencent.com/document/product/436/6249
+    tencent:
+      secretId: AKIDnOlxxxxxxxxxxxxx
+      secretKey: Ln0GJ9Jxxxxxxxxxxxxxxxx
+      region: ap-nanjing
+      bucketName: young-mall-xxxxxxxxxx
+    # 七牛云对象存储配置信息
+    qiniu:
+      endpoint: http://youngshop.wx.clouddn.com
+      accessKey: 111111
+      secretKey: xxxxxx
+      bucketName: young
+    # Minio
+    MinIO:
+      accessKey: admin #访问的key
+      secretKey: admin123456 #访问的秘钥
+      endpoint: http://localhost:9000 #MinIO服务所在地址
+      bucketName: young-mall
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+
