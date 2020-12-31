@@ -136,4 +136,20 @@ public interface ClientOrderService {
      * @return
      */
     ResBean prepay(Integer userId, Integer orderId, HttpServletRequest request);
+
+
+    /**
+     * 取消订单
+     * <p>
+     * 1. 检测当前订单是否能够取消；
+     * 2. 设置订单取消状态；
+     * 3. 商品货品库存恢复；
+     * 4. TODO 优惠券；
+     * 5. TODO 团购活动。
+     *
+     * @param userId  用户id
+     * @param orderId 订单id
+     * @return
+     */
+    ResBean cancel(Integer userId, Integer orderId);
 }

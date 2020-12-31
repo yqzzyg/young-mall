@@ -823,4 +823,55 @@ public class ClientOrderServiceImpl implements ClientOrderService {
         WxPayMpOrderResult result = wxPayService.createOrder(orderRequest);
         return result;
     }
+
+
+    /**
+     * 取消订单
+     * <p>
+     * 1. 检测当前订单是否能够取消；
+     * 2. 设置订单取消状态；
+     * 3. 商品货品库存恢复；
+     * 4. TODO 优惠券；
+     * 5. TODO 团购活动。
+     *
+     * @param userId  用户id
+     * @param orderId 订单id
+     * @return
+     */
+    @Transactional
+    @Override
+    public ResBean cancel(Integer userId, Integer orderId) {
+
+        YoungOrder order = this.findById(orderId);
+
+        if (BeanUtil.isEmpty(order) || !userId.equals(order.getUserId())) {
+            return ResBean.failed("目前用户与该订单不匹配");
+        }
+
+        // 检测是否能够取消
+        OrderHandleOption handleOption = OrderUtil.build(order);
+        if (!handleOption.isCancel()) {
+            logger.error("取消订单失败：{}", ClientResponseCode.ORDER_INVALID_OPERATION.getMsg());
+            return ResBean.failed(ClientResponseCode.ORDER_INVALID_OPERATION);
+        }
+        //设置订单为已取消状态
+        order.setOrderStatus(OrderUtil.STATUS_CANCEL);
+        order.setEndTime(LocalDateTime.now());
+        if (this.updateWithOptimisticLocker(order) != 1) {
+            return ResBean.failed("更新数据失败");
+        }
+
+        // 商品货品数量增加
+        List<YoungOrderGoods> orderGoodsList = clientOrderGoodsService.queryByOid(orderId);
+        for (YoungOrderGoods orderGoods : orderGoodsList) {
+
+            Integer productId = orderGoods.getProductId();
+            Short number = orderGoods.getNumber();
+
+            if (clientGoodsProductService.addStock(productId, number) != 1) {
+                return ResBean.failed("增加库存失败");
+            }
+        }
+        return ResBean.success("取消订单成功");
+    }
 }

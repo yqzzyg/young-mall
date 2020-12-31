@@ -34,8 +34,13 @@ public class ClientGoodsProductServiceImpl implements ClientGoodsProductService 
     public Integer reduceStock(Integer id, Integer goodsId, Short num) {
 
         // 每次需将商品的销售量加下
-        goodsProductMapper.addStock(id,num);
+        goodsProductMapper.addStock(id, num);
         int count = goodsProductMapper.reduceStock(id, num);
         return count;
+    }
+
+    @Override
+    public int addStock(Integer id, Short num) {
+        return goodsProductMapper.addStock(id, num);
     }
 }

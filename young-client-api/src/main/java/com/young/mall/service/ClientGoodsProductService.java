@@ -26,4 +26,13 @@ public interface ClientGoodsProductService {
      * @return
      */
     Integer reduceStock(Integer id, Integer goodsId, Short num);
+
+    /**
+     * 增加库存
+     *
+     * @param id
+     * @param num
+     * @return
+     */
+    int addStock(Integer id, Short num);
 }

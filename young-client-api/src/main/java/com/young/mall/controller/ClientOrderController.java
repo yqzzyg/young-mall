@@ -12,6 +12,7 @@ import com.young.mall.service.ClientOrderService;
 import com.young.mall.service.ClientUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -149,5 +150,30 @@ public class ClientOrderController {
             return ResBean.failed("订单id不能为空");
         }
         return clientOrderService.prepay(userId, orderId, request);
+    }
+
+    @ApiOperation("取消订单")
+    @PostMapping("/cancel")
+    public ResBean cancel(@RequestBody Map<String, Integer> map) {
+
+        logger.info("取消订单入参：{}", JSONUtil.toJsonStr(map));
+
+        ClientUserDetails userInfo = clientUserService.getUserInfo();
+        if (BeanUtil.isEmpty(userInfo)) {
+            logger.error("付款订单的预支付失败，未登录。");
+            return ResBean.unauthorized("请登录！");
+        }
+        Integer userId = userInfo.getYoungUser().getId();
+
+        Integer orderId = map.get("orderId");
+
+        if (ObjectUtils.isEmpty(orderId)) {
+
+            logger.error("订单id不能为空,userInfo:{}", userInfo);
+
+            return ResBean.failed("订单id不能为空");
+        }
+
+        return clientOrderService.cancel(userId, orderId);
     }
 }
