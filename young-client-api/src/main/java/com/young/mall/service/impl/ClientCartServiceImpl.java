@@ -465,4 +465,13 @@ public class ClientCartServiceImpl implements ClientCartService {
         cart.setDeleted(true);
         return youngCartMapper.updateByExampleSelective(cart, example);
     }
+
+    @Override
+    public Integer clearGoodsByCartId(Integer cartId) {
+        YoungCartExample example = new YoungCartExample();
+        example.or().andIdEqualTo(cartId).andCheckedEqualTo(true);
+        YoungCart cart = new YoungCart();
+        cart.setDeleted(true);
+        return youngCartMapper.updateByExampleSelective(cart, example);
+    }
 }

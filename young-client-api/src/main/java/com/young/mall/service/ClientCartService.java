@@ -121,4 +121,12 @@ public interface ClientCartService {
      * @return
      */
     Integer clearGoods(Integer userId);
+
+    /**
+     * 根据cartId逻辑删除购物车商品
+     *
+     * @param cartId
+     * @return
+     */
+    Integer clearGoodsByCartId(Integer cartId);
 }

@@ -446,7 +446,9 @@ public class ClientOrderServiceImpl implements ClientOrderService {
         this.addOrderGoods(order, checkedGoodsList);
 
         // 删除购物车里面的商品信息
-        Integer count = clientCartService.clearGoods(userId);
+//        Integer count = clientCartService.clearGoods(userId);
+
+        Integer count = clientCartService.clearGoodsByCartId(cartId);
 
         // 商品货品数量减少
         for (YoungCart checkGoods : checkedGoodsList) {
