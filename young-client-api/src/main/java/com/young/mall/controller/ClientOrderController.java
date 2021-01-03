@@ -176,4 +176,34 @@ public class ClientOrderController {
 
         return clientOrderService.cancel(userId, orderId);
     }
+
+    /**
+     * 订单申请退款
+     * <p>
+     * 1. 检测当前订单是否能够退款；
+     * 2. 设置订单申请退款状态。
+     *
+     * @param map
+     * @return
+     */
+    @PostMapping("/refund")
+    public ResBean refund(@RequestBody Map<String, Integer> map) {
+        logger.info("取消订单入参：{}", JSONUtil.toJsonStr(map));
+
+        ClientUserDetails userInfo = clientUserService.getUserInfo();
+        if (BeanUtil.isEmpty(userInfo)) {
+            logger.error("付款订单的预支付失败，未登录。");
+            return ResBean.unauthorized("请登录！");
+        }
+
+        Integer orderId = map.get("orderId");
+        if (ObjectUtils.isEmpty(orderId)) {
+            return ResBean.failed("订单id不能为空");
+        }
+        Integer userId = userInfo.getYoungUser().getId();
+
+        ResBean result = clientOrderService.refund(userId, orderId);
+
+        return result;
+    }
 }

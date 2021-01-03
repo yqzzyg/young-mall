@@ -152,4 +152,13 @@ public interface ClientOrderService {
      * @return
      */
     ResBean cancel(Integer userId, Integer orderId);
+
+    /**
+     * 退货
+     *
+     * @param userId  用户id
+     * @param orderId 订单id
+     * @return
+     */
+    ResBean refund(Integer userId, Integer orderId);
 }
