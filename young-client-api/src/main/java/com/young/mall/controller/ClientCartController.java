@@ -246,8 +246,8 @@ public class ClientCartController {
      */
     @ApiOperation("购物车下单")
     @GetMapping("/checkout")
-    public ResBean checkout(Integer cartId, Integer addressId,
-                            Integer couponId, Integer grouponRulesId) {
+    public ResBean checkout(@RequestParam("cartId") Integer cartId, @RequestParam("addressId")Integer addressId,
+                            @RequestParam("couponId") Integer couponId, @RequestParam("grouponRulesId") Integer grouponRulesId) {
 
         ClientUserDetails userInfo = clientUserService.getUserInfo();
         if (BeanUtil.isEmpty(userInfo)) {

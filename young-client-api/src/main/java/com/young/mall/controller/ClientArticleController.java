@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
@@ -34,7 +35,7 @@ public class ClientArticleController {
 
     @ApiOperation("文章详情")
     @GetMapping("/detail")
-    public ResBean detail(@NotNull(message = "公告id不能为空") Integer id) {
+    public ResBean detail(@NotNull(message = "公告id不能为空") @RequestParam("id") Integer id) {
 
         YoungArticle article = clientArticleService.findById(id);
         return ResBean.success(article);

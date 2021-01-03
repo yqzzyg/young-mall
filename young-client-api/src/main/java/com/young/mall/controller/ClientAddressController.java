@@ -93,7 +93,7 @@ public class ClientAddressController {
      */
     @ApiOperation("收货地址详情")
     @GetMapping("/detail")
-    public ResBean detail(@NotNull Integer id) {
+    public ResBean detail(@NotNull @RequestParam("id") Integer id) {
         ClientUserDetails userInfo = clientUserService.getUserInfo();
         if (BeanUtil.isEmpty(userInfo)) {
             logger.error("添加或更新收货地址失败，未登录。");

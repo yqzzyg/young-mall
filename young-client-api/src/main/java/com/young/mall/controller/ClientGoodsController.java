@@ -61,7 +61,7 @@ public class ClientGoodsController {
 
     @ApiOperation("商品分类类目")
     @GetMapping("/category")
-    public ResBean<Map<String, Object>> category(@NotNull Integer id) {
+    public ResBean<Map<String, Object>> category(@NotNull @RequestParam("id") Integer id) {
 
         Map<String, Object> category = clientGoodsService.getCategoryById(id);
 
@@ -114,7 +114,7 @@ public class ClientGoodsController {
 
     @ApiOperation("商品详情")
     @GetMapping("/detail")
-    public ResBean details(@NotNull Integer id) {
+    public ResBean details(@NotNull @RequestParam("id") Integer id) {
 
         ClientUserDetails userInfo = clientUserService.getUserInfo();
         if (BeanUtil.isEmpty(userInfo)) {
@@ -127,7 +127,7 @@ public class ClientGoodsController {
 
     @ApiOperation("商品详情页面“大家都在看”推荐商品")
     @GetMapping("/related")
-    public ResBean related(@NotNull Integer id) {
+    public ResBean related(@NotNull @RequestParam("id") Integer id) {
 
         YoungGoods goods = clientGoodsService.findById(id);
         if (BeanUtil.isEmpty(goods)) {

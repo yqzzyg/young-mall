@@ -55,7 +55,7 @@ public class ClientGrouponController {
      */
     @ApiOperation("用户开团或入团情况")
     @GetMapping("/my")
-    public ResBean my(@RequestParam(defaultValue = "0") Integer showType) {
+    public ResBean my(@RequestParam(name = "showType", defaultValue = "0") Integer showType) {
 
         ClientUserDetails userInfo = clientUserService.getUserInfo();
         if (BeanUtil.isEmpty(userInfo)) {

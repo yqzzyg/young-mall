@@ -1,6 +1,5 @@
 package com.young.mall.controller;
 
-import afu.org.checkerframework.checker.oigj.qual.O;
 import cn.hutool.core.bean.BeanUtil;
 import com.young.db.entity.YoungCategory;
 import com.young.mall.common.ResBean;
@@ -13,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -45,7 +45,7 @@ public class ClientCatalogController {
      */
     @ApiOperation("分类详情")
     @GetMapping("/index")
-    public ResBean<Map<String, Object>> index(Integer id) {
+    public ResBean<Map<String, Object>> index(@RequestParam("id") Integer id) {
 
         //查询所有一级分类
         List<YoungCategory> categoryList = clientCategoryService.queryLevelFirst();
@@ -76,7 +76,7 @@ public class ClientCatalogController {
 
     @ApiOperation("当前分类栏目")
     @GetMapping("/current")
-    public ResBean<Map<String, Object>> current(Integer id) {
+    public ResBean<Map<String, Object>> current(@RequestParam("id") Integer id) {
 
         Optional<YoungCategory> optional = mallCategoryService.findById(id);
         if (!optional.isPresent()) {
