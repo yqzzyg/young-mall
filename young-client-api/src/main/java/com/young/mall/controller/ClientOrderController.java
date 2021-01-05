@@ -161,7 +161,7 @@ public class ClientOrderController {
 
         ClientUserDetails userInfo = clientUserService.getUserInfo();
         if (BeanUtil.isEmpty(userInfo)) {
-            logger.error("付款订单的预支付失败，未登录。");
+            logger.error("取消订单失败，未登录。");
             return ResBean.unauthorized("请登录！");
         }
         Integer userId = userInfo.getYoungUser().getId();
@@ -194,7 +194,7 @@ public class ClientOrderController {
 
         ClientUserDetails userInfo = clientUserService.getUserInfo();
         if (BeanUtil.isEmpty(userInfo)) {
-            logger.error("付款订单的预支付失败，未登录。");
+            logger.error("订单申请退款失败，未登录。");
             return ResBean.unauthorized("请登录！");
         }
 
@@ -206,5 +206,20 @@ public class ClientOrderController {
         ResBean result = clientOrderService.refund(userInfo.getYoungUser(), orderId);
 
         return result;
+    }
+
+    @ApiOperation("确认收货")
+    @PostMapping("/confirm")
+    public ResBean confirm(@RequestBody Map<String,Object> map) {
+
+        logger.info("确认收货入参：{}",map);
+
+        ClientUserDetails userInfo = clientUserService.getUserInfo();
+        if (BeanUtil.isEmpty(userInfo)) {
+            logger.error("确认收货失败，未登录。");
+            return ResBean.unauthorized("请登录！");
+        }
+        Integer userId = userInfo.getYoungUser().getId();
+        return ResBean.success(map);
     }
 }

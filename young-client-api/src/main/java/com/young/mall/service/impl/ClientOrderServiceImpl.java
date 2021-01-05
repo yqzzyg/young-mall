@@ -886,7 +886,7 @@ public class ClientOrderServiceImpl implements ClientOrderService {
     }
 
     @Override
-    public ResBean refund(YoungUser user, Integer orderId) throws WxErrorException {
+    public ResBean refund(YoungUser user, Integer orderId) {
 
         YoungOrder order = this.findById(orderId);
         if (BeanUtil.isEmpty(order)) {
@@ -939,7 +939,12 @@ public class ClientOrderServiceImpl implements ClientOrderService {
         wxMaSubscribeData.add(wxMaSubscribeData3);
 
 
-        notifyService.sendSubscribeMsg(wxMaSubscribeData, user.getWeixinOpenid(), NotifyType.REFUND);
+        try {
+            notifyService.sendSubscribeMsg(wxMaSubscribeData, user.getWeixinOpenid(), NotifyType.REFUND);
+        } catch (WxErrorException e) {
+            logger.error("用户{}:发送微信订阅消息失败：{}", user.getNickname(), e.getMessage());
+            e.getStackTrace();
+        }
         return ResBean.success("退款成功");
     }
 }

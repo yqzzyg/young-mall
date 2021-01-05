@@ -158,9 +158,9 @@ public interface ClientOrderService {
     /**
      * 退货
      *
-     * @param user  用户
+     * @param user    用户
      * @param orderId 订单id
      * @return
      */
-    ResBean refund(YoungUser user, Integer orderId) throws WxErrorException;
+    ResBean refund(YoungUser user, Integer orderId);
 }
