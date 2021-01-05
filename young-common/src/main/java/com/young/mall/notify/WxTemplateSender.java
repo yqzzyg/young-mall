@@ -4,7 +4,6 @@ package com.young.mall.notify;
 import cn.binarywang.wx.miniapp.api.WxMaService;
 import cn.binarywang.wx.miniapp.bean.WxMaSubscribeMessage;
 import cn.binarywang.wx.miniapp.bean.WxMaTemplateData;
-import cn.binarywang.wx.miniapp.bean.WxMaTemplateMessage;
 import com.young.db.entity.YoungUserFormid;
 import com.young.mall.exception.Asserts;
 import com.young.mall.service.MallUserFormIdService;
@@ -30,62 +29,6 @@ public class WxTemplateSender {
 
     @Autowired
     private MallUserFormIdService userFormIdService;
-
-    /**
-     * 发送微信消息(模板消息),不带跳转
-     *
-     * @param touser    用户 OpenID
-     * @param templatId 模板消息ID
-     * @param parms     详细内容
-     */
-
-    public void sendWechatMsg(String touser, String templatId, String[] parms) {
-        sendMsg(touser, templatId, parms, "", "", "");
-    }
-
-
-    /**
-     * 发送微信消息(模板消息),带跳转
-     *
-     * @param touser    用户 OpenID
-     * @param templatId 模板消息ID
-     * @param parms     详细内容
-     * @param page      跳转页面
-     */
-
-    public void sendWechatMsg(String touser, String templatId, String[] parms, String page) {
-        sendMsg(touser, templatId, parms, page, "", "");
-    }
-
-    private void sendMsg(String touser, String templatId, String[] parms, String page, String color,
-                         String emphasisKeyword) {
-        Optional<YoungUserFormid> optional = userFormIdService.queryByOpenId(touser);
-        if (!optional.isPresent()) {
-            Asserts.fail("用户 OpenID 查询失败");
-        }
-        YoungUserFormid userFormid = optional.get();
-
-        if (userFormid == null) {
-            return;
-        }
-
-        WxMaTemplateMessage msg = new WxMaTemplateMessage();
-        msg.setTemplateId(templatId);
-        msg.setToUser(touser);
-        msg.setFormId(userFormid.getFormid());
-        msg.setPage(page);
-//        msg.setColor(color);
-        msg.setEmphasisKeyword(emphasisKeyword);
-        msg.setData(createMsgData(parms));
-        try {
-            wxMaService.getMsgService().sendTemplateMsg(msg);
-            if (userFormIdService.updateUserFormId(userFormid).get() == 0) {
-                logger.warn("更新数据已失效");
-            }
-        } catch (Exception e) {
-            logger.error("发送消息，更新数据失败:{}", e.getMessage());
-        }
-    }
 
     /**
      * 发送订阅消息

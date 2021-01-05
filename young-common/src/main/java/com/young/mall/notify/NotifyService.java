@@ -1,6 +1,5 @@
 package com.young.mall.notify;
 
-import cn.binarywang.wx.miniapp.bean.WxMaSubscribeData;
 import cn.binarywang.wx.miniapp.bean.WxMaSubscribeMessage;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
@@ -10,6 +9,7 @@ import lombok.Data;
 import me.chanjar.weixin.common.error.WxErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.scheduling.annotation.Async;
@@ -26,7 +26,8 @@ import java.util.Map;
 @Data
 public class NotifyService {
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
-
+    @Value("${spring.profiles.active}")
+    private String active;
     private MailSender mailSender;
     private String sendFrom;
     private String sendTo;
@@ -109,48 +110,12 @@ public class NotifyService {
         return smsResult;
     }
 
-    /**
-     * 微信模版消息通知,不跳转
-     * 该方法会尝试从数据库获取缓存的FormId去发送消息
-     *
-     * @param toUser     接收者openId
-     * @param notifyType 通知类别，通过该枚举值在配置文件中获取相应的模版ID
-     * @param params     通知模版内容里的参数，类似"您的验证码为{1}"中{1}的值
-     */
-    @Async
-    public void notifyWxTemplate(String toUser, NotifyType notifyType, String[] params) {
-        if (BeanUtil.isEmpty(smsSender)) {
-            return;
-        }
-        String templateId = getTemplateId(notifyType, wxTemplate);
-
-        wxTemplateSender.sendWechatMsg(toUser, templateId, params);
-
-    }
-
-    /**
-     * 微信模版消息通知，带跳转
-     * 该方法会尝试从数据库获取缓存的FormId去发送消息
-     *
-     * @param toUser     接收者openId
-     * @param notifyType 通知类别，通过该枚举值在配置文件中获取相应的模版ID
-     * @param params     通知模版内容里的参数，类似"您的验证码为{1}"中{1}的值
-     * @param page       点击消息跳转的页面
-     */
-    @Async
-    public void notifyWxTemplate(String toUser, NotifyType notifyType, String[] params, String page) {
-        if (BeanUtil.isEmpty(wxTemplateSender)) {
-            return;
-        }
-        String templateId = getTemplateId(notifyType, wxTemplate);
-        wxTemplateSender.sendWechatMsg(toUser, templateId, params, page);
-    }
 
     /**
      * 微信订阅消息通知
      */
     @Async
-    public void sendSubscribeMsg(List<WxMaSubscribeData> wxMaSubscribeData, String openId, NotifyType notifyType) throws WxErrorException {
+    public void sendSubscribeMsg(List<WxMaSubscribeMessage.Data> wxMaSubscribeData, String openId, NotifyType notifyType) throws WxErrorException {
         if (BeanUtil.isEmpty(wxTemplateSender)) {
             return;
         }
@@ -167,6 +132,13 @@ public class NotifyService {
         subscribeMessage.setTemplateId(templateId);
         //点击模板卡片后的跳转页面，仅限本小程序内的页面。支持带参数,（示例index?foo=bar）。该字段不填则模板无跳转。
         subscribeMessage.setPage("pages/index/index");
+
+        //跳转小程序类型：developer为开发版；trial为体验版；formal为正式版；默认为正式版
+        if (active.contains("dev")) {
+            subscribeMessage.setMiniprogramState("trial");
+        } else if (active.contains("prd")) {
+            subscribeMessage.setMiniprogramState("formal");
+        }
         wxTemplateSender.sendSubscribeMsg(subscribeMessage);
     }
 

@@ -1,6 +1,6 @@
 package com.young.mall.service.impl;
 
-import cn.binarywang.wx.miniapp.bean.WxMaSubscribeData;
+import cn.binarywang.wx.miniapp.bean.WxMaSubscribeMessage;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
@@ -917,9 +917,9 @@ public class ClientOrderServiceImpl implements ClientOrderService {
         //notifyService.notifySslMailWithTo(mailDto);
 
         //创建一个参数集合
-        List<WxMaSubscribeData> wxMaSubscribeData = new ArrayList<>();
+        List<WxMaSubscribeMessage.Data> wxMaSubscribeData = new ArrayList<>();
         //第一个内容： 订单号
-        WxMaSubscribeData wxMaSubscribeData1 = new WxMaSubscribeData();
+        WxMaSubscribeMessage.Data wxMaSubscribeData1 = new WxMaSubscribeMessage.Data();
         wxMaSubscribeData1.setName("character_string3");
         wxMaSubscribeData1.setValue(order.getOrderSn());
 
@@ -927,13 +927,13 @@ public class ClientOrderServiceImpl implements ClientOrderService {
         wxMaSubscribeData.add(wxMaSubscribeData1);
 
         //第二个内容： 退款金额
-        WxMaSubscribeData wxMaSubscribeData2 = new WxMaSubscribeData();
+        WxMaSubscribeMessage.Data wxMaSubscribeData2 = new WxMaSubscribeMessage.Data();
         wxMaSubscribeData2.setName("amount2");
         wxMaSubscribeData2.setValue(order.getActualPrice().toString());
         wxMaSubscribeData.add(wxMaSubscribeData2);
 
         //第三个内容： 客户名称
-        WxMaSubscribeData wxMaSubscribeData3 = new WxMaSubscribeData();
+        WxMaSubscribeMessage.Data wxMaSubscribeData3 = new WxMaSubscribeMessage.Data();
         wxMaSubscribeData3.setName("thing1");
         wxMaSubscribeData3.setValue(user.getNickname());
         wxMaSubscribeData.add(wxMaSubscribeData3);
