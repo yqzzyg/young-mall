@@ -2,18 +2,20 @@
 package com.young.mall.notify;
 
 import cn.binarywang.wx.miniapp.api.WxMaService;
+import cn.binarywang.wx.miniapp.api.impl.WxMaMsgServiceImpl;
+import cn.binarywang.wx.miniapp.bean.WxMaSubscribeData;
+import cn.binarywang.wx.miniapp.bean.WxMaSubscribeMessage;
 import cn.binarywang.wx.miniapp.bean.WxMaTemplateData;
 import cn.binarywang.wx.miniapp.bean.WxMaTemplateMessage;
 import com.young.db.entity.YoungUserFormid;
 import com.young.mall.exception.Asserts;
 import com.young.mall.service.MallUserFormIdService;
+import me.chanjar.weixin.common.error.WxErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 /**
@@ -74,7 +76,7 @@ public class WxTemplateSender {
         msg.setToUser(touser);
         msg.setFormId(userFormid.getFormid());
         msg.setPage(page);
-        msg.setColor(color);
+//        msg.setColor(color);
         msg.setEmphasisKeyword(emphasisKeyword);
         msg.setData(createMsgData(parms));
         try {
@@ -85,6 +87,50 @@ public class WxTemplateSender {
         } catch (Exception e) {
             logger.error("发送消息，更新数据失败:{}", e.getMessage());
         }
+    }
+
+    /**
+     * 发送订阅消息
+     *
+     * @param content
+     * @return
+     */
+    public Map sendSubscribeMsg(Map<String, String> content) throws WxErrorException {
+
+        //===========创建一个参数集合===========
+        ArrayList<WxMaSubscribeData> wxMaSubscribeData = new ArrayList<>();
+
+        //第一个内容： 奖品名称
+        WxMaSubscribeData wxMaSubscribeData1 = new WxMaSubscribeData();
+        wxMaSubscribeData1.setName("character_string3");
+        wxMaSubscribeData1.setValue("339208499");
+
+        //每个参数 存放到大集合中
+        wxMaSubscribeData.add(wxMaSubscribeData1);
+
+        WxMaSubscribeData wxMaSubscribeData2 = new WxMaSubscribeData();
+        wxMaSubscribeData1.setName("amount2");
+        wxMaSubscribeData1.setValue("188");
+        wxMaSubscribeData.add(wxMaSubscribeData2);
+
+        WxMaSubscribeData wxMaSubscribeData3 = new WxMaSubscribeData();
+        wxMaSubscribeData1.setName("thing1");
+        wxMaSubscribeData1.setValue("TIT创意园");
+        wxMaSubscribeData.add(wxMaSubscribeData3);
+
+
+        WxMaSubscribeMessage subscribeMessage = new WxMaSubscribeMessage();
+
+        subscribeMessage.setData(wxMaSubscribeData);
+
+        //给谁推送 用户的openid （可以调用根据code换openid接口)
+        subscribeMessage.setToUser(content.get("openid"));
+        //模板消息id
+        subscribeMessage.setTemplateId("8uxuhparIyhRZjasTvAABI4bAmWlhyBh62SxRDXNfQU");
+        wxMaService.getMsgService().sendSubscribeMsg(subscribeMessage);
+
+        return null;
+
     }
 
     private List<WxMaTemplateData> createMsgData(String[] parms) {

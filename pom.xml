@@ -45,8 +45,8 @@
         <young-security.version>0.0.1-SNAPSHOT</young-security.version>
         <fastjson.version>1.2.72</fastjson.version>
         <email.version>1.5</email.version>
-        <weixin-java-pay.version>3.3.0</weixin-java-pay.version>
-        <weixin-java-miniap.version>3.3.0</weixin-java-miniap.version>
+        <weixin-java-pay.version>3.6.0</weixin-java-pay.version>
+        <weixin-java-miniap.version>3.6.0</weixin-java-miniap.version>
         <qcloudsms.version>1.0.5</qcloudsms.version>
         <aliyunSms.version>4.5.3</aliyunSms.version>
         <aliyunOSS.version>3.10.2</aliyunOSS.version>

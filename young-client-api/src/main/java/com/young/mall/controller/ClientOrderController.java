@@ -12,6 +12,7 @@ import com.young.mall.service.ClientOrderService;
 import com.young.mall.service.ClientUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import me.chanjar.weixin.common.error.WxErrorException;
 import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -187,7 +188,7 @@ public class ClientOrderController {
      * @return
      */
     @PostMapping("/refund")
-    public ResBean refund(@RequestBody Map<String, Integer> map) {
+    public ResBean refund(@RequestBody Map<String, Integer> map) throws WxErrorException {
         logger.info("取消订单入参：{}", JSONUtil.toJsonStr(map));
 
         ClientUserDetails userInfo = clientUserService.getUserInfo();

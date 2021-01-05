@@ -2,6 +2,7 @@ package com.young.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import com.github.binarywang.wxpay.bean.order.WxPayMpOrderResult;
 import com.github.binarywang.wxpay.bean.request.WxPayUnifiedOrderRequest;
 import com.github.binarywang.wxpay.exception.WxPayException;
@@ -19,15 +20,20 @@ import com.young.mall.domain.enums.ClientResponseCode;
 import com.young.mall.domain.vo.OrderCommentVo;
 import com.young.mall.domain.vo.OrderVo;
 import com.young.mall.domain.vo.SubmitOrderVo;
+import com.young.mall.dto.MailDto;
 import com.young.mall.exception.Asserts;
 import com.young.mall.express.ExpressService;
 import com.young.mall.express.entity.ExpressInfo;
 import com.young.mall.express.entity.Traces;
+import com.young.mall.notify.NotifyService;
+import com.young.mall.notify.NotifyType;
 import com.young.mall.service.*;
 import com.young.mall.system.SystemConfig;
+import com.young.mall.utils.DateTimeUtils;
 import com.young.mall.utils.IpUtil;
 import com.young.mall.utils.OrderHandleOption;
 import com.young.mall.utils.OrderUtil;
+import me.chanjar.weixin.common.error.WxErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -102,6 +108,8 @@ public class ClientOrderServiceImpl implements ClientOrderService {
     @Resource
     private ClientUserFormIdService clientUserFormIdService;
 
+    @Resource
+    private NotifyService notifyService;
 
     @Override
     public Map<String, Object> orderInfo(Integer userId) {
@@ -878,9 +886,46 @@ public class ClientOrderServiceImpl implements ClientOrderService {
     }
 
     @Override
-    public ResBean refund(Integer userId, Integer orderId) {
+    public ResBean refund(Integer userId, Integer orderId) throws WxErrorException {
+
+        YoungOrder order = this.findById(orderId);
+        if (BeanUtil.isEmpty(order)) {
+            logger.error("用户id：{}，用户申请退款失败，查询不到该订单：参数错误", userId);
+            return ResBean.failed(401, "参数错误");
+        }
+        OrderHandleOption handleOption = OrderUtil.build(order);
+        if (!handleOption.isRefund()) {
+            logger.error("用户id：{}，用户申请退款失败，订单状态不对:{}", userId, JSONUtil.toJsonStr(order));
+            return ResBean.failed(402, "参数值错误");
+        }
+        // 设置订单申请退款状态
+        order.setOrderStatus(OrderUtil.STATUS_REFUND);
+
+        if (updateWithOptimisticLocker(order) != 1) {
+            logger.error("订单申请退款失败:{}", "更新订单信息失败");
+            return ResBean.failed(504, "更新数据已经失效");
+        }
+        // TODO 发送邮件和短信通知，这里采用异步发送，也可以修改为给用户也发送一封邮件
+        // 有用户申请退款，邮件通知运营人员
+        // notifyService.notifyMail("退款申请", order.toString());
+        MailDto mailDto = MailDto.builder()
+                .title("退款申请")
+                .content(OrderUtil.orderHtmlText(order, order.getId().intValue() + "", null))
+                .build();
+        notifyService.notifySslMail(mailDto);
+        //给目标用户发邮件
+        //notifyService.notifySslMailWithTo(mailDto);
+
+        // 请依据自己的模版消息配置更改参数
+        String[] params = new String[]{order.getOrderSn(),
+                order.getOrderPrice().toString(),
+                DateTimeUtils.getDateTimeDisplayString(order.getAddTime()),
+                order.getConsignee(), order.getMobile(), order.getAddress()};
 
 
-        return null;
+        Map<String, String> map = new HashMap<>();
+        map.put("openid","ogr7I5Vsk4bSvzszEw7LK8y8ZcFc");
+        notifyService.sendSubscribeMsg(map);
+        return ResBean.success("退款成功");
     }
 }

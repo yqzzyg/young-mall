@@ -5,6 +5,7 @@ import com.young.db.entity.YoungOrderGoods;
 import com.young.mall.common.ResBean;
 import com.young.mall.domain.vo.OrderCommentVo;
 import com.young.mall.domain.vo.SubmitOrderVo;
+import me.chanjar.weixin.common.error.WxErrorException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -160,5 +161,5 @@ public interface ClientOrderService {
      * @param orderId 订单id
      * @return
      */
-    ResBean refund(Integer userId, Integer orderId);
+    ResBean refund(Integer userId, Integer orderId) throws WxErrorException;
 }

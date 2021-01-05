@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.young.mall.dto.MailDto;
 import lombok.Data;
+import me.chanjar.weixin.common.error.WxErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.MailSender;
@@ -136,13 +137,21 @@ public class NotifyService {
      */
     @Async
     public void notifyWxTemplate(String toUser, NotifyType notifyType, String[] params, String page) {
-        if (BeanUtil.isEmpty(smsSender)) {
+        if (BeanUtil.isEmpty(wxTemplateSender)) {
             return;
         }
         String templateId = getTemplateId(notifyType, wxTemplate);
         wxTemplateSender.sendWechatMsg(toUser, templateId, params, page);
     }
+    /**
+     * 微信订阅消息通知
+     *
+     */
+    @Async
+    public void sendSubscribeMsg(Map<String, String> content) throws WxErrorException {
 
+        wxTemplateSender.sendSubscribeMsg(content);
+    }
     /**
      * 邮件消息通知, 接收者在spring.mail.sendto中指定
      *
