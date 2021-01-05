@@ -158,12 +158,15 @@ public class NotifyService {
 
         WxMaSubscribeMessage subscribeMessage = new WxMaSubscribeMessage();
 
+        //模板内容，格式形如 { "key1": { "value": any }, "key2": { "value": any } }
         subscribeMessage.setData(wxMaSubscribeData);
 
         //给谁推送 用户的openid （可以调用根据code换openid接口)
         subscribeMessage.setToUser(openId);
         //模板消息id
         subscribeMessage.setTemplateId(templateId);
+        //点击模板卡片后的跳转页面，仅限本小程序内的页面。支持带参数,（示例index?foo=bar）。该字段不填则模板无跳转。
+        subscribeMessage.setPage("pages/index/index");
         wxTemplateSender.sendSubscribeMsg(subscribeMessage);
     }
 

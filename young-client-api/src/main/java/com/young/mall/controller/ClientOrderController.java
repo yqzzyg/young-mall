@@ -187,6 +187,7 @@ public class ClientOrderController {
      * @param map
      * @return
      */
+    @ApiOperation("订单申请退款")
     @PostMapping("/refund")
     public ResBean refund(@RequestBody Map<String, Integer> map) throws WxErrorException {
         logger.info("取消订单入参：{}", JSONUtil.toJsonStr(map));
