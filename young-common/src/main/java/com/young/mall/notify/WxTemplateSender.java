@@ -2,8 +2,6 @@
 package com.young.mall.notify;
 
 import cn.binarywang.wx.miniapp.api.WxMaService;
-import cn.binarywang.wx.miniapp.api.impl.WxMaMsgServiceImpl;
-import cn.binarywang.wx.miniapp.bean.WxMaSubscribeData;
 import cn.binarywang.wx.miniapp.bean.WxMaSubscribeMessage;
 import cn.binarywang.wx.miniapp.bean.WxMaTemplateData;
 import cn.binarywang.wx.miniapp.bean.WxMaTemplateMessage;
