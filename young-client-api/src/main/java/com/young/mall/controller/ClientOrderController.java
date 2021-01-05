@@ -1,6 +1,7 @@
 package com.young.mall.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSON;
 import com.young.db.entity.YoungOrderGoods;
@@ -210,7 +211,7 @@ public class ClientOrderController {
 
     @ApiOperation("确认收货")
     @PostMapping("/confirm")
-    public ResBean confirm(@RequestBody Map<String,Object> map) {
+    public ResBean confirm(@RequestBody Map<String,Integer> map) {
 
         logger.info("确认收货入参：{}",map);
 
@@ -219,7 +220,13 @@ public class ClientOrderController {
             logger.error("确认收货失败，未登录。");
             return ResBean.unauthorized("请登录！");
         }
+
+        Integer orderId = map.get("orderId");
+        if (ObjectUtil.isEmpty(orderId)) {
+            return ResBean.validateFailed("订单号不能为空");
+        }
         Integer userId = userInfo.getYoungUser().getId();
-        return ResBean.success(map);
+        ResBean resBean = clientOrderService.confirm(userId, orderId);
+        return resBean;
     }
 }

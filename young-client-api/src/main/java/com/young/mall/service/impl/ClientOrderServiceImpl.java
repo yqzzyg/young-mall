@@ -947,4 +947,32 @@ public class ClientOrderServiceImpl implements ClientOrderService {
         }
         return ResBean.success("退款成功");
     }
+
+
+    @Override
+    public ResBean confirm(Integer userId, Integer orderId) {
+
+        YoungOrder order = this.findById(orderId);
+        if (BeanUtil.isEmpty(order) || !order.getUserId().equals(userId)) {
+            return ResBean.validateFailed("该订单与当前用户不符");
+        }
+
+        OrderHandleOption handleOption = OrderUtil.build(order);
+
+        if (!handleOption.isConfirm()) {
+            logger.error("订单确认收货失败:{}", ClientResponseCode.ORDER_CONFIRM_OPERATION.getMsg());
+            return ResBean.failed(ClientResponseCode.ORDER_CONFIRM_OPERATION);
+        }
+
+        Short commentsCount = clientOrderGoodsService.getCommentsCount(orderId);
+
+        order.setComments(commentsCount);
+        order.setOrderStatus(OrderUtil.STATUS_CONFIRM);
+        order.setConfirmTime(LocalDateTime.now());
+        if (this.updateWithOptimisticLocker(order) != 1) {
+            logger.error("订单确认收货失败：{}", "更新订单信息失败");
+            return ResBean.failed(504, "更新数据已经失效");
+        }
+        return ResBean.success("确认成功");
+    }
 }

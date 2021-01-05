@@ -163,4 +163,13 @@ public interface ClientOrderService {
      * @return
      */
     ResBean refund(YoungUser user, Integer orderId);
+
+    /**
+     * 确认收货
+     *
+     * @param userId  用户id
+     * @param orderId 订单id
+     * @return
+     */
+    ResBean confirm(Integer userId, Integer orderId);
 }

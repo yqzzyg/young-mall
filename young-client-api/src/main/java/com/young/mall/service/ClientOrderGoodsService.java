@@ -47,8 +47,18 @@ public interface ClientOrderGoodsService {
 
     /**
      * 添加订单商品
+     *
      * @param orderGoods
      * @return
      */
     Integer add(YoungOrderGoods orderGoods);
+
+    /**
+     * 查询待评价商品数量
+     *
+     * @param orderId
+     * @return
+     */
+    Short getCommentsCount(Integer orderId);
+
 }

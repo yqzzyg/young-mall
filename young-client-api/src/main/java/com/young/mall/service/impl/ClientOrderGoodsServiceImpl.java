@@ -54,4 +54,11 @@ public class ClientOrderGoodsServiceImpl implements ClientOrderGoodsService {
         orderGoods.setUpdateTime(LocalDateTime.now());
         return youngOrderGoodsMapper.insertSelective(orderGoods);
     }
+
+    @Override
+    public Short getCommentsCount(Integer orderId) {
+        YoungOrderGoodsExample example = new YoungOrderGoodsExample();
+        example.or().andOrderIdEqualTo(orderId).andDeletedEqualTo(false);
+        return (short) youngOrderGoodsMapper.countByExample(example);
+    }
 }
