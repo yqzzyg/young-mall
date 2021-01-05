@@ -921,7 +921,7 @@ public class ClientOrderServiceImpl implements ClientOrderService {
         //第一个内容： 订单号
         WxMaSubscribeData wxMaSubscribeData1 = new WxMaSubscribeData();
         wxMaSubscribeData1.setName("character_string3");
-        wxMaSubscribeData1.setValue("339208499");
+        wxMaSubscribeData1.setValue(order.getOrderSn());
 
         //每个参数 存放到大集合中
         wxMaSubscribeData.add(wxMaSubscribeData1);
@@ -929,7 +929,7 @@ public class ClientOrderServiceImpl implements ClientOrderService {
         //第二个内容： 退款金额
         WxMaSubscribeData wxMaSubscribeData2 = new WxMaSubscribeData();
         wxMaSubscribeData2.setName("amount2");
-        wxMaSubscribeData2.setValue("188");
+        wxMaSubscribeData2.setValue(order.getActualPrice().toString());
         wxMaSubscribeData.add(wxMaSubscribeData2);
 
         //第三个内容： 客户名称
