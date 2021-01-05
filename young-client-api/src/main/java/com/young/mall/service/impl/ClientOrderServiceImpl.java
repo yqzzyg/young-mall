@@ -912,7 +912,7 @@ public class ClientOrderServiceImpl implements ClientOrderService {
                 .title("退款申请")
                 .content(OrderUtil.orderHtmlText(order, order.getId().intValue() + "", null))
                 .build();
-        notifyService.notifySslMail(mailDto);
+//        notifyService.notifySslMail(mailDto);
         //给目标用户发邮件
         //notifyService.notifySslMailWithTo(mailDto);
 
