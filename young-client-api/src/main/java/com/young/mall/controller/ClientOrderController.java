@@ -201,9 +201,8 @@ public class ClientOrderController {
         if (ObjectUtils.isEmpty(orderId)) {
             return ResBean.failed("订单id不能为空");
         }
-        Integer userId = userInfo.getYoungUser().getId();
 
-        ResBean result = clientOrderService.refund(userId, orderId);
+        ResBean result = clientOrderService.refund(userInfo.getYoungUser(), orderId);
 
         return result;
     }

@@ -3,7 +3,7 @@ package com.young.mall.config.wx;
 import cn.binarywang.wx.miniapp.api.WxMaService;
 import cn.binarywang.wx.miniapp.api.impl.WxMaServiceImpl;
 import cn.binarywang.wx.miniapp.config.WxMaConfig;
-import cn.binarywang.wx.miniapp.config.WxMaInMemoryConfig;
+import cn.binarywang.wx.miniapp.config.impl.WxMaDefaultConfigImpl;
 import com.github.binarywang.wxpay.config.WxPayConfig;
 import com.github.binarywang.wxpay.service.WxPayService;
 import com.github.binarywang.wxpay.service.impl.WxPayServiceImpl;
@@ -23,7 +23,7 @@ public class WxConfig {
 
     @Bean
     public WxMaConfig wxMaConfig() {
-        WxMaInMemoryConfig config = new WxMaInMemoryConfig();
+        WxMaDefaultConfigImpl config = new WxMaDefaultConfigImpl();
         config.setAppid(properties.getAppId());
         config.setSecret(properties.getAppSecret());
         return config;

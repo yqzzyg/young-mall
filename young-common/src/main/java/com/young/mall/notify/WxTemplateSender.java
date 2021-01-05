@@ -92,45 +92,12 @@ public class WxTemplateSender {
     /**
      * 发送订阅消息
      *
-     * @param content
+     * @param subscribeMessage
      * @return
      */
-    public Map sendSubscribeMsg(Map<String, String> content) throws WxErrorException {
+    public void sendSubscribeMsg(WxMaSubscribeMessage subscribeMessage) throws WxErrorException {
 
-        //===========创建一个参数集合===========
-        ArrayList<WxMaSubscribeData> wxMaSubscribeData = new ArrayList<>();
-
-        //第一个内容： 奖品名称
-        WxMaSubscribeData wxMaSubscribeData1 = new WxMaSubscribeData();
-        wxMaSubscribeData1.setName("character_string3");
-        wxMaSubscribeData1.setValue("339208499");
-
-        //每个参数 存放到大集合中
-        wxMaSubscribeData.add(wxMaSubscribeData1);
-
-        WxMaSubscribeData wxMaSubscribeData2 = new WxMaSubscribeData();
-        wxMaSubscribeData1.setName("amount2");
-        wxMaSubscribeData1.setValue("188");
-        wxMaSubscribeData.add(wxMaSubscribeData2);
-
-        WxMaSubscribeData wxMaSubscribeData3 = new WxMaSubscribeData();
-        wxMaSubscribeData1.setName("thing1");
-        wxMaSubscribeData1.setValue("TIT创意园");
-        wxMaSubscribeData.add(wxMaSubscribeData3);
-
-
-        WxMaSubscribeMessage subscribeMessage = new WxMaSubscribeMessage();
-
-        subscribeMessage.setData(wxMaSubscribeData);
-
-        //给谁推送 用户的openid （可以调用根据code换openid接口)
-        subscribeMessage.setToUser(content.get("openid"));
-        //模板消息id
-        subscribeMessage.setTemplateId("8uxuhparIyhRZjasTvAABI4bAmWlhyBh62SxRDXNfQU");
         wxMaService.getMsgService().sendSubscribeMsg(subscribeMessage);
-
-        return null;
-
     }
 
     private List<WxMaTemplateData> createMsgData(String[] parms) {

@@ -1,5 +1,7 @@
 package com.young.mall.notify;
 
+import cn.binarywang.wx.miniapp.bean.WxMaSubscribeData;
+import cn.binarywang.wx.miniapp.bean.WxMaSubscribeMessage;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
@@ -143,15 +145,28 @@ public class NotifyService {
         String templateId = getTemplateId(notifyType, wxTemplate);
         wxTemplateSender.sendWechatMsg(toUser, templateId, params, page);
     }
+
     /**
      * 微信订阅消息通知
-     *
      */
     @Async
-    public void sendSubscribeMsg(Map<String, String> content) throws WxErrorException {
+    public void sendSubscribeMsg(List<WxMaSubscribeData> wxMaSubscribeData, String openId, NotifyType notifyType) throws WxErrorException {
+        if (BeanUtil.isEmpty(wxTemplateSender)) {
+            return;
+        }
+        String templateId = getTemplateId(notifyType, wxTemplate);
 
-        wxTemplateSender.sendSubscribeMsg(content);
+        WxMaSubscribeMessage subscribeMessage = new WxMaSubscribeMessage();
+
+        subscribeMessage.setData(wxMaSubscribeData);
+
+        //给谁推送 用户的openid （可以调用根据code换openid接口)
+        subscribeMessage.setToUser(openId);
+        //模板消息id
+        subscribeMessage.setTemplateId(templateId);
+        wxTemplateSender.sendSubscribeMsg(subscribeMessage);
     }
+
     /**
      * 邮件消息通知, 接收者在spring.mail.sendto中指定
      *

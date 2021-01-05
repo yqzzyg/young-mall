@@ -2,6 +2,7 @@ package com.young.mall.service;
 
 import com.young.db.entity.YoungOrder;
 import com.young.db.entity.YoungOrderGoods;
+import com.young.db.entity.YoungUser;
 import com.young.mall.common.ResBean;
 import com.young.mall.domain.vo.OrderCommentVo;
 import com.young.mall.domain.vo.SubmitOrderVo;
@@ -157,9 +158,9 @@ public interface ClientOrderService {
     /**
      * 退货
      *
-     * @param userId  用户id
+     * @param user  用户
      * @param orderId 订单id
      * @return
      */
-    ResBean refund(Integer userId, Integer orderId) throws WxErrorException;
+    ResBean refund(YoungUser user, Integer orderId) throws WxErrorException;
 }

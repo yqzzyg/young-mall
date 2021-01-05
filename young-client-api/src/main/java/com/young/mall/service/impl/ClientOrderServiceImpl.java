@@ -1,5 +1,6 @@
 package com.young.mall.service.impl;
 
+import cn.binarywang.wx.miniapp.bean.WxMaSubscribeData;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
@@ -29,7 +30,6 @@ import com.young.mall.notify.NotifyService;
 import com.young.mall.notify.NotifyType;
 import com.young.mall.service.*;
 import com.young.mall.system.SystemConfig;
-import com.young.mall.utils.DateTimeUtils;
 import com.young.mall.utils.IpUtil;
 import com.young.mall.utils.OrderHandleOption;
 import com.young.mall.utils.OrderUtil;
@@ -886,16 +886,16 @@ public class ClientOrderServiceImpl implements ClientOrderService {
     }
 
     @Override
-    public ResBean refund(Integer userId, Integer orderId) throws WxErrorException {
+    public ResBean refund(YoungUser user, Integer orderId) throws WxErrorException {
 
         YoungOrder order = this.findById(orderId);
         if (BeanUtil.isEmpty(order)) {
-            logger.error("用户id：{}，用户申请退款失败，查询不到该订单：参数错误", userId);
+            logger.error("用户：{}，用户申请退款失败，查询不到该订单：参数错误", user);
             return ResBean.failed(401, "参数错误");
         }
         OrderHandleOption handleOption = OrderUtil.build(order);
         if (!handleOption.isRefund()) {
-            logger.error("用户id：{}，用户申请退款失败，订单状态不对:{}", userId, JSONUtil.toJsonStr(order));
+            logger.error("用户：{}，用户申请退款失败，订单状态不对:{}", user, JSONUtil.toJsonStr(order));
             return ResBean.failed(402, "参数值错误");
         }
         // 设置订单申请退款状态
@@ -916,16 +916,30 @@ public class ClientOrderServiceImpl implements ClientOrderService {
         //给目标用户发邮件
         //notifyService.notifySslMailWithTo(mailDto);
 
-        // 请依据自己的模版消息配置更改参数
-        String[] params = new String[]{order.getOrderSn(),
-                order.getOrderPrice().toString(),
-                DateTimeUtils.getDateTimeDisplayString(order.getAddTime()),
-                order.getConsignee(), order.getMobile(), order.getAddress()};
+        //创建一个参数集合
+        List<WxMaSubscribeData> wxMaSubscribeData = new ArrayList<>();
+        //第一个内容： 订单号
+        WxMaSubscribeData wxMaSubscribeData1 = new WxMaSubscribeData();
+        wxMaSubscribeData1.setName("character_string3");
+        wxMaSubscribeData1.setValue("339208499");
+
+        //每个参数 存放到大集合中
+        wxMaSubscribeData.add(wxMaSubscribeData1);
+
+        //第二个内容： 退款金额
+        WxMaSubscribeData wxMaSubscribeData2 = new WxMaSubscribeData();
+        wxMaSubscribeData2.setName("amount2");
+        wxMaSubscribeData2.setValue("188");
+        wxMaSubscribeData.add(wxMaSubscribeData2);
+
+        //第三个内容： 客户名称
+        WxMaSubscribeData wxMaSubscribeData3 = new WxMaSubscribeData();
+        wxMaSubscribeData3.setName("thing1");
+        wxMaSubscribeData3.setValue(user.getNickname());
+        wxMaSubscribeData.add(wxMaSubscribeData3);
 
 
-        Map<String, String> map = new HashMap<>();
-        map.put("openid","ogr7I5Vsk4bSvzszEw7LK8y8ZcFc");
-        notifyService.sendSubscribeMsg(map);
+        notifyService.sendSubscribeMsg(wxMaSubscribeData, user.getWeixinOpenid(), NotifyType.REFUND);
         return ResBean.success("退款成功");
     }
 }
