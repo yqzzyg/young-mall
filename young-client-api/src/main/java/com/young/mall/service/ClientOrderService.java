@@ -172,4 +172,13 @@ public interface ClientOrderService {
      * @return
      */
     ResBean confirm(Integer userId, Integer orderId);
+
+    /**
+     * 删除订单
+     *
+     * @param userId  用户id
+     * @param orderId 订单id
+     * @return
+     */
+    ResBean delete(Integer userId, Integer orderId);
 }

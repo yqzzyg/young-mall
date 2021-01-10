@@ -45,7 +45,7 @@ public class ClientCatalogController {
      */
     @ApiOperation("分类详情")
     @GetMapping("/index")
-    public ResBean<Map<String, Object>> index(@RequestParam("id") Integer id) {
+    public ResBean<Map<String, Object>> index(Integer id) {
 
         //查询所有一级分类
         List<YoungCategory> categoryList = clientCategoryService.queryLevelFirst();

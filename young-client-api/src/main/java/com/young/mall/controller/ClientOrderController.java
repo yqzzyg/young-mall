@@ -3,7 +3,6 @@ package com.young.mall.controller;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.json.JSONUtil;
-import com.alibaba.fastjson.JSON;
 import com.young.db.entity.YoungOrderGoods;
 import com.young.mall.common.ResBean;
 import com.young.mall.domain.ClientUserDetails;
@@ -13,7 +12,6 @@ import com.young.mall.service.ClientOrderService;
 import com.young.mall.service.ClientUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import me.chanjar.weixin.common.error.WxErrorException;
 import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -115,7 +113,7 @@ public class ClientOrderController {
     @PostMapping("/submit")
     public ResBean submit(@Valid @RequestBody SubmitOrderVo submitOrder) {
 
-        logger.info("提交订单入参submit:{}", JSON.toJSONString(submitOrder));
+        logger.info("提交订单入参submit:{}",  JSONUtil.toJsonStr(submitOrder));
 
         ClientUserDetails userInfo = clientUserService.getUserInfo();
         if (BeanUtil.isEmpty(userInfo)) {
@@ -190,7 +188,7 @@ public class ClientOrderController {
      */
     @ApiOperation("订单申请退款")
     @PostMapping("/refund")
-    public ResBean refund(@RequestBody Map<String, Integer> map) throws WxErrorException {
+    public ResBean refund(@RequestBody Map<String, Integer> map) {
         logger.info("取消订单入参：{}", JSONUtil.toJsonStr(map));
 
         ClientUserDetails userInfo = clientUserService.getUserInfo();
@@ -211,9 +209,9 @@ public class ClientOrderController {
 
     @ApiOperation("确认收货")
     @PostMapping("/confirm")
-    public ResBean confirm(@RequestBody Map<String,Integer> map) {
+    public ResBean confirm(@RequestBody Map<String, Integer> map) {
 
-        logger.info("确认收货入参：{}",map);
+        logger.info("确认收货入参：{}", map);
 
         ClientUserDetails userInfo = clientUserService.getUserInfo();
         if (BeanUtil.isEmpty(userInfo)) {
@@ -228,5 +226,24 @@ public class ClientOrderController {
         Integer userId = userInfo.getYoungUser().getId();
         ResBean resBean = clientOrderService.confirm(userId, orderId);
         return resBean;
+    }
+
+    @ApiOperation("删除订单")
+    @PostMapping("delete")
+    public ResBean delete(@RequestBody Map<String, Integer> map) {
+        logger.info("删除订单入参：{}", map);
+
+        ClientUserDetails userInfo = clientUserService.getUserInfo();
+        if (BeanUtil.isEmpty(userInfo)) {
+            logger.error("删除订单失败，未登录。");
+            return ResBean.unauthorized("请登录！");
+        }
+
+        Integer orderId = map.get("orderId");
+        if (ObjectUtil.isEmpty(orderId)) {
+            return ResBean.validateFailed();
+        }
+
+        return clientOrderService.delete(userInfo.getYoungUser().getId(), orderId);
     }
 }

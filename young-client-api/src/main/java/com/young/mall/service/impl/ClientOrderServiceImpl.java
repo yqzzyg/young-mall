@@ -975,4 +975,25 @@ public class ClientOrderServiceImpl implements ClientOrderService {
         }
         return ResBean.success("确认成功");
     }
+
+    @Override
+    public ResBean delete(Integer userId, Integer orderId) {
+
+
+        YoungOrder order = this.findById(orderId);
+        if (BeanUtil.isEmpty(order) || !userId.equals(order.getUserId())) {
+            return ResBean.validateFailed();
+        }
+        OrderHandleOption handleOption = OrderUtil.build(order);
+
+        if (!handleOption.isDelete()) {
+            logger.error("删除订单失败：{}", ClientResponseCode.ORDER_DEL_OPERATION.getMsg());
+            return ResBean.failed(ClientResponseCode.ORDER_DEL_OPERATION);
+        }
+
+        //此处的order_status字段没有用于标识删除的数字，所以此处的删除直接调用deleted字段用于逻辑删除
+        int count = youngOrderMapper.logicalDeleteByPrimaryKey(orderId);
+        //TODO 后续需要添加删除售后记录的逻辑
+        return ResBean.success(count);
+    }
 }
