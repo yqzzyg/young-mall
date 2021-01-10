@@ -109,11 +109,16 @@ public class ClientOrderController {
         return clientOrderService.comment(commentVo);
     }
 
+    /**
+     * TODO 改造接口幂等性，可利用userId和cartId（此处的cartId如果从购物车界面调用，则cartId为空，后续改造）的唯一性利用Redis改造
+     * @param submitOrder
+     * @return
+     */
     @ApiOperation("提交订单")
     @PostMapping("/submit")
     public ResBean submit(@Valid @RequestBody SubmitOrderVo submitOrder) {
 
-        logger.info("提交订单入参submit:{}",  JSONUtil.toJsonStr(submitOrder));
+        logger.info("提交订单入参submit:{}", JSONUtil.toJsonStr(submitOrder));
 
         ClientUserDetails userInfo = clientUserService.getUserInfo();
         if (BeanUtil.isEmpty(userInfo)) {
@@ -129,6 +134,7 @@ public class ClientOrderController {
      * 付款订单的预支付会话标识
      * //预付款API文档
      * https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_1
+     * TODO 改造接口幂等性，可利用userId和orderId的唯一性利用Redis改造
      *
      * @param map
      * @return
@@ -182,6 +188,7 @@ public class ClientOrderController {
      * <p>
      * 1. 检测当前订单是否能够退款；
      * 2. 设置订单申请退款状态。
+     * TODO 改造接口幂等性，可利用userId和orderId的唯一性利用Redis改造
      *
      * @param map
      * @return
