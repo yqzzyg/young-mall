@@ -46,6 +46,7 @@ public class GoodsProductServiceImpl implements GoodsProductService {
     public Optional<Integer> insertList(List<YoungGoodsProduct> list) {
 
         for (YoungGoodsProduct product : list) {
+            product.setVersion(0);
             product.setAddTime(LocalDateTime.now());
             product.setUpdateTime(LocalDateTime.now());
         }
