@@ -31,10 +31,17 @@ public interface GoodsProductMapper {
     /**
      * 减库存
      *
-     * @param id
-     * @param num
+     * @param id      young_goods_product主键id
+     * @param num     需要减的数量
+     * @param version 乐观锁版本号
      * @return
      */
-    int reduceStock(@Param("id") Integer id, @Param("num") Short num);
+    int reduceStock(@Param("id") Integer id, @Param("num") Short num, @Param("version") Integer version);
 
+    /**
+     * @param id young_goods主键id
+     * @param num 添加的数量
+     * @return
+     */
+    int addSales(@Param("id") Integer id, @Param("num") Short num);
 }

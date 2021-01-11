@@ -1,5 +1,6 @@
 package com.young.mall.service;
 
+import com.young.db.entity.YoungCart;
 import com.young.db.entity.YoungGoodsProduct;
 
 /**
@@ -20,12 +21,10 @@ public interface ClientGoodsProductService {
     /**
      * 减库存
      *
-     * @param id
-     * @param goodsId
-     * @param num
+     * @param checkGoods 购物车单个商品，包含young_goods主键id,young_goods_product主键id
      * @return
      */
-    Integer reduceStock(Integer id, Integer goodsId, Short num);
+    Integer reduceStock(YoungCart checkGoods);
 
     /**
      * 增加库存

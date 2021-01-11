@@ -26,6 +26,13 @@
     <update id="reduceStock" parameterType="map">
         update young_goods_product
         set number = number - #{num,jdbcType=INTEGER}, update_time = now()
-        where id = #{id,jdbcType=INTEGER} and number >= #{num,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER} and number >= #{num,jdbcType=INTEGER} and version =
+        #{version,jdbcType=INTEGER}
+    </update>
+
+    <update id="addSales" parameterType="map">
+        update young_goods
+        set sales = sales + #{num,jdbcType=INTEGER}, update_time = now()
+        where id = #{id,jdbcType=INTEGER}
     </update>
 </mapper>

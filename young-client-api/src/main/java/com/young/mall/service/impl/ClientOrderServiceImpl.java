@@ -460,16 +460,7 @@ public class ClientOrderServiceImpl implements ClientOrderService {
 
         // 商品货品数量减少
         for (YoungCart checkGoods : checkedGoodsList) {
-
-            Integer productId = checkGoods.getProductId();
-
-            YoungGoodsProduct product = clientGoodsProductService.findById(productId);
-
-            Integer remainNumber = product.getNumber() - checkGoods.getNumber();
-            if (remainNumber < 0) {
-                Asserts.fail("下单的商品货品数量大于库存量");
-            }
-            if (clientGoodsProductService.reduceStock(productId, checkGoods.getGoodsId(), checkGoods.getNumber()) == 0) {
+            if (clientGoodsProductService.reduceStock(checkGoods) == 0) {
                 Asserts.fail("商品货品库存减少失败");
             }
         }
