@@ -246,7 +246,7 @@ public class ClientCartController {
      */
     @ApiOperation("购物车下单")
     @PostMapping("/checkout")
-    public ResBean checkout(@RequestBody CheckOutVo checkOutVo) {
+    public ResBean checkout(@Valid @RequestBody CheckOutVo checkOutVo) {
 
         ClientUserDetails userInfo = clientUserService.getUserInfo();
         if (BeanUtil.isEmpty(userInfo)) {
