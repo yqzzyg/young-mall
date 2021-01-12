@@ -95,13 +95,13 @@ public interface ClientCartService {
      * 购物车下单
      *
      * @param userId         用户ID
-     * @param cartId         购物车商品ID： 如果购物车商品ID是空，则下单当前用户所有购物车商品； 如果购物车商品ID非空，则只下单当前购物车商品。
+     * @param cartIds         购物车商品ID： 如果购物车商品ID是空，则下单当前用户所有购物车商品； 如果购物车商品ID非空，则只下单当前购物车商品。
      * @param addressId      收货地址ID： 如果收货地址ID是空，则查询当前用户的默认地址。
      * @param couponId       优惠券ID： 如果优惠券ID是空，则自动选择合适的优惠券。
      * @param grouponRulesId
      * @return 购物车操作结果
      */
-    ResBean checkOut(Integer userId, Integer cartId,
+    ResBean checkOut(Integer userId, List<Integer> cartIds,
                      Integer addressId, Integer couponId,
                      Integer grouponRulesId);
 

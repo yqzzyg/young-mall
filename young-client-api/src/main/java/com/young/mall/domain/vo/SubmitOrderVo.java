@@ -1,12 +1,11 @@
 package com.young.mall.domain.vo;
 
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @Description:
@@ -22,7 +21,7 @@ public class SubmitOrderVo implements Serializable {
 
     @NotNull(message = "购物车id不能为空")
     @ApiModelProperty("购物车id")
-    private Integer cartId;
+    private List<Integer> cartIds;
 
     @NotNull(message = "收货地址id不能为空")
     @ApiModelProperty("收货地址id")

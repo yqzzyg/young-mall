@@ -8,6 +8,7 @@ import com.young.mall.common.ResBean;
 import com.young.mall.domain.CartCheckDto;
 import com.young.mall.domain.ClientUserDetails;
 import com.young.mall.domain.enums.ClientResponseCode;
+import com.young.mall.domain.vo.CheckOutVo;
 import com.young.mall.domain.vo.FastAddVo;
 import com.young.mall.service.ClientCartService;
 import com.young.mall.service.ClientGoodsProductService;
@@ -238,25 +239,23 @@ public class ClientCartController {
     }
 
     /**
-     * @param cartId         购物车商品ID： 如果购物车商品ID是空，则下单当前用户所有购物车商品； 如果购物车商品ID非空，则只下单当前购物车商品。
-     * @param addressId      收货地址ID： 如果收货地址ID是空，则查询当前用户的默认地址。
-     * @param couponId       优惠券ID： 如果优惠券ID是空，则自动选择合适的优惠券。
-     * @param grouponRulesId
+     * @param checkOutVo 购物车商品ID： 如果购物车商品ID是空，则下单当前用户所有购物车商品； 如果购物车商品ID非空，则只下单当前购物车商品。
+     *                   收货地址ID： 如果收货地址ID是空，则查询当前用户的默认地址。
+     *                   优惠券ID： 如果优惠券ID是空，则自动选择合适的优惠券。
      * @return
      */
     @ApiOperation("购物车下单")
-    @GetMapping("/checkout")
-    public ResBean checkout(@RequestParam("cartId") Integer cartId, @RequestParam("addressId")Integer addressId,
-                            @RequestParam("couponId") Integer couponId, @RequestParam("grouponRulesId") Integer grouponRulesId) {
+    @PostMapping("/checkout")
+    public ResBean checkout(@RequestBody CheckOutVo checkOutVo) {
 
         ClientUserDetails userInfo = clientUserService.getUserInfo();
         if (BeanUtil.isEmpty(userInfo)) {
             logger.error("用户添加购物车失败，未登录。");
             return ResBean.unauthorized("请登录！");
         }
-        //收货地址
-
-        ResBean resBean = clientCartService.checkOut(userInfo.getYoungUser().getId(), cartId, addressId, couponId, grouponRulesId);
+        ResBean resBean = clientCartService.checkOut(userInfo.getYoungUser().getId(),
+                checkOutVo.getCartIds(), checkOutVo.getAddressId(),
+                checkOutVo.getCouponId(), checkOutVo.getGrouponRulesId());
         return resBean;
     }
 

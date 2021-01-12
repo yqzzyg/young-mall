@@ -408,7 +408,7 @@ public class ClientOrderServiceImpl implements ClientOrderService {
     @Override
     public ResBean submit(Integer userId, SubmitOrderVo submitOrder) {
 
-        Integer cartId = submitOrder.getCartId();
+        List<Integer> cartIds = submitOrder.getCartIds();
         Integer grouponLinkId = submitOrder.getGrouponLinkId();
         Integer grouponRulesId = submitOrder.getGrouponRulesId();
         Integer couponId = submitOrder.getCouponId();
@@ -443,7 +443,7 @@ public class ClientOrderServiceImpl implements ClientOrderService {
         }
 
         //计算运费和商品总价
-        Map<String, Object> goodsPrice = this.getAllGoodsPrice(userId, cartId, rules, grouponPrice);
+        Map<String, Object> goodsPrice = this.getAllGoodsPrice(userId, cartIds, rules, grouponPrice);
         List<YoungCart> checkedGoodsList = (List<YoungCart>) goodsPrice.get("checkedGoodsList");
 
         //把订单信息落库  young_order表
@@ -454,9 +454,9 @@ public class ClientOrderServiceImpl implements ClientOrderService {
         this.addOrderGoods(order, checkedGoodsList);
 
         // 删除购物车里面的商品信息
-//        Integer count = clientCartService.clearGoods(userId);
-
-        Integer count = clientCartService.clearGoodsByCartId(cartId);
+        for (Integer cartId : cartIds) {
+            Integer count = clientCartService.clearGoodsByCartId(cartId);
+        }
 
         // 商品货品数量减少
         for (YoungCart checkGoods : checkedGoodsList) {
@@ -546,17 +546,19 @@ public class ClientOrderServiceImpl implements ClientOrderService {
     }
 
     //计算运费和商品总价
-    private Map<String, Object> getAllGoodsPrice(Integer userId, Integer cartId, YoungGrouponRules rules, BigDecimal grouponPrice) {
+    private Map<String, Object> getAllGoodsPrice(Integer userId, List<Integer> cartIds, YoungGrouponRules rules, BigDecimal grouponPrice) {
 
         // 商品价格
         List<YoungCart> checkedGoodsList = null;
         // 如果未从购物车发起的下单，则获取用户选好的商品
-        if (cartId == null || cartId.equals(0)) {
+        if (cartIds == null || cartIds.size() == 0) {
             checkedGoodsList = clientCartService.queryByUidAndChecked(userId);
         } else {
-            YoungCart cart = clientCartService.findById(cartId);
-            checkedGoodsList = new ArrayList<>(2);
-            checkedGoodsList.add(cart);
+            for (Integer cartId : cartIds) {
+                YoungCart cart = clientCartService.findById(cartId);
+                checkedGoodsList = new ArrayList<>(cartIds.size());
+                checkedGoodsList.add(cart);
+            }
         }
 
         // 商品总价 （包含团购减免，即减免团购后的商品总价，多店铺需将所有商品相加）

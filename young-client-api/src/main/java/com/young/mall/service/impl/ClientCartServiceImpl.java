@@ -194,7 +194,7 @@ public class ClientCartServiceImpl implements ClientCartService {
 
     @Transactional
     @Override
-    public ResBean checkOut(Integer userId, Integer cartId, Integer addressId, Integer couponId, Integer grouponRulesId) {
+    public ResBean checkOut(Integer userId, List<Integer> cartIds, Integer addressId, Integer couponId, Integer grouponRulesId) {
 
         // 收货地址
         YoungAddress checkedAddress = null;
@@ -228,15 +228,17 @@ public class ClientCartServiceImpl implements ClientCartService {
         // 商品价格
         List<YoungCart> checkedGoodsList = null;
         // 如果未从购物车发起的下单，则获取用户选好的商品
-        if (cartId == null || cartId.equals(0)) {
+        if (cartIds == null || cartIds.size() == 0) {
             checkedGoodsList = this.queryByUidAndChecked(userId);
         } else {
-            YoungCart cart = this.findById(cartId);
-            if (BeanUtil.isEmpty(cart)) {
-                return ResBean.failed("参数值不对");
-            }
             checkedGoodsList = new ArrayList<>(4);
-            checkedGoodsList.add(cart);
+            for (Integer cartId : cartIds) {
+                YoungCart cart = this.findById(cartId);
+                if (BeanUtil.isEmpty(cart)) {
+                    return ResBean.failed("参数值不对");
+                }
+                checkedGoodsList.add(cart);
+            }
         }
 
         Map<String, Object> data = new HashMap<>();
