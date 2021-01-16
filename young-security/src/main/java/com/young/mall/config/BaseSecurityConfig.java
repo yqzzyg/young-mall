@@ -40,7 +40,7 @@ public class BaseSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(
                         "/admin/auth/login",
                         //小程序首页
-                        "/client/home/*","/client/auth/*",
+                        "/client/home/*","/client/auth/*","/client/goods/count",
                         "/doc.html",
                         "/swagger-resources/**",
                         "/swagger/**",
