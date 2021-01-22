@@ -4,7 +4,7 @@ import cn.binarywang.wx.miniapp.bean.WxMaSubscribeMessage;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
-import com.young.mall.dto.MailDto;
+import com.young.mall.domain.dto.MailDto;
 import lombok.Data;
 import me.chanjar.weixin.common.error.WxErrorException;
 import org.slf4j.Logger;

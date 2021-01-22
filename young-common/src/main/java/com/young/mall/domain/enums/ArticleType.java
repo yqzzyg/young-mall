@@ -1,4 +1,4 @@
-package com.young.mall.enums;
+package com.young.mall.domain.enums;
 
 import cn.hutool.core.util.StrUtil;
 

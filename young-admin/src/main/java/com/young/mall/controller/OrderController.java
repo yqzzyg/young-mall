@@ -3,7 +3,7 @@ package com.young.mall.controller;
 import com.young.db.entity.YoungOrder;
 import com.young.mall.common.CommonPage;
 import com.young.mall.common.ResBean;
-import com.young.mall.dto.RefundVo;
+import com.young.mall.domain.dto.RefundVo;
 import com.young.mall.service.OrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

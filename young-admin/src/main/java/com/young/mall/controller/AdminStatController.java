@@ -1,7 +1,7 @@
 package com.young.mall.controller;
 
 import com.young.mall.common.ResBean;
-import com.young.mall.dto.StatVo;
+import com.young.mall.domain.dto.StatVo;
 import com.young.mall.service.AdminStatService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

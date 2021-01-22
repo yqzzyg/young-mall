@@ -2,18 +2,16 @@ package com.young.mall.controller;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
-import com.young.db.entity.YoungAd;
 import com.young.db.entity.YoungAdmin;
 import com.young.mall.common.CommonPage;
 import com.young.mall.common.ResBean;
-import com.young.mall.dto.AdminUserDto;
-import com.young.mall.enums.AdminResponseCode;
+import com.young.mall.domain.dto.AdminUserDto;
+import com.young.mall.domain.enums.AdminResponseCode;
 import com.young.mall.exception.Asserts;
 import com.young.mall.service.AdminUserService;
 import com.young.mall.utils.RegexUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.tomcat.util.http.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,8 +22,6 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import static com.young.mall.enums.AdminResponseCode.ADMIN_INVALID_NAME;
 
 /**
  * @Description: 管理员管理

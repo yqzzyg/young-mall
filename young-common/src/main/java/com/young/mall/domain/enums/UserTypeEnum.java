@@ -1,4 +1,4 @@
-package com.young.mall.enums;
+package com.young.mall.domain.enums;
 
 /**
  * @Description: 用户类型的枚举类

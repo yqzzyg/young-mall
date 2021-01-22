@@ -1,4 +1,4 @@
-package com.young.mall.dto;
+package com.young.mall.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

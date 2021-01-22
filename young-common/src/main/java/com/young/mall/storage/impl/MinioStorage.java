@@ -3,7 +3,7 @@ package com.young.mall.storage.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.json.JSONUtil;
-import com.young.mall.dto.BucketPolicyConfigDto;
+import com.young.mall.domain.dto.BucketPolicyConfigDto;
 import com.young.mall.exception.Asserts;
 import com.young.mall.storage.Storage;
 import io.minio.*;

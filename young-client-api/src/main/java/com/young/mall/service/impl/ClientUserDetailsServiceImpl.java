@@ -1,9 +1,8 @@
 package com.young.mall.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import com.young.db.entity.YoungUser;
-import com.young.mall.constant.RedisConstant;
+import com.young.mall.domain.constant.RedisConstant;
 import com.young.mall.domain.ClientUserDetails;
 import com.young.mall.exception.Asserts;
 import com.young.mall.service.ClientCacheService;

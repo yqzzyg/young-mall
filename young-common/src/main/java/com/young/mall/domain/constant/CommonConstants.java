@@ -1,4 +1,4 @@
-package com.young.mall.constant;
+package com.young.mall.domain.constant;
 
 /**
  * @Description: 一些常用的参数定义

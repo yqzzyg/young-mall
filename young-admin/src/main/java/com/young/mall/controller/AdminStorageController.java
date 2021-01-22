@@ -5,7 +5,7 @@ import cn.hutool.json.JSONUtil;
 import com.young.db.entity.YoungStorage;
 import com.young.mall.common.CommonPage;
 import com.young.mall.common.ResBean;
-import com.young.mall.dto.FileDto;
+import com.young.mall.domain.dto.FileDto;
 import com.young.mall.service.MallStorageService;
 import com.young.mall.storage.StorageService;
 import io.swagger.annotations.Api;

@@ -2,7 +2,7 @@ package com.young.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.young.db.entity.YoungAdmin;
-import com.young.mall.constant.RedisConstant;
+import com.young.mall.domain.constant.RedisConstant;
 import com.young.mall.service.AdminCacheService;
 import com.young.mall.service.AdminService;
 import com.young.mall.service.RedisService;

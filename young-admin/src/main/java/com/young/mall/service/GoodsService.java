@@ -1,7 +1,7 @@
 package com.young.mall.service;
 
 import com.young.db.entity.YoungGoods;
-import com.young.mall.dto.GoodsArguments;
+import com.young.mall.domain.dto.GoodsArguments;
 
 import java.util.List;
 import java.util.Map;

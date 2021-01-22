@@ -2,7 +2,7 @@ package com.young.mall.service;
 
 import com.young.db.entity.YoungComment;
 import com.young.mall.common.ResBean;
-import com.young.mall.dto.CommentDto;
+import com.young.mall.domain.dto.CommentDto;
 
 import java.util.List;
 import java.util.Optional;

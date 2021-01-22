@@ -1,4 +1,4 @@
-package com.young.mall.dto;
+package com.young.mall.domain.dto;
 
 import lombok.Builder;
 import lombok.Data;

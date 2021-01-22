@@ -4,7 +4,7 @@ import cn.hutool.json.JSONUtil;
 import com.young.db.entity.YoungComment;
 import com.young.mall.common.CommonPage;
 import com.young.mall.common.ResBean;
-import com.young.mall.dto.CommentDto;
+import com.young.mall.domain.dto.CommentDto;
 import com.young.mall.service.MallCommentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
