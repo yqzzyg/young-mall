@@ -9,6 +9,12 @@ import lombok.Getter;
  */
 @Getter
 public enum QueueEnum {
+
+    /**
+     * 消息通知队列
+     */
+    QUEUE_LOGGER("mall.log.direct", "mall.log.insert", "mall.log.insert"),
+
     /**
      * 消息通知队列
      */

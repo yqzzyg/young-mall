@@ -6,6 +6,7 @@ import cn.hutool.core.util.URLUtil;
 import cn.hutool.json.JSONUtil;
 import com.young.mall.domain.ClientUserDetails;
 import com.young.mall.domain.MallLog;
+import com.young.mall.rabbitMQ.LogMsgSender;
 import com.young.mall.service.ClientUserService;
 import io.swagger.annotations.ApiOperation;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -42,6 +43,9 @@ public class ClientLogAspect {
 
     @Autowired
     private ClientUserService clientUserService;
+
+    @Autowired
+    private LogMsgSender logMsgSender;
 
     @Pointcut("execution(public * com.young.mall.controller.*.*(..)) || execution(public * com.young.mall.*.controller.*.*(..))")
     public void clientLog() {
@@ -83,6 +87,7 @@ public class ClientLogAspect {
         if (!BeanUtil.isEmpty(userInfo)) {
             mallLog.setUsername(userInfo.getUsername());
         }
+        mallLog.setUserId(userInfo.getYoungUser().getId());
         long endTime = System.currentTimeMillis();
         String urlStr = request.getRequestURL().toString();
         mallLog.setBasePath(StrUtil.removeSuffix(urlStr, URLUtil.getPath(urlStr)));
@@ -94,6 +99,9 @@ public class ClientLogAspect {
         mallLog.setStartTime(startTime);
         mallLog.setUri(request.getRequestURI());
         mallLog.setUrl(request.getRequestURL().toString());
+
+        logMsgSender.sendLogMessage(mallLog);
+
         Map<String, Object> logMap = new HashMap<>(8);
         logMap.put("url", mallLog.getUrl());
         logMap.put("method", mallLog.getMethod());

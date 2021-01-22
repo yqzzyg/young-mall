@@ -21,7 +21,10 @@ public class MallLog {
      * 操作用户
      */
     private String username;
-
+    /**
+     * 操作用户id
+     */
+    private Integer userId;
     /**
      * 操作时间
      */

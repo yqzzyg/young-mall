@@ -139,6 +139,7 @@ public class ClientOrderController {
      * @param map
      * @return
      */
+    @ApiOperation("预支付")
     @PostMapping("/prepay")
     public ResBean prepay(@RequestBody Map<String, Integer> map, HttpServletRequest request) {
         logger.info("prepay入参：{}", JSONUtil.toJsonStr(map));
