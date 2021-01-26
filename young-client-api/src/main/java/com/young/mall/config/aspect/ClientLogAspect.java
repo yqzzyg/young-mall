@@ -86,8 +86,8 @@ public class ClientLogAspect {
         ClientUserDetails userInfo = clientUserService.getUserInfo();
         if (!BeanUtil.isEmpty(userInfo)) {
             mallLog.setUsername(userInfo.getUsername());
+            mallLog.setUserId(userInfo.getYoungUser().getId());
         }
-        mallLog.setUserId(userInfo.getYoungUser().getId());
         long endTime = System.currentTimeMillis();
         String urlStr = request.getRequestURL().toString();
         mallLog.setBasePath(StrUtil.removeSuffix(urlStr, URLUtil.getPath(urlStr)));
