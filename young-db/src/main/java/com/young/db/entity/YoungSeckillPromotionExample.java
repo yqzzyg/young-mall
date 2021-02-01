@@ -1,6 +1,5 @@
 package com.young.db.entity;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -433,7 +432,7 @@ public class YoungSeckillPromotionExample {
             return (Criteria) this;
         }
 
-        public Criteria andStartDateEqualTo(LocalDate value) {
+        public Criteria andStartDateEqualTo(LocalDateTime value) {
             addCriterion("start_date =", value, "startDate");
             return (Criteria) this;
         }
@@ -450,7 +449,7 @@ public class YoungSeckillPromotionExample {
             return (Criteria) this;
         }
 
-        public Criteria andStartDateNotEqualTo(LocalDate value) {
+        public Criteria andStartDateNotEqualTo(LocalDateTime value) {
             addCriterion("start_date <>", value, "startDate");
             return (Criteria) this;
         }
@@ -467,7 +466,7 @@ public class YoungSeckillPromotionExample {
             return (Criteria) this;
         }
 
-        public Criteria andStartDateGreaterThan(LocalDate value) {
+        public Criteria andStartDateGreaterThan(LocalDateTime value) {
             addCriterion("start_date >", value, "startDate");
             return (Criteria) this;
         }
@@ -484,7 +483,7 @@ public class YoungSeckillPromotionExample {
             return (Criteria) this;
         }
 
-        public Criteria andStartDateGreaterThanOrEqualTo(LocalDate value) {
+        public Criteria andStartDateGreaterThanOrEqualTo(LocalDateTime value) {
             addCriterion("start_date >=", value, "startDate");
             return (Criteria) this;
         }
@@ -501,7 +500,7 @@ public class YoungSeckillPromotionExample {
             return (Criteria) this;
         }
 
-        public Criteria andStartDateLessThan(LocalDate value) {
+        public Criteria andStartDateLessThan(LocalDateTime value) {
             addCriterion("start_date <", value, "startDate");
             return (Criteria) this;
         }
@@ -518,7 +517,7 @@ public class YoungSeckillPromotionExample {
             return (Criteria) this;
         }
 
-        public Criteria andStartDateLessThanOrEqualTo(LocalDate value) {
+        public Criteria andStartDateLessThanOrEqualTo(LocalDateTime value) {
             addCriterion("start_date <=", value, "startDate");
             return (Criteria) this;
         }
@@ -535,22 +534,22 @@ public class YoungSeckillPromotionExample {
             return (Criteria) this;
         }
 
-        public Criteria andStartDateIn(List<LocalDate> values) {
+        public Criteria andStartDateIn(List<LocalDateTime> values) {
             addCriterion("start_date in", values, "startDate");
             return (Criteria) this;
         }
 
-        public Criteria andStartDateNotIn(List<LocalDate> values) {
+        public Criteria andStartDateNotIn(List<LocalDateTime> values) {
             addCriterion("start_date not in", values, "startDate");
             return (Criteria) this;
         }
 
-        public Criteria andStartDateBetween(LocalDate value1, LocalDate value2) {
+        public Criteria andStartDateBetween(LocalDateTime value1, LocalDateTime value2) {
             addCriterion("start_date between", value1, value2, "startDate");
             return (Criteria) this;
         }
 
-        public Criteria andStartDateNotBetween(LocalDate value1, LocalDate value2) {
+        public Criteria andStartDateNotBetween(LocalDateTime value1, LocalDateTime value2) {
             addCriterion("start_date not between", value1, value2, "startDate");
             return (Criteria) this;
         }
@@ -565,7 +564,7 @@ public class YoungSeckillPromotionExample {
             return (Criteria) this;
         }
 
-        public Criteria andEndDateEqualTo(LocalDate value) {
+        public Criteria andEndDateEqualTo(LocalDateTime value) {
             addCriterion("end_date =", value, "endDate");
             return (Criteria) this;
         }
@@ -582,7 +581,7 @@ public class YoungSeckillPromotionExample {
             return (Criteria) this;
         }
 
-        public Criteria andEndDateNotEqualTo(LocalDate value) {
+        public Criteria andEndDateNotEqualTo(LocalDateTime value) {
             addCriterion("end_date <>", value, "endDate");
             return (Criteria) this;
         }
@@ -599,7 +598,7 @@ public class YoungSeckillPromotionExample {
             return (Criteria) this;
         }
 
-        public Criteria andEndDateGreaterThan(LocalDate value) {
+        public Criteria andEndDateGreaterThan(LocalDateTime value) {
             addCriterion("end_date >", value, "endDate");
             return (Criteria) this;
         }
@@ -616,7 +615,7 @@ public class YoungSeckillPromotionExample {
             return (Criteria) this;
         }
 
-        public Criteria andEndDateGreaterThanOrEqualTo(LocalDate value) {
+        public Criteria andEndDateGreaterThanOrEqualTo(LocalDateTime value) {
             addCriterion("end_date >=", value, "endDate");
             return (Criteria) this;
         }
@@ -633,7 +632,7 @@ public class YoungSeckillPromotionExample {
             return (Criteria) this;
         }
 
-        public Criteria andEndDateLessThan(LocalDate value) {
+        public Criteria andEndDateLessThan(LocalDateTime value) {
             addCriterion("end_date <", value, "endDate");
             return (Criteria) this;
         }
@@ -650,7 +649,7 @@ public class YoungSeckillPromotionExample {
             return (Criteria) this;
         }
 
-        public Criteria andEndDateLessThanOrEqualTo(LocalDate value) {
+        public Criteria andEndDateLessThanOrEqualTo(LocalDateTime value) {
             addCriterion("end_date <=", value, "endDate");
             return (Criteria) this;
         }
@@ -667,22 +666,22 @@ public class YoungSeckillPromotionExample {
             return (Criteria) this;
         }
 
-        public Criteria andEndDateIn(List<LocalDate> values) {
+        public Criteria andEndDateIn(List<LocalDateTime> values) {
             addCriterion("end_date in", values, "endDate");
             return (Criteria) this;
         }
 
-        public Criteria andEndDateNotIn(List<LocalDate> values) {
+        public Criteria andEndDateNotIn(List<LocalDateTime> values) {
             addCriterion("end_date not in", values, "endDate");
             return (Criteria) this;
         }
 
-        public Criteria andEndDateBetween(LocalDate value1, LocalDate value2) {
+        public Criteria andEndDateBetween(LocalDateTime value1, LocalDateTime value2) {
             addCriterion("end_date between", value1, value2, "endDate");
             return (Criteria) this;
         }
 
-        public Criteria andEndDateNotBetween(LocalDate value1, LocalDate value2) {
+        public Criteria andEndDateNotBetween(LocalDateTime value1, LocalDateTime value2) {
             addCriterion("end_date not between", value1, value2, "endDate");
             return (Criteria) this;
         }

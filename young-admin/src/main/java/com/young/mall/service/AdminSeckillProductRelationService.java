@@ -9,7 +9,7 @@ import java.util.List;
  * @Author: yqz
  * @CreateDate: 2021/2/1 15:18
  */
-public interface AdminSeckillPromotionProductRelationService {
+public interface AdminSeckillProductRelationService {
 
     /**
      * 分页查询相关商品及促销信息

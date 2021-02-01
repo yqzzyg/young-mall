@@ -5,7 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.young.db.dao.YoungSeckillPromotionMapper;
 import com.young.db.entity.YoungSeckillPromotion;
 import com.young.db.entity.YoungSeckillPromotionExample;
-import com.young.mall.service.AdminSeckillPromotionService;
+import com.young.mall.service.AdminSeckillService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -17,7 +17,7 @@ import java.util.List;
  * @CreateDate: 2021/2/1 16:18
  */
 @Service
-public class AdminSeckillPromotionServiceImpl implements AdminSeckillPromotionService {
+public class AdminSeckillServiceImpl implements AdminSeckillService {
 
     @Resource
     private YoungSeckillPromotionMapper seckillPromotionMapper;

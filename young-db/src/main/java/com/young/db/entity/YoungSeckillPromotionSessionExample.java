@@ -1,7 +1,6 @@
 package com.young.db.entity;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -433,7 +432,7 @@ public class YoungSeckillPromotionSessionExample {
             return (Criteria) this;
         }
 
-        public Criteria andStartTimeEqualTo(LocalTime value) {
+        public Criteria andStartTimeEqualTo(LocalDateTime value) {
             addCriterion("start_time =", value, "startTime");
             return (Criteria) this;
         }
@@ -450,7 +449,7 @@ public class YoungSeckillPromotionSessionExample {
             return (Criteria) this;
         }
 
-        public Criteria andStartTimeNotEqualTo(LocalTime value) {
+        public Criteria andStartTimeNotEqualTo(LocalDateTime value) {
             addCriterion("start_time <>", value, "startTime");
             return (Criteria) this;
         }
@@ -467,7 +466,7 @@ public class YoungSeckillPromotionSessionExample {
             return (Criteria) this;
         }
 
-        public Criteria andStartTimeGreaterThan(LocalTime value) {
+        public Criteria andStartTimeGreaterThan(LocalDateTime value) {
             addCriterion("start_time >", value, "startTime");
             return (Criteria) this;
         }
@@ -484,7 +483,7 @@ public class YoungSeckillPromotionSessionExample {
             return (Criteria) this;
         }
 
-        public Criteria andStartTimeGreaterThanOrEqualTo(LocalTime value) {
+        public Criteria andStartTimeGreaterThanOrEqualTo(LocalDateTime value) {
             addCriterion("start_time >=", value, "startTime");
             return (Criteria) this;
         }
@@ -501,7 +500,7 @@ public class YoungSeckillPromotionSessionExample {
             return (Criteria) this;
         }
 
-        public Criteria andStartTimeLessThan(LocalTime value) {
+        public Criteria andStartTimeLessThan(LocalDateTime value) {
             addCriterion("start_time <", value, "startTime");
             return (Criteria) this;
         }
@@ -518,7 +517,7 @@ public class YoungSeckillPromotionSessionExample {
             return (Criteria) this;
         }
 
-        public Criteria andStartTimeLessThanOrEqualTo(LocalTime value) {
+        public Criteria andStartTimeLessThanOrEqualTo(LocalDateTime value) {
             addCriterion("start_time <=", value, "startTime");
             return (Criteria) this;
         }
@@ -535,22 +534,22 @@ public class YoungSeckillPromotionSessionExample {
             return (Criteria) this;
         }
 
-        public Criteria andStartTimeIn(List<LocalTime> values) {
+        public Criteria andStartTimeIn(List<LocalDateTime> values) {
             addCriterion("start_time in", values, "startTime");
             return (Criteria) this;
         }
 
-        public Criteria andStartTimeNotIn(List<LocalTime> values) {
+        public Criteria andStartTimeNotIn(List<LocalDateTime> values) {
             addCriterion("start_time not in", values, "startTime");
             return (Criteria) this;
         }
 
-        public Criteria andStartTimeBetween(LocalTime value1, LocalTime value2) {
+        public Criteria andStartTimeBetween(LocalDateTime value1, LocalDateTime value2) {
             addCriterion("start_time between", value1, value2, "startTime");
             return (Criteria) this;
         }
 
-        public Criteria andStartTimeNotBetween(LocalTime value1, LocalTime value2) {
+        public Criteria andStartTimeNotBetween(LocalDateTime value1, LocalDateTime value2) {
             addCriterion("start_time not between", value1, value2, "startTime");
             return (Criteria) this;
         }
@@ -565,7 +564,7 @@ public class YoungSeckillPromotionSessionExample {
             return (Criteria) this;
         }
 
-        public Criteria andEndTimeEqualTo(LocalTime value) {
+        public Criteria andEndTimeEqualTo(LocalDateTime value) {
             addCriterion("end_time =", value, "endTime");
             return (Criteria) this;
         }
@@ -582,7 +581,7 @@ public class YoungSeckillPromotionSessionExample {
             return (Criteria) this;
         }
 
-        public Criteria andEndTimeNotEqualTo(LocalTime value) {
+        public Criteria andEndTimeNotEqualTo(LocalDateTime value) {
             addCriterion("end_time <>", value, "endTime");
             return (Criteria) this;
         }
@@ -599,7 +598,7 @@ public class YoungSeckillPromotionSessionExample {
             return (Criteria) this;
         }
 
-        public Criteria andEndTimeGreaterThan(LocalTime value) {
+        public Criteria andEndTimeGreaterThan(LocalDateTime value) {
             addCriterion("end_time >", value, "endTime");
             return (Criteria) this;
         }
@@ -616,7 +615,7 @@ public class YoungSeckillPromotionSessionExample {
             return (Criteria) this;
         }
 
-        public Criteria andEndTimeGreaterThanOrEqualTo(LocalTime value) {
+        public Criteria andEndTimeGreaterThanOrEqualTo(LocalDateTime value) {
             addCriterion("end_time >=", value, "endTime");
             return (Criteria) this;
         }
@@ -633,7 +632,7 @@ public class YoungSeckillPromotionSessionExample {
             return (Criteria) this;
         }
 
-        public Criteria andEndTimeLessThan(LocalTime value) {
+        public Criteria andEndTimeLessThan(LocalDateTime value) {
             addCriterion("end_time <", value, "endTime");
             return (Criteria) this;
         }
@@ -650,7 +649,7 @@ public class YoungSeckillPromotionSessionExample {
             return (Criteria) this;
         }
 
-        public Criteria andEndTimeLessThanOrEqualTo(LocalTime value) {
+        public Criteria andEndTimeLessThanOrEqualTo(LocalDateTime value) {
             addCriterion("end_time <=", value, "endTime");
             return (Criteria) this;
         }
@@ -667,22 +666,22 @@ public class YoungSeckillPromotionSessionExample {
             return (Criteria) this;
         }
 
-        public Criteria andEndTimeIn(List<LocalTime> values) {
+        public Criteria andEndTimeIn(List<LocalDateTime> values) {
             addCriterion("end_time in", values, "endTime");
             return (Criteria) this;
         }
 
-        public Criteria andEndTimeNotIn(List<LocalTime> values) {
+        public Criteria andEndTimeNotIn(List<LocalDateTime> values) {
             addCriterion("end_time not in", values, "endTime");
             return (Criteria) this;
         }
 
-        public Criteria andEndTimeBetween(LocalTime value1, LocalTime value2) {
+        public Criteria andEndTimeBetween(LocalDateTime value1, LocalDateTime value2) {
             addCriterion("end_time between", value1, value2, "endTime");
             return (Criteria) this;
         }
 
-        public Criteria andEndTimeNotBetween(LocalTime value1, LocalTime value2) {
+        public Criteria andEndTimeNotBetween(LocalDateTime value1, LocalDateTime value2) {
             addCriterion("end_time not between", value1, value2, "endTime");
             return (Criteria) this;
         }

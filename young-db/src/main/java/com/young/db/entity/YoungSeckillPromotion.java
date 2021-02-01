@@ -1,9 +1,13 @@
 package com.young.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,15 +35,24 @@ public class YoungSeckillPromotion implements Serializable {
 
     private String title;
 
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "开始日期")
-    private LocalDate startDate;
+    private LocalDateTime startDate;
 
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "结束日期")
-    private LocalDate endDate;
+    private LocalDateTime endDate;
 
     @ApiModelProperty(value = "上下线状态")
     private Integer status;
 
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "秒杀时间段名称")
     private LocalDateTime createTime;
 
@@ -64,19 +77,19 @@ public class YoungSeckillPromotion implements Serializable {
         this.title = title;
     }
 
-    public LocalDate getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDate getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 
@@ -143,8 +156,8 @@ public class YoungSeckillPromotion implements Serializable {
     public enum Column {
         id("id", "id", "BIGINT", false),
         title("title", "title", "VARCHAR", false),
-        startDate("start_date", "startDate", "DATE", false),
-        endDate("end_date", "endDate", "DATE", false),
+        startDate("start_date", "startDate", "TIMESTAMP", false),
+        endDate("end_date", "endDate", "TIMESTAMP", false),
         status("status", "status", "INTEGER", true),
         createTime("create_time", "createTime", "TIMESTAMP", false),
         deleted("deleted", "deleted", "BIT", false);

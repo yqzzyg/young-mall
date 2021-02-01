@@ -3,7 +3,7 @@ package com.young.mall.controller;
 import com.young.db.pojo.SeckillPromotionProduct;
 import com.young.mall.common.CommonPage;
 import com.young.mall.common.ResBean;
-import com.young.mall.service.AdminSeckillPromotionProductRelationService;
+import com.young.mall.service.AdminSeckillProductRelationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,10 +22,10 @@ import java.util.List;
 @Api(tags = "秒杀和商品关系管理Controller")
 @RestController
 @RequestMapping("/admin/SeckillProductRelation")
-public class AdminSecondsKillController {
+public class AdminSecKillController {
 
     @Resource
-    private AdminSeckillPromotionProductRelationService relationService;
+    private AdminSeckillProductRelationService relationService;
 
     @ApiOperation("分页查询不同场次关联及商品信息")
     @GetMapping("/list")

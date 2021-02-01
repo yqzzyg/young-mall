@@ -3,7 +3,7 @@ package com.young.mall.controller;
 import com.young.db.entity.YoungSeckillPromotion;
 import com.young.mall.common.CommonPage;
 import com.young.mall.common.ResBean;
-import com.young.mall.service.AdminSeckillPromotionService;
+import com.young.mall.service.AdminSeckillService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
@@ -13,18 +13,18 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * @Description:
+ * @Description: 秒杀活动管理
  * @Author: yqz
  * @CreateDate: 2021/2/1 16:16
  */
 @Controller
-@Api(tags = "秒杀活动管理AdminSeckillPromotion", description = "限时购活动管理")
+@Api(tags = "秒杀活动管理AdminSeckillPromotion")
 @RestController
 @RequestMapping("/admin/seckill")
 public class AdminSeckillPromotionController {
 
     @Resource
-    private AdminSeckillPromotionService promotionService;
+    private AdminSeckillService promotionService;
 
 
     @ApiOperation("根据活动名称分页查询")

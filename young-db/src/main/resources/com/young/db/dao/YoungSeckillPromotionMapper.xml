@@ -4,8 +4,8 @@
   <resultMap id="BaseResultMap" type="com.young.db.entity.YoungSeckillPromotion">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="title" jdbcType="VARCHAR" property="title" />
-    <result column="start_date" jdbcType="DATE" property="startDate" />
-    <result column="end_date" jdbcType="DATE" property="endDate" />
+    <result column="start_date" jdbcType="TIMESTAMP" property="startDate" />
+    <result column="end_date" jdbcType="TIMESTAMP" property="endDate" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="deleted" jdbcType="BIT" property="deleted" />
@@ -176,7 +176,7 @@
     insert into young_seckill_promotion (title, start_date, end_date, 
       `status`, create_time, deleted
       )
-    values (#{title,jdbcType=VARCHAR}, #{startDate,jdbcType=DATE}, #{endDate,jdbcType=DATE}, 
+    values (#{title,jdbcType=VARCHAR}, #{startDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP}, 
       #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}
       )
   </insert>
@@ -210,10 +210,10 @@
         #{title,jdbcType=VARCHAR},
       </if>
       <if test="startDate != null">
-        #{startDate,jdbcType=DATE},
+        #{startDate,jdbcType=TIMESTAMP},
       </if>
       <if test="endDate != null">
-        #{endDate,jdbcType=DATE},
+        #{endDate,jdbcType=TIMESTAMP},
       </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
@@ -242,10 +242,10 @@
         title = #{record.title,jdbcType=VARCHAR},
       </if>
       <if test="record.startDate != null">
-        start_date = #{record.startDate,jdbcType=DATE},
+        start_date = #{record.startDate,jdbcType=TIMESTAMP},
       </if>
       <if test="record.endDate != null">
-        end_date = #{record.endDate,jdbcType=DATE},
+        end_date = #{record.endDate,jdbcType=TIMESTAMP},
       </if>
       <if test="record.status != null">
         `status` = #{record.status,jdbcType=INTEGER},
@@ -265,8 +265,8 @@
     update young_seckill_promotion
     set id = #{record.id,jdbcType=BIGINT},
       title = #{record.title,jdbcType=VARCHAR},
-      start_date = #{record.startDate,jdbcType=DATE},
-      end_date = #{record.endDate,jdbcType=DATE},
+      start_date = #{record.startDate,jdbcType=TIMESTAMP},
+      end_date = #{record.endDate,jdbcType=TIMESTAMP},
       `status` = #{record.status,jdbcType=INTEGER},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       deleted = #{record.deleted,jdbcType=BIT}
@@ -281,10 +281,10 @@
         title = #{title,jdbcType=VARCHAR},
       </if>
       <if test="startDate != null">
-        start_date = #{startDate,jdbcType=DATE},
+        start_date = #{startDate,jdbcType=TIMESTAMP},
       </if>
       <if test="endDate != null">
-        end_date = #{endDate,jdbcType=DATE},
+        end_date = #{endDate,jdbcType=TIMESTAMP},
       </if>
       <if test="status != null">
         `status` = #{status,jdbcType=INTEGER},
@@ -301,8 +301,8 @@
   <update id="updateByPrimaryKey" parameterType="com.young.db.entity.YoungSeckillPromotion">
     update young_seckill_promotion
     set title = #{title,jdbcType=VARCHAR},
-      start_date = #{startDate,jdbcType=DATE},
-      end_date = #{endDate,jdbcType=DATE},
+      start_date = #{startDate,jdbcType=TIMESTAMP},
+      end_date = #{endDate,jdbcType=TIMESTAMP},
       `status` = #{status,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       deleted = #{deleted,jdbcType=BIT}

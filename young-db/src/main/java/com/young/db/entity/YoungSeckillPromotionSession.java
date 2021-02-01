@@ -1,10 +1,14 @@
 package com.young.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -33,15 +37,24 @@ public class YoungSeckillPromotionSession implements Serializable {
     @ApiModelProperty(value = "场次名称")
     private String name;
 
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "每日开始时间")
-    private LocalTime startTime;
+    private LocalDateTime startTime;
 
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "每日结束时间")
-    private LocalTime endTime;
+    private LocalDateTime endTime;
 
     @ApiModelProperty(value = "启用状态：0->不启用；1->启用")
     private Integer status;
 
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonFormat( pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "创建时间")
     private LocalDateTime createTime;
 
@@ -66,19 +79,19 @@ public class YoungSeckillPromotionSession implements Serializable {
         this.name = name;
     }
 
-    public LocalTime getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalTime startTime) {
+    public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
 
-    public LocalTime getEndTime() {
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalTime endTime) {
+    public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
 
@@ -145,8 +158,8 @@ public class YoungSeckillPromotionSession implements Serializable {
     public enum Column {
         id("id", "id", "BIGINT", false),
         name("name", "name", "VARCHAR", true),
-        startTime("start_time", "startTime", "TIME", false),
-        endTime("end_time", "endTime", "TIME", false),
+        startTime("start_time", "startTime", "TIMESTAMP", false),
+        endTime("end_time", "endTime", "TIMESTAMP", false),
         status("status", "status", "INTEGER", true),
         createTime("create_time", "createTime", "TIMESTAMP", false),
         deleted("deleted", "deleted", "BIT", false);

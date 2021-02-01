@@ -9,7 +9,7 @@ import java.util.List;
  * @Author: yqz
  * @CreateDate: 2021/2/1 16:17
  */
-public interface AdminSeckillPromotionService {
+public interface AdminSeckillService {
 
     /**
      * 分页查询活动
