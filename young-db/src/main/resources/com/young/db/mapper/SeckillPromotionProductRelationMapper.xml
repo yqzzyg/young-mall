@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.young.db.mapper.SeckillPromotionProductRelationMapper">
+
+
+    <resultMap id="flashProductMap" type="com.young.db.pojo.SeckillPromotionProduct" extends="com.young.db.dao.YoungSeckillPromotionProductRelationMapper.BaseResultMap">
+        <association property="youngGoods" resultMap="com.young.db.dao.YoungGoodsMapper.BaseResultMap" columnPrefix="p_"/>
+    </resultMap>
+    <select id="getSeckillGoodsList" resultMap="flashProductMap">
+        SELECT
+            r.id,
+            r.flash_promotion_price,
+            r.flash_promotion_count,
+            r.flash_promotion_limit,
+            r.flash_promotion_id,
+            r.flash_promotion_session_id,
+            r.product_id,
+            r.sort,
+            p.id p_id,
+            p.`name` p_name,
+            p.goods_sn p_product_sn,
+            p.price p_price,
+            p.stock p_stock
+        FROM
+            young_seckill_promotion_product_relation r
+            LEFT JOIN young_goods p ON r.product_id = p.id
+        WHERE
+            r.flash_promotion_id = #{flashPromotionId}
+            AND r.flash_promotion_session_id = #{flashPromotionSessionId}
+        ORDER BY r.sort DESC
+    </select>
+</mapper>
