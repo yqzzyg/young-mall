@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * @Description: 秒杀购场次管理
+ * @Description: 秒杀购场次管理(秒杀时间段列表)
  * @Author: yqz
  * @CreateDate: 2021/2/1 21:36
  */
