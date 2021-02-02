@@ -26,10 +26,18 @@ public class AdminSeckillPromotionController {
     @Resource
     private AdminSeckillService promotionService;
 
+    @ApiOperation("添加活动")
+    @PostMapping(value = "/create")
+    public ResBean create(@RequestBody YoungSeckillPromotion flashPromotion) {
+        int count = promotionService.create(flashPromotion);
+        if (count > 0) {
+            return ResBean.success(count);
+        }
+        return ResBean.failed();
+    }
 
     @ApiOperation("根据活动名称分页查询")
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    @ResponseBody
+    @PostMapping(value = "/list")
     public ResBean<CommonPage<YoungSeckillPromotion>> getItem(@RequestParam(value = "keyword", required = false) String keyword,
                                                               @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
                                                               @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {

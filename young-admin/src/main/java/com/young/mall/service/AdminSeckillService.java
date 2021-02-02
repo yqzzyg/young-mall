@@ -11,6 +11,16 @@ import java.util.List;
  */
 public interface AdminSeckillService {
 
+
+    /**
+     * 添加活动
+     *
+     * @param flashPromotion
+     * @return
+     */
+    int create(YoungSeckillPromotion flashPromotion);
+
+
     /**
      * 分页查询活动
      *

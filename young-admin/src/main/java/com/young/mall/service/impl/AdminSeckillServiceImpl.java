@@ -9,6 +9,7 @@ import com.young.mall.service.AdminSeckillService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -21,6 +22,13 @@ public class AdminSeckillServiceImpl implements AdminSeckillService {
 
     @Resource
     private YoungSeckillPromotionMapper seckillPromotionMapper;
+
+    @Override
+    public int create(YoungSeckillPromotion flashPromotion) {
+
+        flashPromotion.setCreateTime(LocalDateTime.now());
+        return seckillPromotionMapper.insertSelective(flashPromotion);
+    }
 
     @Override
     public List<YoungSeckillPromotion> list(String keyword, Integer pageSize, Integer pageNum) {
