@@ -1,6 +1,8 @@
 package com.young.mall.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.young.db.dao.YoungSeckillPromotionProductRelationMapper;
+import com.young.db.entity.YoungSeckillPromotionProductRelation;
 import com.young.db.mapper.SeckillPromotionProductRelationMapper;
 import com.young.db.pojo.SeckillPromotionProduct;
 import com.young.mall.service.AdminSeckillProductRelationService;
@@ -20,6 +22,17 @@ public class AdminSeckillProductRelationServiceImpl implements AdminSeckillProdu
     @Resource
     private SeckillPromotionProductRelationMapper relationMapper;
 
+    @Resource
+    private YoungSeckillPromotionProductRelationMapper youngSeckillPromotionProductRelationMapper;
+
+    @Override
+    public int create(List<YoungSeckillPromotionProductRelation> relationList) {
+
+        for (YoungSeckillPromotionProductRelation relation : relationList) {
+            youngSeckillPromotionProductRelationMapper.insertSelective(relation);
+        }
+        return relationList.size();
+    }
 
     @Override
     public List<SeckillPromotionProduct> list(Long flashPromotionId, Long flashPromotionSessionId, Integer pageSize, Integer pageNum) {

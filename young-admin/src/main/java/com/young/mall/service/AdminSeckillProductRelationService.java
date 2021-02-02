@@ -1,6 +1,8 @@
 package com.young.mall.service;
 
+import com.young.db.entity.YoungSeckillPromotionProductRelation;
 import com.young.db.pojo.SeckillPromotionProduct;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -10,6 +12,15 @@ import java.util.List;
  * @CreateDate: 2021/2/1 15:18
  */
 public interface AdminSeckillProductRelationService {
+
+    /**
+     * 批量添加关联
+     *
+     * @param relationList
+     * @return
+     */
+    @Transactional
+    int create(List<YoungSeckillPromotionProductRelation> relationList);
 
     /**
      * 分页查询相关商品及促销信息
