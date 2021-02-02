@@ -56,6 +56,13 @@ public class AdminSecKillRelationController {
         return ResBean.failed();
     }
 
+    @ApiOperation("获取管理商品促销信息")
+    @GetMapping(value = "/{id}")
+    public ResBean<YoungSeckillPromotionProductRelation> getItem(@PathVariable Long id) {
+        YoungSeckillPromotionProductRelation relation = relationService.getItem(id);
+        return ResBean.success(relation);
+    }
+
     @ApiOperation("分页查询不同场次关联及商品信息")
     @GetMapping("/list")
     public ResBean list(@RequestParam(value = "flashPromotionId") Long flashPromotionId,

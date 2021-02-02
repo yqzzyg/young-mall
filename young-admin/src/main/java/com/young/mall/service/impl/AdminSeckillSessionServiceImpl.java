@@ -5,7 +5,7 @@ import com.young.db.dao.YoungSeckillPromotionSessionMapper;
 import com.young.db.entity.YoungSeckillPromotionSession;
 import com.young.db.entity.YoungSeckillPromotionSessionExample;
 import com.young.db.pojo.SeckillPromotionSessionDetail;
-import com.young.mall.service.AdminProductRelationService;
+import com.young.mall.service.AdminSeckillProductRelationService;
 import com.young.mall.service.AdminSeckillSessionService;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +26,7 @@ public class AdminSeckillSessionServiceImpl implements AdminSeckillSessionServic
     private YoungSeckillPromotionSessionMapper promotionSessionMapper;
 
     @Resource
-    private AdminProductRelationService relationService;
+    private AdminSeckillProductRelationService relationService;
 
     @Override
     public int create(YoungSeckillPromotionSession promotionSession) {

@@ -39,6 +39,14 @@ public interface AdminSeckillProductRelationService {
      */
     int update(Long id, YoungSeckillPromotionProductRelation relation);
 
+    /**
+     * 获取关联详情
+     *
+     * @param id
+     * @return
+     */
+    YoungSeckillPromotionProductRelation getItem(Long id);
+
 
     /**
      * 分页查询相关商品及促销信息
@@ -51,4 +59,12 @@ public interface AdminSeckillProductRelationService {
      */
     List<SeckillPromotionProduct> list(Long flashPromotionId, Long flashPromotionSessionId, Integer pageSize, Integer pageNum);
 
+    /**
+     * 根据活动和场次id获取商品关系数量
+     *
+     * @param promotionId
+     * @param promotionSessionId
+     * @return
+     */
+    long getCount(Long promotionId, Long promotionSessionId);
 }
