@@ -28,6 +28,14 @@ public class AdminSeckillSessionServiceImpl implements AdminSeckillSessionServic
     private AdminProductRelationService relationService;
 
     @Override
+    public List<YoungSeckillPromotionSession> list() {
+
+        YoungSeckillPromotionSessionExample example = new YoungSeckillPromotionSessionExample();
+        example.or().andDeletedEqualTo(false);
+        return promotionSessionMapper.selectByExample(example);
+    }
+
+    @Override
     public List<SeckillPromotionSessionDetail> selectList(Long promotionId) {
 
         List<SeckillPromotionSessionDetail> result = new ArrayList<>();
