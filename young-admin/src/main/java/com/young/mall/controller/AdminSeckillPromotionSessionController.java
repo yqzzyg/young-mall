@@ -24,6 +24,17 @@ public class AdminSeckillPromotionSessionController {
     @Resource
     private AdminSeckillSessionService seckillSessionService;
 
+
+    @ApiOperation("修改场次")
+    @PostMapping(value = "/update/{id}")
+    public ResBean update(@PathVariable Long id, @RequestBody YoungSeckillPromotionSession promotionSession) {
+        int count = seckillSessionService.update(id, promotionSession);
+        if (count > 0) {
+            return ResBean.success(count);
+        }
+        return ResBean.failed();
+    }
+
     @ApiOperation("添加场次")
     @PostMapping(value = "/create")
     public ResBean create(@RequestBody YoungSeckillPromotionSession promotionSession) {

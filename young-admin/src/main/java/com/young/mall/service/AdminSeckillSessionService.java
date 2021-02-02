@@ -20,6 +20,15 @@ public interface AdminSeckillSessionService {
      */
     int create(YoungSeckillPromotionSession promotionSession);
 
+    /**
+     * 修改场次
+     *
+     * @param id
+     * @param promotionSession
+     * @return
+     */
+    int update(Long id, YoungSeckillPromotionSession promotionSession);
+
 
     /**
      * 根据启用状态获取场次列表
