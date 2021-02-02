@@ -20,6 +20,14 @@ public interface AdminSeckillService {
      */
     int create(YoungSeckillPromotion flashPromotion);
 
+    /**
+     * 删除单个活动
+     *
+     * @param id
+     * @return
+     */
+    int delete(Long id);
+
 
     /**
      * 分页查询活动

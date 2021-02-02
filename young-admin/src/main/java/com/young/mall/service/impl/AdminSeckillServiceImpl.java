@@ -31,6 +31,11 @@ public class AdminSeckillServiceImpl implements AdminSeckillService {
     }
 
     @Override
+    public int delete(Long id) {
+        return seckillPromotionMapper.logicalDeleteByPrimaryKey(id);
+    }
+
+    @Override
     public List<YoungSeckillPromotion> list(String keyword, Integer pageSize, Integer pageNum) {
 
         YoungSeckillPromotionExample example = new YoungSeckillPromotionExample();

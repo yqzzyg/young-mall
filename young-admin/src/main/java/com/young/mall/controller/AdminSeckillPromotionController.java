@@ -36,6 +36,17 @@ public class AdminSeckillPromotionController {
         return ResBean.failed();
     }
 
+    @ApiOperation("删除活动信息")
+    @PostMapping(value = "/delete/{id}")
+    public Object delete(@PathVariable Long id) {
+        int count = promotionService.delete(id);
+        if (count > 0) {
+            return ResBean.success(count);
+        }
+        return ResBean.failed();
+    }
+
+
     @ApiOperation("根据活动名称分页查询")
     @PostMapping(value = "/list")
     public ResBean<CommonPage<YoungSeckillPromotion>> getItem(@RequestParam(value = "keyword", required = false) String keyword,
