@@ -10,6 +10,7 @@ import com.young.mall.service.AdminSeckillSessionService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,14 @@ public class AdminSeckillSessionServiceImpl implements AdminSeckillSessionServic
 
     @Resource
     private AdminProductRelationService relationService;
+
+    @Override
+    public int create(YoungSeckillPromotionSession promotionSession) {
+
+        promotionSession.setCreateTime(LocalDateTime.now());
+
+        return promotionSessionMapper.insertSelective(promotionSession);
+    }
 
     @Override
     public List<YoungSeckillPromotionSession> list() {

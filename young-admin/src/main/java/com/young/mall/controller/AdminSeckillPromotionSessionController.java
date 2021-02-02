@@ -24,6 +24,16 @@ public class AdminSeckillPromotionSessionController {
     @Resource
     private AdminSeckillSessionService seckillSessionService;
 
+    @ApiOperation("添加场次")
+    @PostMapping(value = "/create")
+    public ResBean create(@RequestBody YoungSeckillPromotionSession promotionSession) {
+        int count = seckillSessionService.create(promotionSession);
+        if (count > 0) {
+            return ResBean.success(count);
+        }
+        return ResBean.failed();
+    }
+
     @ApiOperation("获取全部场次")
     @GetMapping("/list")
     public ResBean<List<YoungSeckillPromotionSession>> list() {
@@ -32,8 +42,7 @@ public class AdminSeckillPromotionSessionController {
     }
 
     @ApiOperation("获取全部可选场次及其数量")
-    @RequestMapping(value = "/selectList", method = RequestMethod.GET)
-    @ResponseBody
+    @GetMapping(value = "/selectList")
     public ResBean<List<SeckillPromotionSessionDetail>> selectList(Long flashPromotionId) {
         List<SeckillPromotionSessionDetail> promotionSessionList = seckillSessionService.selectList(flashPromotionId);
         return ResBean.success(promotionSessionList);

@@ -13,6 +13,15 @@ import java.util.List;
 public interface AdminSeckillSessionService {
 
     /**
+     * 添加场次
+     *
+     * @param promotionSession
+     * @return
+     */
+    int create(YoungSeckillPromotionSession promotionSession);
+
+
+    /**
      * 根据启用状态获取场次列表
      *
      * @return
