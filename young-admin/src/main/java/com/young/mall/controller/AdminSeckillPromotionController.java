@@ -74,7 +74,7 @@ public class AdminSeckillPromotionController {
     }
 
     @ApiOperation("根据活动名称分页查询")
-    @PostMapping(value = "/list")
+    @GetMapping(value = "/list")
     public ResBean<CommonPage<YoungSeckillPromotion>> getItem(@RequestParam(value = "keyword", required = false) String keyword,
                                                               @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
                                                               @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {

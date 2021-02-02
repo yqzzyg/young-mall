@@ -32,7 +32,10 @@ public class AdminSeckillServiceImpl implements AdminSeckillService {
 
     @Override
     public int delete(Long id) {
-        return seckillPromotionMapper.logicalDeleteByPrimaryKey(id);
+        YoungSeckillPromotion promotion = new YoungSeckillPromotion();
+        promotion.setId(id);
+        promotion.setDeleted(true);
+        return seckillPromotionMapper.updateByPrimaryKeySelective(promotion);
     }
 
     @Override
@@ -59,9 +62,12 @@ public class AdminSeckillServiceImpl implements AdminSeckillService {
 
         YoungSeckillPromotionExample example = new YoungSeckillPromotionExample();
 
+        YoungSeckillPromotionExample.Criteria criteria = example.or();
+
         if (!StrUtil.isEmpty(keyword)) {
-            example.createCriteria().andTitleLike("%" + keyword + "%");
+            criteria.andTitleLike("%" + keyword + "%");
         }
+        criteria.andDeletedEqualTo(false);
         PageHelper.startPage(pageNum, pageSize);
         List<YoungSeckillPromotion> promotionList = seckillPromotionMapper.selectByExample(example);
         return promotionList;
