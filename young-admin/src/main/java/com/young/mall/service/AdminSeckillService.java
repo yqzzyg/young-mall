@@ -46,6 +46,13 @@ public interface AdminSeckillService {
      */
     int updateStatus(Long id, Integer status);
 
+    /**
+     * 获取详细信息
+     *
+     * @param id
+     * @return
+     */
+    YoungSeckillPromotion getItem(Long id);
 
     /**
      * 分页查询活动

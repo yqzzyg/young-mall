@@ -50,6 +50,11 @@ public class AdminSeckillServiceImpl implements AdminSeckillService {
     }
 
     @Override
+    public YoungSeckillPromotion getItem(Long id) {
+        return seckillPromotionMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
     public List<YoungSeckillPromotion> list(String keyword, Integer pageSize, Integer pageNum) {
 
         YoungSeckillPromotionExample example = new YoungSeckillPromotionExample();

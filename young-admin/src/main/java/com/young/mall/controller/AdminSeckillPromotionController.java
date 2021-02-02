@@ -66,6 +66,13 @@ public class AdminSeckillPromotionController {
         return ResBean.failed();
     }
 
+    @ApiOperation("获取活动详情")
+    @GetMapping(value = "/{id}")
+    public ResBean<YoungSeckillPromotion> getItem(@PathVariable Long id) {
+        YoungSeckillPromotion flashPromotion = promotionService.getItem(id);
+        return ResBean.success(flashPromotion);
+    }
+
     @ApiOperation("根据活动名称分页查询")
     @PostMapping(value = "/list")
     public ResBean<CommonPage<YoungSeckillPromotion>> getItem(@RequestParam(value = "keyword", required = false) String keyword,
