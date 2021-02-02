@@ -45,6 +45,17 @@ public class AdminSeckillPromotionSessionController {
         return ResBean.failed();
     }
 
+    @ApiOperation("修改启用状态")
+    @PostMapping(value = "/update/status/{id}")
+    public ResBean updateStatus(@PathVariable Long id, Integer status) {
+        int count = seckillSessionService.updateStatus(id, status);
+        if (count > 0) {
+            return ResBean.success(count);
+        }
+        return ResBean.failed();
+    }
+
+
     @ApiOperation("获取全部场次")
     @GetMapping("/list")
     public ResBean<List<YoungSeckillPromotionSession>> list() {

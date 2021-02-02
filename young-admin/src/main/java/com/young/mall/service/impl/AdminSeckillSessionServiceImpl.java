@@ -43,6 +43,14 @@ public class AdminSeckillSessionServiceImpl implements AdminSeckillSessionServic
     }
 
     @Override
+    public int updateStatus(Long id, Integer status) {
+        YoungSeckillPromotionSession promotionSession = new YoungSeckillPromotionSession();
+        promotionSession.setId(id);
+        promotionSession.setStatus(status);
+        return promotionSessionMapper.updateByPrimaryKeySelective(promotionSession);
+    }
+
+    @Override
     public List<YoungSeckillPromotionSession> list() {
 
         YoungSeckillPromotionSessionExample example = new YoungSeckillPromotionSessionExample();
