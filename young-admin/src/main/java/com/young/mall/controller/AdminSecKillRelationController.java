@@ -19,7 +19,7 @@ import java.util.List;
  */
 @Api(tags = "秒杀和商品关系管理Controller")
 @RestController
-@RequestMapping("/admin/SeckillProductRelation")
+@RequestMapping("/admin/seckillProductRelation")
 public class AdminSecKillRelationController {
 
     @Resource
