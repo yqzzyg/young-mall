@@ -23,6 +23,15 @@ public interface AdminSeckillProductRelationService {
     int create(List<YoungSeckillPromotionProductRelation> relationList);
 
     /**
+     * 删除关联
+     *
+     * @param id
+     * @return
+     */
+    int delete(Long id);
+
+
+    /**
      * 分页查询相关商品及促销信息
      *
      * @param flashPromotionId

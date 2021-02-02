@@ -35,6 +35,11 @@ public class AdminSeckillProductRelationServiceImpl implements AdminSeckillProdu
     }
 
     @Override
+    public int delete(Long id) {
+        return youngSeckillPromotionProductRelationMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
     public List<SeckillPromotionProduct> list(Long flashPromotionId, Long flashPromotionSessionId, Integer pageSize, Integer pageNum) {
         PageHelper.startPage(pageNum, pageSize);
         return relationMapper.getSeckillGoodsList(flashPromotionId, flashPromotionSessionId);

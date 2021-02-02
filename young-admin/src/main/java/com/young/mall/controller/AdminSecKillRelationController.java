@@ -35,6 +35,17 @@ public class AdminSecKillRelationController {
         return ResBean.failed();
     }
 
+    @ApiOperation("删除关联")
+    @PostMapping(value = "/delete/{id}")
+    public ResBean delete(@PathVariable Long id) {
+        int count = relationService.delete(id);
+        if (count > 0) {
+            return ResBean.success(count);
+        }
+        return ResBean.failed();
+    }
+
+
     @ApiOperation("分页查询不同场次关联及商品信息")
     @GetMapping("/list")
     public ResBean list(@RequestParam(value = "flashPromotionId") Long flashPromotionId,
