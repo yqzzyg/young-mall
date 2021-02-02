@@ -36,6 +36,12 @@ public class AdminSeckillServiceImpl implements AdminSeckillService {
     }
 
     @Override
+    public int update(Long id, YoungSeckillPromotion flashPromotion) {
+        flashPromotion.setId(id);
+        return seckillPromotionMapper.updateByPrimaryKey(flashPromotion);
+    }
+
+    @Override
     public List<YoungSeckillPromotion> list(String keyword, Integer pageSize, Integer pageNum) {
 
         YoungSeckillPromotionExample example = new YoungSeckillPromotionExample();

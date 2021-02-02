@@ -38,7 +38,7 @@ public class AdminSeckillPromotionController {
 
     @ApiOperation("删除活动信息")
     @PostMapping(value = "/delete/{id}")
-    public Object delete(@PathVariable Long id) {
+    public ResBean delete(@PathVariable Long id) {
         int count = promotionService.delete(id);
         if (count > 0) {
             return ResBean.success(count);
@@ -46,6 +46,15 @@ public class AdminSeckillPromotionController {
         return ResBean.failed();
     }
 
+    @ApiOperation("编辑活动信息")
+    @PostMapping(value = "/update/{id}")
+    public ResBean update(@PathVariable Long id, @RequestBody YoungSeckillPromotion flashPromotion) {
+        int count = promotionService.update(id, flashPromotion);
+        if (count > 0) {
+            return ResBean.success(count);
+        }
+        return ResBean.failed();
+    }
 
     @ApiOperation("根据活动名称分页查询")
     @PostMapping(value = "/list")
