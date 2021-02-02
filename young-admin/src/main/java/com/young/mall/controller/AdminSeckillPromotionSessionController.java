@@ -80,7 +80,7 @@ public class AdminSeckillPromotionSessionController {
         return ResBean.success(promotionSessionList);
     }
 
-    @ApiOperation("获取全部可选场次及其数量")
+    @ApiOperation("获取全部可选场次及其数量(设置商品入口)")
     @GetMapping(value = "/selectList")
     public ResBean<List<SeckillPromotionSessionDetail>> selectList(Long flashPromotionId) {
         List<SeckillPromotionSessionDetail> promotionSessionList = seckillSessionService.selectList(flashPromotionId);

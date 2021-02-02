@@ -2,6 +2,7 @@ package com.young.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.young.db.dao.YoungSeckillPromotionSessionMapper;
+import com.young.db.entity.YoungSeckillPromotion;
 import com.young.db.entity.YoungSeckillPromotionSession;
 import com.young.db.entity.YoungSeckillPromotionSessionExample;
 import com.young.db.pojo.SeckillPromotionSessionDetail;
@@ -52,7 +53,11 @@ public class AdminSeckillSessionServiceImpl implements AdminSeckillSessionServic
 
     @Override
     public int delete(Long id) {
-        return promotionSessionMapper.deleteByPrimaryKey(id);
+        YoungSeckillPromotionSession promotionSession = new YoungSeckillPromotionSession();
+        promotionSession.setId(id);
+        promotionSession.setDeleted(true);
+
+        return promotionSessionMapper.updateByPrimaryKeySelective(promotionSession);
     }
 
     @Override
@@ -74,7 +79,7 @@ public class AdminSeckillSessionServiceImpl implements AdminSeckillSessionServic
         List<SeckillPromotionSessionDetail> result = new ArrayList<>();
 
         YoungSeckillPromotionSessionExample example = new YoungSeckillPromotionSessionExample();
-        example.createCriteria().andStatusEqualTo(1);
+        example.createCriteria().andStatusEqualTo(1).andDeletedEqualTo(false);
 
         List<YoungSeckillPromotionSession> list = promotionSessionMapper.selectByExample(example);
 
