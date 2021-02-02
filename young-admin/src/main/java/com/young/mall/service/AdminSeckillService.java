@@ -38,6 +38,16 @@ public interface AdminSeckillService {
     int update(Long id, YoungSeckillPromotion flashPromotion);
 
     /**
+     * 修改上下线状态
+     *
+     * @param id
+     * @param status
+     * @return
+     */
+    int updateStatus(Long id, Integer status);
+
+
+    /**
      * 分页查询活动
      *
      * @param keyword

@@ -56,6 +56,16 @@ public class AdminSeckillPromotionController {
         return ResBean.failed();
     }
 
+    @ApiOperation("修改上下线状态")
+    @PostMapping(value = "/update/status/{id}")
+    public ResBean update(@PathVariable Long id, Integer status) {
+        int count = promotionService.updateStatus(id, status);
+        if (count > 0) {
+            return ResBean.success(count);
+        }
+        return ResBean.failed();
+    }
+
     @ApiOperation("根据活动名称分页查询")
     @PostMapping(value = "/list")
     public ResBean<CommonPage<YoungSeckillPromotion>> getItem(@RequestParam(value = "keyword", required = false) String keyword,
