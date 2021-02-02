@@ -30,6 +30,15 @@ public interface AdminSeckillProductRelationService {
      */
     int delete(Long id);
 
+    /**
+     * 修改关联相关信息
+     *
+     * @param id
+     * @param relation
+     * @return
+     */
+    int update(Long id, YoungSeckillPromotionProductRelation relation);
+
 
     /**
      * 分页查询相关商品及促销信息

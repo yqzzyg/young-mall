@@ -40,6 +40,13 @@ public class AdminSeckillProductRelationServiceImpl implements AdminSeckillProdu
     }
 
     @Override
+    public int update(Long id, YoungSeckillPromotionProductRelation relation) {
+        relation.setId(id);
+
+        return youngSeckillPromotionProductRelationMapper.updateByPrimaryKey(relation);
+    }
+
+    @Override
     public List<SeckillPromotionProduct> list(Long flashPromotionId, Long flashPromotionSessionId, Integer pageSize, Integer pageNum) {
         PageHelper.startPage(pageNum, pageSize);
         return relationMapper.getSeckillGoodsList(flashPromotionId, flashPromotionSessionId);

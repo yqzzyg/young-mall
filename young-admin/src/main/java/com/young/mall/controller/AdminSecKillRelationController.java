@@ -45,6 +45,16 @@ public class AdminSecKillRelationController {
         return ResBean.failed();
     }
 
+    @ApiOperation("修改关联相关信息")
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
+    @ResponseBody
+    public ResBean update(@PathVariable Long id, @RequestBody YoungSeckillPromotionProductRelation relation) {
+        int count = relationService.update(id, relation);
+        if (count > 0) {
+            return ResBean.success(count);
+        }
+        return ResBean.failed();
+    }
 
     @ApiOperation("分页查询不同场次关联及商品信息")
     @GetMapping("/list")
