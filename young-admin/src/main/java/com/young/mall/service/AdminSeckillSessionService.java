@@ -38,6 +38,21 @@ public interface AdminSeckillSessionService {
      */
     int updateStatus(Long id, Integer status);
 
+    /**
+     * 删除场次
+     *
+     * @param id
+     * @return
+     */
+    int delete(Long id);
+
+    /**
+     * 获取详情
+     *
+     * @param id
+     * @return
+     */
+    YoungSeckillPromotionSession getItem(Long id);
 
     /**
      * 根据启用状态获取场次列表

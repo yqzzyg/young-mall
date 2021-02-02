@@ -55,6 +55,23 @@ public class AdminSeckillPromotionSessionController {
         return ResBean.failed();
     }
 
+    @ApiOperation("删除场次")
+    @PostMapping(value = "/delete/{id}")
+    public ResBean delete(@PathVariable Long id) {
+        int count = seckillSessionService.delete(id);
+        if (count > 0) {
+            return ResBean.success(count);
+        }
+        return ResBean.failed();
+    }
+
+    @ApiOperation("获取场次详情")
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResBean<YoungSeckillPromotionSession> getItem(@PathVariable Long id) {
+        YoungSeckillPromotionSession promotionSession = seckillSessionService.getItem(id);
+        return ResBean.success(promotionSession);
+    }
 
     @ApiOperation("获取全部场次")
     @GetMapping("/list")

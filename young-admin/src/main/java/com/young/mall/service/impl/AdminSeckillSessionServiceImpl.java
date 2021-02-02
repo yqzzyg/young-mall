@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @Description:
+ * @Description: 限时购场次管理Service实现类
  * @Author: yqz
  * @CreateDate: 2021/2/1 21:45
  */
@@ -48,6 +48,16 @@ public class AdminSeckillSessionServiceImpl implements AdminSeckillSessionServic
         promotionSession.setId(id);
         promotionSession.setStatus(status);
         return promotionSessionMapper.updateByPrimaryKeySelective(promotionSession);
+    }
+
+    @Override
+    public int delete(Long id) {
+        return promotionSessionMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public YoungSeckillPromotionSession getItem(Long id) {
+        return promotionSessionMapper.selectByPrimaryKey(id);
     }
 
     @Override
