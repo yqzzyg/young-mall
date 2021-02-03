@@ -1,6 +1,5 @@
 package com.young.mall.controller;
 
-import com.young.db.entity.YoungSeckillPromotion;
 import com.young.mall.common.ResBean;
 import com.young.mall.service.ClientSecondsToKillService;
 import io.swagger.annotations.Api;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.List;
+import java.util.Map;
 
 /**
  * @Description: 秒杀抢购（仿京东秒杀页面）
@@ -31,9 +30,9 @@ public class ClientSecondsToKillController {
 
     @ApiOperation("秒杀类别")
     @GetMapping("/category")
-    public ResBean seckillPromotionCategory(@RequestParam(value = "id", required = false) Integer id) {
+    public ResBean<Map<String, Object>> seckillPromotionCategory(@RequestParam(value = "id", required = false) Integer id) {
 
-        List<YoungSeckillPromotion> category = killService.seckillPromotionCategory(id);
+        Map<String, Object> category = killService.seckillPromotionCategory(id);
         return ResBean.success(category);
     }
 

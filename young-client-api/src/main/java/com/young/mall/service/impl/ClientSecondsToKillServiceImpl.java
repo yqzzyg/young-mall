@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description: 秒杀活动Service实现类
@@ -38,7 +40,7 @@ public class ClientSecondsToKillServiceImpl implements ClientSecondsToKillServic
     private SeckillPromotionProductRelationMapper relationMapper;
 
     @Override
-    public List<YoungSeckillPromotion> seckillPromotionCategory(Integer id) {
+    public Map<String, Object> seckillPromotionCategory(Integer id) {
 
         YoungSeckillPromotionExample example = new YoungSeckillPromotionExample();
 
@@ -48,7 +50,12 @@ public class ClientSecondsToKillServiceImpl implements ClientSecondsToKillServic
 
         List<YoungSeckillPromotion> promotionList = seckillPromotionMapper.selectByExample(example);
 
-        return promotionList;
+        Map<String, Object> data = new HashMap<>(5);
+        data.put("currentCategory", promotionList);
+        //用户显示页面title
+        data.put("parentCategory", promotionList);
+        data.put("brotherCategory", promotionList);
+        return data;
     }
 
     @Override

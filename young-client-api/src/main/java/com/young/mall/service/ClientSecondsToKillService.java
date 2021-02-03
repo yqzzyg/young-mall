@@ -1,9 +1,7 @@
 package com.young.mall.service;
 
 
-import com.young.db.entity.YoungSeckillPromotion;
-
-import java.util.List;
+import java.util.Map;
 
 /**
  * @Description: 秒杀活动Service
@@ -18,7 +16,7 @@ public interface ClientSecondsToKillService {
      * @param id
      * @return
      */
-    List<YoungSeckillPromotion> seckillPromotionCategory(Integer id);
+    Map<String, Object> seckillPromotionCategory(Integer id);
 
     /**
      * 根据category查询秒杀商品列表
