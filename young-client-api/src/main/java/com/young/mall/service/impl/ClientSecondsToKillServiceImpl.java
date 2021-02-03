@@ -11,13 +11,14 @@ import com.young.db.mapper.SeckillPromotionProductRelationMapper;
 import com.young.db.pojo.SeckillPromotionProduct;
 import com.young.db.pojo.SeckillPromotionSessionDetail;
 import com.young.mall.service.ClientSecondsToKillService;
+import com.young.mall.service.MallGoodsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Description: 秒杀活动Service实现类
@@ -26,6 +27,7 @@ import java.util.Map;
  */
 @Service
 public class ClientSecondsToKillServiceImpl implements ClientSecondsToKillService {
+    protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Resource
     private YoungSeckillPromotionMapper seckillPromotionMapper;
@@ -38,6 +40,9 @@ public class ClientSecondsToKillServiceImpl implements ClientSecondsToKillServic
 
     @Resource
     private SeckillPromotionProductRelationMapper relationMapper;
+
+    @Autowired
+    private MallGoodsService mallGoodsService;
 
     @Override
     public Map<String, Object> seckillPromotionCategory(Integer id) {
@@ -59,7 +64,7 @@ public class ClientSecondsToKillServiceImpl implements ClientSecondsToKillServic
     }
 
     @Override
-    public Object list(Integer promotionId, Integer page, Integer size) {
+    public List<SeckillPromotionSessionDetail> list(Integer promotionId, Integer page, Integer size) {
 
         List<SeckillPromotionSessionDetail> resultList = new ArrayList<>();
 
@@ -88,10 +93,11 @@ public class ClientSecondsToKillServiceImpl implements ClientSecondsToKillServic
     }
 
     @Override
-    public Object listByDate(Long promotionId, Long promotionSessionId, Integer pageSize, Integer pageNum) {
+    public List<SeckillPromotionProduct> listByDate(Long promotionId, Long promotionSessionId, Integer pageSize, Integer pageNum) {
 
         PageHelper.startPage(pageNum, pageSize);
         List<SeckillPromotionProduct> seckillGoodsList = relationMapper.getSeckillGoodsList(promotionId, promotionSessionId);
         return seckillGoodsList;
     }
+
 }

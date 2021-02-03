@@ -1,5 +1,7 @@
 package com.young.mall.controller;
 
+import com.young.db.pojo.SeckillPromotionProduct;
+import com.young.db.pojo.SeckillPromotionSessionDetail;
 import com.young.mall.common.ResBean;
 import com.young.mall.service.ClientSecondsToKillService;
 import io.swagger.annotations.Api;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -47,11 +50,11 @@ public class ClientSecondsToKillController {
      */
     @ApiOperation("根据category查询秒杀商品列表")
     @GetMapping("/list")
-    public ResBean list(
+    public ResBean<List<SeckillPromotionSessionDetail>> list(
             @RequestParam(value = "promotionId") Integer promotionId,
             @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "5") Integer size) {
-        Object list = killService.list(promotionId, page, size);
+        List<SeckillPromotionSessionDetail> list = killService.list(promotionId, page, size);
         return ResBean.success(list);
     }
 
@@ -66,19 +69,29 @@ public class ClientSecondsToKillController {
      */
     @ApiOperation("分页查询不同场次关联及商品信息")
     @GetMapping("/listByDate")
-    public ResBean listByDate(@RequestParam(value = "promotionId") Long promotionId,
-                              @RequestParam(value = "promotionSessionId") Long promotionSessionId,
-                              @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
-                              @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
+    public ResBean<List<SeckillPromotionProduct>> listByDate(@RequestParam(value = "promotionId") Long promotionId,
+                                                             @RequestParam(value = "promotionSessionId") Long promotionSessionId,
+                                                             @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
+                                                             @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
 
-        Object listByDate = killService.listByDate(promotionId, promotionSessionId, pageSize, pageNum);
+        List<SeckillPromotionProduct> listByDate = killService.listByDate(promotionId, promotionSessionId, pageSize, pageNum);
         return ResBean.success(listByDate);
     }
 
+    /**
+     * @param id 商品id
+     * @return
+     */
     @ApiOperation("秒杀商品详情")
     @GetMapping("/details")
-    public ResBean details() {
+    public ResBean details(@RequestParam("id") Integer id) {
 
         return ResBean.success(null);
+    }
+
+    @ApiOperation("获取系统时间")
+    @GetMapping("/now")
+    public ResBean now() {
+        return ResBean.success(System.currentTimeMillis());
     }
 }

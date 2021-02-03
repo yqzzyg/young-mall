@@ -1,6 +1,11 @@
 package com.young.mall.service;
 
 
+import com.young.db.entity.YoungGoodsProduct;
+import com.young.db.pojo.SeckillPromotionProduct;
+import com.young.db.pojo.SeckillPromotionSessionDetail;
+
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,7 +31,7 @@ public interface ClientSecondsToKillService {
      * @param size
      * @return
      */
-    Object list(Integer promotionId, Integer page, Integer size);
+    List<SeckillPromotionSessionDetail> list(Integer promotionId, Integer page, Integer size);
 
     /**
      * 分页查询不同场次关联及商品信息
@@ -37,6 +42,6 @@ public interface ClientSecondsToKillService {
      * @param pageNum
      * @return
      */
-    Object listByDate(Long promotionId, Long promotionSessionId, Integer pageSize, Integer pageNum);
+    List<SeckillPromotionProduct> listByDate(Long promotionId, Long promotionSessionId, Integer pageSize, Integer pageNum);
 
 }
