@@ -48,6 +48,8 @@ public class ClientSecondsToKillServiceImpl implements ClientSecondsToKillServic
 
         YoungSeckillPromotionExample example = new YoungSeckillPromotionExample();
 
+        example.or().andStatusEqualTo(1).andDeletedEqualTo(false);
+
         List<YoungSeckillPromotion> promotionList = seckillPromotionMapper.selectByExample(example);
 
         Map<String, Object> data = new HashMap<>(5);

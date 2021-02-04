@@ -32,7 +32,7 @@ public class ClientSecondsToKillController {
     private ClientSecondsToKillService killService;
 
 
-    @ApiOperation("秒杀类别")
+    @ApiOperation("秒杀商品类别")
     @GetMapping("/category")
     public ResBean<Map<String, Object>> seckillPromotionCategory(Integer id) {
 
@@ -42,14 +42,14 @@ public class ClientSecondsToKillController {
 
 
     /**
-     * 根据category查询秒杀商品列表
+     * 根据category查询秒杀时间段列表
      *
      * @param promotionId 秒杀活动id
      * @param page
      * @param size
      * @return
      */
-    @ApiOperation("根据category查询秒杀商品列表")
+    @ApiOperation("根据category查询秒杀时间段列表")
     @GetMapping("/list")
     public ResBean list(
             @RequestParam(value = "promotionId") Integer promotionId,
