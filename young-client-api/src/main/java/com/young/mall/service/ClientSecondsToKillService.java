@@ -18,10 +18,9 @@ public interface ClientSecondsToKillService {
     /**
      * 查询秒杀分类
      *
-     * @param id
      * @return
      */
-    Map<String, Object> seckillPromotionCategory(Integer id);
+    Map<String, Object> seckillPromotionCategory();
 
     /**
      * 根据category查询秒杀商品列表

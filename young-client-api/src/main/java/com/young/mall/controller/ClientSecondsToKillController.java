@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,9 +34,9 @@ public class ClientSecondsToKillController {
 
     @ApiOperation("秒杀类别")
     @GetMapping("/category")
-    public ResBean<Map<String, Object>> seckillPromotionCategory(@RequestParam(value = "id", required = false) Integer id) {
+    public ResBean<Map<String, Object>> seckillPromotionCategory(Integer id) {
 
-        Map<String, Object> category = killService.seckillPromotionCategory(id);
+        Map<String, Object> category = killService.seckillPromotionCategory();
         return ResBean.success(category);
     }
 
@@ -50,12 +51,15 @@ public class ClientSecondsToKillController {
      */
     @ApiOperation("根据category查询秒杀商品列表")
     @GetMapping("/list")
-    public ResBean<List<SeckillPromotionSessionDetail>> list(
+    public ResBean list(
             @RequestParam(value = "promotionId") Integer promotionId,
             @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "5") Integer size) {
         List<SeckillPromotionSessionDetail> list = killService.list(promotionId, page, size);
-        return ResBean.success(list);
+        Map<String, Object> data = new HashMap<>(2);
+
+        data.put("goodsList", list);
+        return ResBean.success(data);
     }
 
     /**
