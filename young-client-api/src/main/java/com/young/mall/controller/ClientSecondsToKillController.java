@@ -58,7 +58,7 @@ public class ClientSecondsToKillController {
         List<SeckillPromotionSessionDetail> list = killService.list(promotionId, page, size);
         Map<String, Object> data = new HashMap<>(2);
 
-        data.put("goodsList", list);
+        data.put("promotionSession", list);
         return ResBean.success(data);
     }
 
