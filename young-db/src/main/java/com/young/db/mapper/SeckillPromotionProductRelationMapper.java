@@ -22,4 +22,6 @@ public interface SeckillPromotionProductRelationMapper {
     List<SeckillPromotionProduct> getSeckillGoodsList(@Param("flashPromotionId") Long flashPromotionId,
                                                       @Param("flashPromotionSessionId") Long flashPromotionSessionId);
 
+
+
 }

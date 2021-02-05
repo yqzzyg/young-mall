@@ -65,13 +65,6 @@ public class AdminSeckillSessionServiceImpl implements AdminSeckillSessionServic
         return promotionSessionMapper.selectByPrimaryKey(id);
     }
 
-    @Override
-    public List<YoungSeckillPromotionSession> list() {
-
-        YoungSeckillPromotionSessionExample example = new YoungSeckillPromotionSessionExample();
-        example.or().andDeletedEqualTo(false);
-        return promotionSessionMapper.selectByExample(example);
-    }
 
     @Override
     public List<SeckillPromotionSessionDetail> selectList(Long promotionId) {

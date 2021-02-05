@@ -73,12 +73,6 @@ public class AdminSeckillPromotionSessionController {
         return ResBean.success(promotionSession);
     }
 
-    @ApiOperation("获取全部场次")
-    @GetMapping("/list")
-    public ResBean<List<YoungSeckillPromotionSession>> list() {
-        List<YoungSeckillPromotionSession> promotionSessionList = seckillSessionService.list();
-        return ResBean.success(promotionSessionList);
-    }
 
     @ApiOperation("获取全部可选场次及其数量(设置商品入口)")
     @GetMapping(value = "/selectList")

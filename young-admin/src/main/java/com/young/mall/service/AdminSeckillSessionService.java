@@ -55,13 +55,6 @@ public interface AdminSeckillSessionService {
     YoungSeckillPromotionSession getItem(Long id);
 
     /**
-     * 根据启用状态获取场次列表
-     *
-     * @return
-     */
-    List<YoungSeckillPromotionSession> list();
-
-    /**
      * 获取全部可选场次及其数量
      *
      * @param promotionId
