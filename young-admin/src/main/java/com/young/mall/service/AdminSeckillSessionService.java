@@ -60,6 +60,8 @@ public interface AdminSeckillSessionService {
      * @param promotionId
      * @return
      */
-    List<SeckillPromotionSessionDetail> selectList(Long promotionId);
+    List<SeckillPromotionSessionDetail> selectList(Long promotionId,
+                                                   Integer size,
+                                                   Integer page);
 
 }

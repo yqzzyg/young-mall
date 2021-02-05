@@ -2,6 +2,7 @@ package com.young.mall.controller;
 
 import com.young.db.entity.YoungSeckillPromotionSession;
 import com.young.db.pojo.SeckillPromotionSessionDetail;
+import com.young.mall.common.CommonPage;
 import com.young.mall.common.ResBean;
 import com.young.mall.service.AdminSeckillSessionService;
 import io.swagger.annotations.Api;
@@ -76,8 +77,12 @@ public class AdminSeckillPromotionSessionController {
 
     @ApiOperation("获取全部可选场次及其数量(设置商品入口)")
     @GetMapping(value = "/selectList")
-    public ResBean<List<SeckillPromotionSessionDetail>> selectList(Long flashPromotionId) {
-        List<SeckillPromotionSessionDetail> promotionSessionList = seckillSessionService.selectList(flashPromotionId);
-        return ResBean.success(promotionSessionList);
+    public ResBean<CommonPage<SeckillPromotionSessionDetail>> selectList(Long flashPromotionId,
+                                                                         @RequestParam(value = "size", defaultValue = "5") Integer size,
+                                                                         @RequestParam(value = "page", defaultValue = "1") Integer page) {
+        List<SeckillPromotionSessionDetail> promotionSessionList = seckillSessionService.selectList(flashPromotionId, size, page);
+
+        CommonPage<SeckillPromotionSessionDetail> restPage = CommonPage.restPage(promotionSessionList);
+        return ResBean.success(restPage);
     }
 }

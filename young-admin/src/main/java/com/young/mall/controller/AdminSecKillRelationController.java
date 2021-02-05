@@ -67,10 +67,10 @@ public class AdminSecKillRelationController {
     @GetMapping("/list")
     public ResBean list(@RequestParam(value = "flashPromotionId") Long flashPromotionId,
                         @RequestParam(value = "flashPromotionSessionId") Long flashPromotionSessionId,
-                        @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
-                        @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
+                        @RequestParam(value = "size", defaultValue = "5") Integer size,
+                        @RequestParam(value = "page", defaultValue = "1") Integer page) {
 
-        List<SeckillPromotionProduct> promotionProducts = relationService.list(flashPromotionId, flashPromotionSessionId, pageSize, pageNum);
+        List<SeckillPromotionProduct> promotionProducts = relationService.list(flashPromotionId, flashPromotionSessionId, size, page);
 
         return ResBean.success(CommonPage.restPage(promotionProducts));
 
