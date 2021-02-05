@@ -13,6 +13,13 @@
             <result column="p_stock" jdbcType="INTEGER" property="stock" />
         </association>
     </resultMap>
+
+
+    <resultMap id="sessionMap" type="com.young.db.pojo.SeckillPromotionSessionDetail"
+               extends="com.young.db.dao.YoungSeckillPromotionSessionMapper.BaseResultMap">
+        <result column="product_count" jdbcType="INTEGER" property="productCount"></result>
+    </resultMap>
+
     <select id="getSeckillGoodsList" resultMap="flashProductMap">
         SELECT
         r.id,
@@ -37,5 +44,19 @@
         AND r.flash_promotion_session_id = #{flashPromotionSessionId}
         GROUP BY p.goods_id
         ORDER BY r.sort DESC
+    </select>
+
+    <select id="getSessionListWithCount" resultMap="sessionMap">
+        SELECT
+        ps.id,
+        ps.`name`,
+        COUNT(pr.flash_promotion_session_id) product_count,
+        ps.start_time,ps.end_time
+        FROM young_seckill_promotion_session ps
+        LEFT JOIN young_seckill_promotion_product_relation pr ON ps.id = pr.flash_promotion_session_id
+        WHERE pr.flash_promotion_id = #{promotionId}
+        AND ps.deleted=0
+        GROUP BY pr.flash_promotion_session_id
+        ORDER BY ps.start_time ASC
     </select>
 </mapper>
