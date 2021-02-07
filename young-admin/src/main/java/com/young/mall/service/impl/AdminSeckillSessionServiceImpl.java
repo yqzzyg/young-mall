@@ -1,12 +1,19 @@
 package com.young.mall.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.young.db.dao.YoungSeckillPromotionProductRelationMapper;
 import com.young.db.dao.YoungSeckillPromotionSessionMapper;
+import com.young.db.entity.YoungSeckillPromotionProductRelation;
+import com.young.db.entity.YoungSeckillPromotionProductRelationExample;
 import com.young.db.entity.YoungSeckillPromotionSession;
 import com.young.db.mapper.SeckillPromotionProductRelationMapper;
 import com.young.db.pojo.SeckillPromotionSessionDetail;
+import com.young.mall.exception.Asserts;
 import com.young.mall.service.AdminSeckillSessionService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
@@ -20,20 +27,32 @@ import java.util.List;
 @Service
 public class AdminSeckillSessionServiceImpl implements AdminSeckillSessionService {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Resource
     private YoungSeckillPromotionSessionMapper promotionSessionMapper;
 
+    @Resource
+    private YoungSeckillPromotionProductRelationMapper productRelationMapper;
 
     @Resource
     private SeckillPromotionProductRelationMapper relationMapper;
 
 
     @Override
-    public int create(YoungSeckillPromotionSession promotionSession) {
+    @Transactional(rollbackFor = Exception.class)
+    public int create(Long flashPromotionId, YoungSeckillPromotionSession promotionSession) {
 
         promotionSession.setCreateTime(LocalDateTime.now());
+        //在该秒杀分类下添加秒杀场次
+        int count = promotionSessionMapper.insertSelective(promotionSession);
 
-        return promotionSessionMapper.insertSelective(promotionSession);
+        YoungSeckillPromotionProductRelation relation = new YoungSeckillPromotionProductRelation();
+        relation.setFlashPromotionId(flashPromotionId);
+        relation.setFlashPromotionSessionId(promotionSession.getId());
+        //在秒杀分类--场次关系表中添加关联
+        productRelationMapper.insertSelective(relation);
+        return count;
     }
 
     @Override

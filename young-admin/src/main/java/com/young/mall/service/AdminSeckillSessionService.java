@@ -2,6 +2,7 @@ package com.young.mall.service;
 
 import com.young.db.entity.YoungSeckillPromotionSession;
 import com.young.db.pojo.SeckillPromotionSessionDetail;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,10 +16,11 @@ public interface AdminSeckillSessionService {
     /**
      * 添加场次
      *
+     * @param flashPromotionId
      * @param promotionSession
      * @return
      */
-    int create(YoungSeckillPromotionSession promotionSession);
+    int create(Long flashPromotionId, YoungSeckillPromotionSession promotionSession);
 
     /**
      * 修改场次

@@ -37,9 +37,9 @@ public class AdminSeckillPromotionSessionController {
     }
 
     @ApiOperation("添加场次")
-    @PostMapping(value = "/create")
-    public ResBean create(@RequestBody YoungSeckillPromotionSession promotionSession) {
-        int count = seckillSessionService.create(promotionSession);
+    @PostMapping(value = "/create/{flashPromotionId}")
+    public ResBean create(@PathVariable Long flashPromotionId, @RequestBody YoungSeckillPromotionSession promotionSession) {
+        int count = seckillSessionService.create(flashPromotionId, promotionSession);
         if (count > 0) {
             return ResBean.success(count);
         }
