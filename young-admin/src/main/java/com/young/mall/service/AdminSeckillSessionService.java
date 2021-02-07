@@ -44,9 +44,10 @@ public interface AdminSeckillSessionService {
      * 删除场次
      *
      * @param id
+     * @param flashPromotionId 活动id
      * @return
      */
-    int delete(Long id);
+    int delete(Long id,Long flashPromotionId);
 
     /**
      * 获取详情

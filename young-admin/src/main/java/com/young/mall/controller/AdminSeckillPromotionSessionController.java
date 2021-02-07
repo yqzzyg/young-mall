@@ -40,7 +40,7 @@ public class AdminSeckillPromotionSessionController {
     @PostMapping(value = "/create/{flashPromotionId}")
     public ResBean create(@PathVariable Long flashPromotionId, @RequestBody YoungSeckillPromotionSession promotionSession) {
         int count = seckillSessionService.create(flashPromotionId, promotionSession);
-        if (count > 0) {
+        if (count == 2) {
             return ResBean.success(count);
         }
         return ResBean.failed();
@@ -58,9 +58,9 @@ public class AdminSeckillPromotionSessionController {
 
     @ApiOperation("删除场次")
     @PostMapping(value = "/delete/{id}")
-    public ResBean delete(@PathVariable Long id) {
-        int count = seckillSessionService.delete(id);
-        if (count > 0) {
+    public ResBean delete(@PathVariable Long id, @RequestParam Long flashPromotionId) {
+        int count = seckillSessionService.delete(id, flashPromotionId);
+        if (count == 2) {
             return ResBean.success(count);
         }
         return ResBean.failed();

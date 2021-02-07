@@ -51,8 +51,8 @@ public class AdminSeckillSessionServiceImpl implements AdminSeckillSessionServic
         relation.setFlashPromotionId(flashPromotionId);
         relation.setFlashPromotionSessionId(promotionSession.getId());
         //在秒杀分类--场次关系表中添加关联
-        productRelationMapper.insertSelective(relation);
-        return count;
+        int countPr = productRelationMapper.insertSelective(relation);
+        return count + countPr;
     }
 
     @Override
@@ -70,12 +70,20 @@ public class AdminSeckillSessionServiceImpl implements AdminSeckillSessionServic
     }
 
     @Override
-    public int delete(Long id) {
+    public int delete(Long id, Long flashPromotionId) {
         YoungSeckillPromotionSession promotionSession = new YoungSeckillPromotionSession();
         promotionSession.setId(id);
         promotionSession.setDeleted(true);
+        int count = promotionSessionMapper.updateByPrimaryKeySelective(promotionSession);
 
-        return promotionSessionMapper.updateByPrimaryKeySelective(promotionSession);
+        YoungSeckillPromotionProductRelationExample relationExample = new YoungSeckillPromotionProductRelationExample();
+        relationExample.or()
+                .andFlashPromotionSessionIdEqualTo(id)
+                .andFlashPromotionIdEqualTo(flashPromotionId);
+
+        int countPr = productRelationMapper.logicalDeleteByExample(relationExample);
+
+        return count + countPr;
     }
 
     @Override
