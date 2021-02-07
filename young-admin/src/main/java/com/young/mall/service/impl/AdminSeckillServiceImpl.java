@@ -3,10 +3,13 @@ package com.young.mall.service.impl;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
 import com.young.db.dao.YoungSeckillPromotionMapper;
+import com.young.db.dao.YoungSeckillPromotionProductRelationMapper;
 import com.young.db.entity.YoungSeckillPromotion;
 import com.young.db.entity.YoungSeckillPromotionExample;
+import com.young.db.entity.YoungSeckillPromotionProductRelationExample;
 import com.young.mall.service.AdminSeckillService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
@@ -23,6 +26,9 @@ public class AdminSeckillServiceImpl implements AdminSeckillService {
     @Resource
     private YoungSeckillPromotionMapper seckillPromotionMapper;
 
+    @Resource
+    private YoungSeckillPromotionProductRelationMapper productRelationMapper;
+
     @Override
     public int create(YoungSeckillPromotion flashPromotion) {
 
@@ -31,10 +37,18 @@ public class AdminSeckillServiceImpl implements AdminSeckillService {
     }
 
     @Override
+    @Transactional
     public int delete(Long id) {
         YoungSeckillPromotion promotion = new YoungSeckillPromotion();
         promotion.setId(id);
         promotion.setDeleted(true);
+
+        //同时删除关联表
+        YoungSeckillPromotionProductRelationExample relationExample = new YoungSeckillPromotionProductRelationExample();
+        relationExample.or().andFlashPromotionIdEqualTo(id);
+        int count = productRelationMapper.logicalDeleteByExample(relationExample);
+
+
         return seckillPromotionMapper.updateByPrimaryKeySelective(promotion);
     }
 
