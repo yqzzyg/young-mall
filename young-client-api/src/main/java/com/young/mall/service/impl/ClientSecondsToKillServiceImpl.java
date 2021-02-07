@@ -1,6 +1,5 @@
 package com.young.mall.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import com.github.pagehelper.PageHelper;
 import com.young.db.dao.YoungSeckillPromotionMapper;
 import com.young.db.dao.YoungSeckillPromotionProductRelationMapper;
@@ -8,7 +7,7 @@ import com.young.db.dao.YoungSeckillPromotionSessionMapper;
 import com.young.db.entity.*;
 import com.young.db.mapper.SeckillPromotionProductRelationMapper;
 import com.young.db.pojo.SeckillPromotionProduct;
-import com.young.db.pojo.SeckillPromotionSessionDetail;
+import com.young.db.pojo.SeckillPromotionRelationProduct;
 import com.young.mall.service.ClientSecondsToKillService;
 import com.young.mall.service.MallGoodsService;
 import org.slf4j.Logger;
@@ -59,32 +58,11 @@ public class ClientSecondsToKillServiceImpl implements ClientSecondsToKillServic
     }
 
     @Override
-    public List<SeckillPromotionSessionDetail> list(Integer promotionId, Integer page, Integer size) {
+    public List<SeckillPromotionRelationProduct> list(Integer promotionId, Integer page, Integer size) {
 
-        List<SeckillPromotionSessionDetail> resultList = new ArrayList<>();
-
-        YoungSeckillPromotionSessionExample example = new YoungSeckillPromotionSessionExample();
-        example.createCriteria().andStatusEqualTo(1).andDeletedEqualTo(false);
-        //查询所有秒杀活动
-        List<YoungSeckillPromotionSession> list = promotionSessionMapper.selectByExample(example);
-
-
-        //查询每个秒杀活动内的多个时间段
-        for (YoungSeckillPromotionSession session : list) {
-            SeckillPromotionSessionDetail detail = new SeckillPromotionSessionDetail();
-
-
-            YoungSeckillPromotionProductRelationExample relationExample = new YoungSeckillPromotionProductRelationExample();
-            relationExample.or()
-                    .andFlashPromotionIdEqualTo(Long.valueOf(promotionId))
-                    .andFlashPromotionSessionIdEqualTo(session.getId());
-            //该活动对应的商品数量
-            long relationCount = productRelationMapper.countByExample(relationExample);
-            BeanUtil.copyProperties(session, detail);
-            detail.setProductCount(relationCount);
-            resultList.add(detail);
-        }
-        return resultList;
+        PageHelper.startPage(page, size);
+        List<SeckillPromotionRelationProduct> relationProductList = relationMapper.getSessionListByPromotionId(Long.valueOf(promotionId));
+        return relationProductList;
     }
 
     @Override

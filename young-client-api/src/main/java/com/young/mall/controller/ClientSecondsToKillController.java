@@ -1,7 +1,7 @@
 package com.young.mall.controller;
 
 import com.young.db.pojo.SeckillPromotionProduct;
-import com.young.db.pojo.SeckillPromotionSessionDetail;
+import com.young.db.pojo.SeckillPromotionRelationProduct;
 import com.young.mall.common.ResBean;
 import com.young.mall.service.ClientSecondsToKillService;
 import io.swagger.annotations.Api;
@@ -55,7 +55,7 @@ public class ClientSecondsToKillController {
             @RequestParam(value = "promotionId") Integer promotionId,
             @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "5") Integer size) {
-        List<SeckillPromotionSessionDetail> list = killService.list(promotionId, page, size);
+        List<SeckillPromotionRelationProduct> list = killService.list(promotionId, page, size);
         Map<String, Object> data = new HashMap<>(2);
 
         data.put("promotionSession", list);

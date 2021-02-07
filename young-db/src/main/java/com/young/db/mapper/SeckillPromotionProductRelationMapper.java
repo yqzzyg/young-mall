@@ -1,6 +1,7 @@
 package com.young.db.mapper;
 
 import com.young.db.pojo.SeckillPromotionProduct;
+import com.young.db.pojo.SeckillPromotionRelationProduct;
 import com.young.db.pojo.SeckillPromotionSessionDetail;
 import org.apache.ibatis.annotations.Param;
 
@@ -30,4 +31,13 @@ public interface SeckillPromotionProductRelationMapper {
      * @return
      */
     List<SeckillPromotionSessionDetail> getSessionListWithCount(Long promotionId);
+
+
+    /**
+     * 根据活动id查询该活动下有哪些时间段
+     *
+     * @param promotionId
+     * @return
+     */
+    List<SeckillPromotionRelationProduct> getSessionListByPromotionId(Long promotionId);
 }

@@ -1,9 +1,8 @@
 package com.young.mall.service;
 
 
-import com.young.db.entity.YoungGoodsProduct;
 import com.young.db.pojo.SeckillPromotionProduct;
-import com.young.db.pojo.SeckillPromotionSessionDetail;
+import com.young.db.pojo.SeckillPromotionRelationProduct;
 
 import java.util.List;
 import java.util.Map;
@@ -30,7 +29,7 @@ public interface ClientSecondsToKillService {
      * @param size
      * @return
      */
-    List<SeckillPromotionSessionDetail> list(Integer promotionId, Integer page, Integer size);
+    List<SeckillPromotionRelationProduct> list(Integer promotionId, Integer page, Integer size);
 
     /**
      * 分页查询不同场次关联及商品信息
