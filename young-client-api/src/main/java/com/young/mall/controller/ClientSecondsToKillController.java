@@ -1,17 +1,22 @@
 package com.young.mall.controller;
 
+import cn.hutool.core.bean.BeanUtil;
+import com.github.pagehelper.PageInfo;
+import com.young.db.entity.YoungCategory;
+import com.young.db.entity.YoungGoods;
 import com.young.db.pojo.SeckillPromotionProduct;
 import com.young.db.pojo.SeckillPromotionRelationProduct;
 import com.young.mall.common.ResBean;
-import com.young.mall.service.ClientSecondsToKillService;
+import com.young.mall.domain.ClientUserDetails;
+import com.young.mall.domain.vo.SeckillGoodsListVo;
+import com.young.mall.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,12 +36,24 @@ public class ClientSecondsToKillController {
     @Resource
     private ClientSecondsToKillService killService;
 
+    @Autowired
+    private ClientGoodsService clientGoodsService;
+
+    @Autowired
+    private ClientUserService clientUserService;
+
+    @Autowired
+    private ClientSearchHistoryService clientSearchHistoryService;
+
+    @Autowired
+    private ClientCategoryService clientCategoryService;
+
 
     @ApiOperation("秒杀商品类别")
     @GetMapping("/category")
     public ResBean<Map<String, Object>> seckillPromotionCategory(Integer id) {
 
-        Map<String, Object> category = killService.seckillPromotionCategory();
+        Map<String, Object> category = killService.seckillPromotionCategory(id);
         return ResBean.success(category);
     }
 
@@ -97,5 +114,38 @@ public class ClientSecondsToKillController {
     @GetMapping("/now")
     public ResBean now() {
         return ResBean.success(System.currentTimeMillis());
+    }
+
+
+    @ApiOperation("获取秒杀商品列表")
+    @PostMapping("/goodsList")
+    public ResBean goodsList(@RequestBody SeckillGoodsListVo vo) {
+
+        ClientUserDetails userInfo = clientUserService.getUserInfo();
+        if (BeanUtil.isEmpty(userInfo)) {
+            return ResBean.unauthorized("请登录！");
+        }
+
+        // 查询列表数据
+        List<YoungGoods> goodsList = clientGoodsService.querySelective(vo.getGoodsIds(), vo.getCategoryId(), vo.getBrandId(), vo.getKeyword(), null,
+                null, vo.getPage(), vo.getSize(), vo.getSort(), vo.getOrder());
+        // 查询商品所属类目列表id。
+        List<Integer> catIds = clientGoodsService.getCatIds(vo.getBrandId(), vo.getKeyword(), vo.getIsHot(), vo.getIsNew());
+        //根据商品类目ids，查询所属所有类目列表
+        List<YoungCategory> categoryList = null;
+        if (catIds.size() != 0) {
+            categoryList = clientCategoryService.queryL2ByIds(catIds);
+        } else {
+            categoryList = new ArrayList<>(0);
+        }
+        Map<String, Object> data = new HashMap<>();
+
+        PageInfo<YoungGoods> pageInfo = PageInfo.of(goodsList);
+        data.put("goodsList", goodsList);
+        data.put("count", pageInfo.getTotal());
+        //用于展示”筛选--分类“
+        data.put("filterCategoryList", categoryList);
+        data.put("totalPages", pageInfo.getPages());
+        return ResBean.success(data);
     }
 }

@@ -1,5 +1,6 @@
 package com.young.mall.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.young.db.dao.YoungGoodsMapper;
@@ -149,7 +150,7 @@ public class ClientGoodsServiceImpl implements ClientGoodsService {
     }
 
     @Override
-    public List<YoungGoods> querySelective(Integer catId, Integer brandId,
+    public List<YoungGoods> querySelective(List<Integer> goodsIds, Integer catId, Integer brandId,
                                            String keywords, Boolean isHot,
                                            Boolean isNew, Integer page,
                                            Integer limit, String sort,
@@ -160,11 +161,15 @@ public class ClientGoodsServiceImpl implements ClientGoodsService {
         YoungGoodsExample.Criteria criteria1 = example.or();
         YoungGoodsExample.Criteria criteria2 = example.or();
 
+        if (!ObjectUtil.isEmpty(goodsIds) && goodsIds.size() > 0) {
+            criteria1.andIdIn(goodsIds);
+            criteria2.andIdIn(goodsIds);
+        }
         if (!StringUtils.isEmpty(catId) && catId != 0) {
             criteria1.andCategoryIdEqualTo(catId);
             criteria2.andCategoryIdEqualTo(catId);
         }
-        if (!StringUtils.isEmpty(brandId)) {
+        if (!StringUtils.isEmpty(brandId) && brandId != 0) {
             criteria1.andBrandIdEqualTo(brandId);
             criteria2.andBrandIdEqualTo(brandId);
         }

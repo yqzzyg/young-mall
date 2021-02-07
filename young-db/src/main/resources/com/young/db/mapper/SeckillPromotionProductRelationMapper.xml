@@ -71,10 +71,9 @@
     </select>
 
     <select id="getSessionListByPromotionId" resultMap="relationProductMap">
-
         SELECT ps.id,ps.`name`,ps.start_time,pr.product_id
-        FROM young_seckill_promotion_product_relation pr
-        LEFT JOIN young_seckill_promotion_session ps ON pr.flash_promotion_session_id = ps.id
+        FROM young_seckill_promotion_session ps
+        LEFT JOIN young_seckill_promotion_product_relation pr  ON pr.flash_promotion_session_id = ps.id
         WHERE pr.flash_promotion_id = #{promotionId}
         AND ps.`status` = 1 AND ps.deleted = 0 AND pr.deleted = 0
         ORDER BY ps.start_time ASC

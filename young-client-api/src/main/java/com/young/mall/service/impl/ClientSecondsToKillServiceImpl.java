@@ -1,5 +1,6 @@
 package com.young.mall.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.github.pagehelper.PageHelper;
 import com.young.db.dao.YoungSeckillPromotionMapper;
 import com.young.db.dao.YoungSeckillPromotionProductRelationMapper;
@@ -43,12 +44,14 @@ public class ClientSecondsToKillServiceImpl implements ClientSecondsToKillServic
     private MallGoodsService mallGoodsService;
 
     @Override
-    public Map<String, Object> seckillPromotionCategory() {
+    public Map<String, Object> seckillPromotionCategory(Integer id) {
 
         YoungSeckillPromotionExample example = new YoungSeckillPromotionExample();
-
-        example.or().andStatusEqualTo(1).andDeletedEqualTo(false);
-
+        YoungSeckillPromotionExample.Criteria or = example.or();
+        or.andStatusEqualTo(1).andDeletedEqualTo(false);
+        if (!ObjectUtil.isEmpty(id) && id != 0) {
+            or.andIdEqualTo(Long.valueOf(id));
+        }
         List<YoungSeckillPromotion> promotionList = seckillPromotionMapper.selectByExample(example);
 
         Map<String, Object> data = new HashMap<>(5);

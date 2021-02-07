@@ -59,6 +59,7 @@ public interface ClientGoodsService {
     /**
      * 分页查询商品
      *
+     * @param goodsIds 商品id集合
      * @param catId    分类id
      * @param brandId  品牌id
      * @param keywords 关键词
@@ -70,7 +71,7 @@ public interface ClientGoodsService {
      * @param order    排序方式
      * @return
      */
-    List<YoungGoods> querySelective(Integer catId, Integer brandId,
+    List<YoungGoods> querySelective(List<Integer> goodsIds, Integer catId, Integer brandId,
                                     String keywords,
                                     Boolean isHot, Boolean isNew,
                                     Integer page, Integer limit, String sort, String order);

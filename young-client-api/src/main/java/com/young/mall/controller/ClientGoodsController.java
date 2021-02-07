@@ -70,7 +70,7 @@ public class ClientGoodsController {
 
     @ApiOperation("根据商品分类、品牌、关键词等，分页查询商品")
     @GetMapping("/list")
-    public ResBean list(Integer categoryId, Integer brandId, String keyword, Boolean isNew, Boolean isHot,
+    public ResBean list(@RequestParam(required = false) List<Integer> goodsIds, Integer categoryId, Integer brandId, String keyword, Boolean isNew, Boolean isHot,
                         @RequestParam(defaultValue = "1") Integer page,
                         @RequestParam(defaultValue = "10") Integer size,
                         @RequestParam(defaultValue = "sort_order") String sort,
@@ -91,7 +91,7 @@ public class ClientGoodsController {
         }
 
         // 查询列表数据
-        List<YoungGoods> goodsList = clientGoodsService.querySelective(categoryId, brandId, keyword, isNew, isHot, page, size, sort, order);
+        List<YoungGoods> goodsList = clientGoodsService.querySelective(goodsIds,categoryId, brandId, keyword, isNew, isHot, page, size, sort, order);
         // 查询商品所属类目列表id。
         List<Integer> catIds = clientGoodsService.getCatIds(brandId, keyword, isHot, isNew);
         //根据商品类目ids，查询所属所有类目列表
