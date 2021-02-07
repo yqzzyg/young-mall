@@ -23,9 +23,9 @@
 
     <resultMap id="relationProductMap" type="com.young.db.pojo.SeckillPromotionRelationProduct"
                extends="com.young.db.dao.YoungSeckillPromotionSessionMapper.BaseResultMap">
-        <collection property="productIds" ofType="com.young.db.pojo.SeckillPromotionRelationProductId"
+        <collection property="goodsIds" ofType="INTEGER"
                     javaType="ArrayList">
-            <result column="product_id" jdbcType="INTEGER" property="productId"></result>
+            <result column="product_id" jdbcType="INTEGER"></result>
         </collection>
     </resultMap>
 

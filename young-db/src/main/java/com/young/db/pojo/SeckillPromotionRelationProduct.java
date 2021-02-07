@@ -15,5 +15,5 @@ import java.util.List;
 public class SeckillPromotionRelationProduct extends YoungSeckillPromotionSession {
 
     @ApiModelProperty("一对多商品id")
-    private List<SeckillPromotionRelationProductId> productIds;
+    private List<Integer> goodsIds;
 }
