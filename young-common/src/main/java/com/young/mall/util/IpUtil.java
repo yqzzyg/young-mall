@@ -1,4 +1,4 @@
-package com.young.mall.utils;
+package com.young.mall.util;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;

@@ -1,4 +1,4 @@
-package com.young.mall.utils;
+package com.young.mall.util;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;

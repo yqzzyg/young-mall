@@ -20,7 +20,7 @@ import com.young.mall.notify.NotifyService;
 import com.young.mall.service.GoodsProductService;
 import com.young.mall.service.OrderService;
 import com.young.mall.domain.enums.AdminResponseCode;
-import com.young.mall.utils.OrderUtil;
+import com.young.mall.util.OrderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

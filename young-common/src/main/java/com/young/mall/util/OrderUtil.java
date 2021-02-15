@@ -1,4 +1,4 @@
-package com.young.mall.utils;
+package com.young.mall.util;
 
 import com.alibaba.fastjson.JSONObject;
 import com.young.db.entity.YoungOrder;

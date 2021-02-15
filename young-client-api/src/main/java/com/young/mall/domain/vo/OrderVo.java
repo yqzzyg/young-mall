@@ -1,6 +1,6 @@
 package com.young.mall.domain.vo;
 
-import com.young.mall.utils.OrderHandleOption;
+import com.young.mall.util.OrderHandleOption;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

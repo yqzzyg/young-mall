@@ -9,7 +9,7 @@ import com.young.mall.domain.dto.AdminUserDto;
 import com.young.mall.domain.enums.AdminResponseCode;
 import com.young.mall.exception.Asserts;
 import com.young.mall.service.AdminUserService;
-import com.young.mall.utils.RegexUtil;
+import com.young.mall.util.RegexUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

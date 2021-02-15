@@ -1,4 +1,4 @@
-package com.young.mall.utils;
+package com.young.mall.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;

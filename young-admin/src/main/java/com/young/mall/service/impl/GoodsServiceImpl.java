@@ -11,7 +11,7 @@ import com.young.mall.domain.dto.GoodsArguments;
 import com.young.mall.exception.Asserts;
 import com.young.mall.service.*;
 import com.young.mall.domain.enums.AdminResponseCode;
-import com.young.mall.utils.QrCodeUtil;
+import com.young.mall.util.QrCodeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

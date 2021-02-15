@@ -3,7 +3,7 @@ package com.young.mall.express;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.young.mall.config.express.ExpressProperties;
 import com.young.mall.express.entity.ExpressInfo;
-import com.young.mall.utils.HttpUtil;
+import com.young.mall.util.HttpUtil;
 import lombok.Data;
 import org.springframework.util.Base64Utils;
 

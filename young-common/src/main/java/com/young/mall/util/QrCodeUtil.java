@@ -1,4 +1,4 @@
-package com.young.mall.utils;
+package com.young.mall.util;
 
 import cn.binarywang.wx.miniapp.api.WxMaService;
 import com.young.db.entity.YoungGroupon;

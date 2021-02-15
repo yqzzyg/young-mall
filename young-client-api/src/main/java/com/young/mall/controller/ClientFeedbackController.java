@@ -7,7 +7,7 @@ import com.young.mall.domain.vo.FeedbackVo;
 import com.young.mall.exception.Asserts;
 import com.young.mall.service.ClientFeedbackService;
 import com.young.mall.service.ClientUserService;
-import com.young.mall.utils.RegexUtil;
+import com.young.mall.util.RegexUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;

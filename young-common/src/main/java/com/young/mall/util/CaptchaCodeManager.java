@@ -1,10 +1,9 @@
-package com.young.mall.utils;
+package com.young.mall.util;
 
 
 import com.young.mall.domain.CaptchaItem;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 

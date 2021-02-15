@@ -7,7 +7,7 @@ import com.young.mall.domain.ClientUserDetails;
 import com.young.mall.service.ClientAddressService;
 import com.young.mall.service.ClientUserService;
 import com.young.mall.service.ClientRegionService;
-import com.young.mall.utils.RegexUtil;
+import com.young.mall.util.RegexUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;

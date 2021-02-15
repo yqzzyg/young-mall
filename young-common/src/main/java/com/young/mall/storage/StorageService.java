@@ -2,8 +2,8 @@ package com.young.mall.storage;
 
 import com.young.db.entity.YoungStorage;
 import com.young.mall.service.MallStorageService;
-import com.young.mall.utils.CharUtil;
-import com.young.mall.utils.DateTimeUtils;
+import com.young.mall.util.CharUtil;
+import com.young.mall.util.DateTimeUtils;
 import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
