@@ -8,7 +8,6 @@ import com.young.db.entity.YoungSeckillPromotionProductRelationExample;
 import com.young.db.entity.YoungSeckillPromotionSession;
 import com.young.db.mapper.SeckillPromotionProductRelationMapper;
 import com.young.db.pojo.SeckillPromotionSessionDetail;
-import com.young.mall.exception.Asserts;
 import com.young.mall.service.AdminSeckillSessionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
